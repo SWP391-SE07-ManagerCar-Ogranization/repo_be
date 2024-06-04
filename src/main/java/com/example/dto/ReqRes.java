@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Lob;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,6 +25,7 @@ public class ReqRes {
     private String name;
     private Role role;
     private String email;
+    private String phone;
     private String password;
     private Account account;
     private String idCard;
@@ -32,7 +34,8 @@ public class ReqRes {
     private String image;
     private String dob;
     private String address;
-    private String createdDate;
+    private Date createdAt;
+    private Date updateAt;
     private boolean status;
     private List<Account> accountList;
 

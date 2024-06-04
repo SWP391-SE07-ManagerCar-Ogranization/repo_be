@@ -36,7 +36,6 @@ public class UserManagementController {
     @GetMapping("/admin/get-all-users")
     public ResponseEntity<ReqRes> getAllUsers(){
         return ResponseEntity.ok(usersManagementService.getAllUsers());
-
     }
 
     @GetMapping("/admin/get-users/{userId}")
