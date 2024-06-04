@@ -2,24 +2,20 @@ package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "payment_method")
 @Data
-public class Role {
+public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
-    private String roleName;
+    private Integer paymentMethodId;
+    private String methodName;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "role")
-    private Set<Account> accounts;
-
+    @OneToMany(mappedBy = "paymentMethod")
+    private Set<Transaction> transactions;
 }

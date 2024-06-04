@@ -14,9 +14,6 @@ import java.util.List;
 @Service
 public class OurUserDetailsService implements UserDetailsService,AccountService {
 
-//
-
-
     @Autowired
     private AccountRepository accountRepository;
 
