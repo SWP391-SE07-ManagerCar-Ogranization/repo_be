@@ -1,7 +1,7 @@
 package com.example.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,8 +50,8 @@ public class Account implements UserDetails {
 
     private double accountBalance;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="role_id")
     private Role role;
 

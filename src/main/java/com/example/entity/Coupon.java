@@ -1,6 +1,9 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,8 +17,9 @@ public class Coupon {
     private String couponName;
     private double couponValue;
     private int couponQuantity;
-    @JsonBackReference
+
     @ManyToOne
+    @JsonBackReference(value = "customer_coupon")
     @JoinColumn(name = "customer_id", nullable=false)
     private Customer customer;
 }

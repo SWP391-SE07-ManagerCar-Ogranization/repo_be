@@ -1,6 +1,9 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,23 +24,23 @@ public class Transaction {
     @PrimaryKeyJoinColumn
     private Invoice invoice;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "group_car_trans")
     @JoinColumn(name="group_car_id", nullable=false)
     private GroupCar groupCar;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "customer_trans")
     @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "driver_detail_trans")
     @JoinColumn(name="driver_detail_id", nullable=false)
     private DriverDetail driverDetail;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "payment_method")
     @JoinColumn(name="payment_method_id", nullable=false)
     private PaymentMethod paymentMethod;
 }
