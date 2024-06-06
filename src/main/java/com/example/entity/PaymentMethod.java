@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -9,17 +10,15 @@ import lombok.Data;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "payment_method")
 @Data
-public class Role {
+public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
+    private Integer paymentMethodId;
+    private String methodName;
 
-    private String roleName;
-
-    @OneToMany(mappedBy = "role")
-    @JsonManagedReference
-    private Set<Account> accounts;
-
+    @OneToMany(mappedBy = "paymentMethod")
+    @JsonManagedReference(value = "payment_method")
+    private Set<Transaction> transactions;
 }

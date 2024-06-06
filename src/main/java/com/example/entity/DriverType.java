@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -9,17 +10,14 @@ import lombok.Data;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "driver_type")
 @Data
-public class Role {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "driverTypeId")
+public class DriverType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
-
-    private String roleName;
-
-    @OneToMany(mappedBy = "role")
-    @JsonManagedReference
-    private Set<Account> accounts;
-
+    private int driverTypeId;
+    private String driverTypeName;
+    @ManyToMany(mappedBy = "driver")
+    Set<DriverDetail> driverDetails;
 }

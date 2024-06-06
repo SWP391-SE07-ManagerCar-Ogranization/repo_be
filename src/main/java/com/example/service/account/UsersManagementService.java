@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class UsersManagementService {
                 ourUser.setStatus(true);
                 ourUser.setEmail(registrationRequest.getEmail());
                 ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-                ourUser.setCreatedDate(LocalDate.now().toString());
+                ourUser.setCreatedAt(new Date());
                 Account accountResult = ourUserDetailsService.addAccount(ourUser);
                 if (accountResult.getAccountId()>0) {
                     resp.setAccount((accountResult));
@@ -81,9 +81,9 @@ public class UsersManagementService {
                 user.setEmail(email);
                 user.setImage(loginRequest.getImage());
                 user.setName(loginRequest.getName());
-                user.setRole(roleService.findById(2)); // Default role
+                user.setRole(roleService.findById(2));
                 user.setStatus(true);
-                user.setCreatedDate(LocalDate.now().toString());
+                user.setCreatedAt(new Date());
                 ourUserDetailsService.addAccount(user);
             }
             var jwt = jwtUtils.generateToken(user);
@@ -103,7 +103,7 @@ public class UsersManagementService {
         }
         return response;
     }
-// fix it
+
     public ReqRes forgotPassword(ReqRes reqRes, boolean flag) {
         ReqRes response = new ReqRes();
         try {
@@ -220,7 +220,7 @@ public class UsersManagementService {
             if (account != null) {
                 account.setEmail(updatedUser.getEmail());
                 account.setName(updatedUser.getName());
-                account.setRole(roleService.findById(2));
+                account.setRole(account.getRole());
                 account.setImage(updatedUser.getImage());
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
                     account.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
