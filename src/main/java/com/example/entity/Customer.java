@@ -1,7 +1,6 @@
 package com.example.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,6 +9,9 @@ import java.util.Set;
 @Entity
 @Table(name = "customer")
 @Data
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+//        property = "@customer_id")
 public class Customer {
     @Id
     @Column(name = "customer_id")
@@ -23,9 +25,9 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "group_car_id"))
     Set<GroupCar> groupCars;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customer")
-    private Set<Feedback> feedbacks;
+
+//    @OneToMany(mappedBy = "customer")
+//    private Set<Feedback> feedbacks;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "customer")

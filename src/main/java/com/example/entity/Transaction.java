@@ -1,6 +1,8 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,9 +11,13 @@ import java.util.Date;
 @Data
 @Table(name = "transaction")
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "@transactionId")
 public class Transaction {
     @Id
     @Column(name = "transaction_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
     private boolean transactionStatus;
     private Date createAt;

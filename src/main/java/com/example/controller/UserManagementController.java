@@ -77,7 +77,7 @@ public class UserManagementController {
 
     @GetMapping("/public/get-all-drivers")
     public ResponseEntity<List<Account>> getAllDrivers(){
-        return ResponseEntity.ok(ourUserDetailsService.getAllAccountByRoleId(2));
+        return ResponseEntity.ok(ourUserDetailsService.getAllAccountByRoleId(3));
     }
 
     @PutMapping("/public/{id}/update-status")

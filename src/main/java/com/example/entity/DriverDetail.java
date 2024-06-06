@@ -1,6 +1,8 @@
 package com.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +11,9 @@ import java.util.Set;
 @Data
 @Table(name = "driver_detail")
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "@driverDetailId")
 public class DriverDetail {
     @Id
     @Column(name = "driver_detail_id")

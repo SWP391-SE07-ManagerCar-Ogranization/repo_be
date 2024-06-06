@@ -2,6 +2,8 @@ package com.example.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +17,9 @@ import java.util.List;
 @Entity
 @Table(name = "account")
 @Data
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "@accountId")
 public class Account implements UserDetails {
 
     @Id
