@@ -6,12 +6,15 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "customer")
-@Data
+@Getter
+@Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Customer {
     @Id
@@ -19,16 +22,9 @@ public class Customer {
     private Integer id;
     private int customerPoint;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "group_cars_join",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_car_id"))
-//    @JsonBackReference(value = "customersGroupCars")
-    Set<GroupCar> groupCars;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customers_feedback")
+    @JsonBackReference(value = "customers_feedback")
     private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "customer")
@@ -48,4 +44,11 @@ public class Customer {
     @JoinColumn(name = "customer_id")
     private Account account;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "group_cars_join",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_car_id"))
+    @JsonManagedReference(value = "customersGroupCars")
+    Set<GroupCar> groupCars;
 }

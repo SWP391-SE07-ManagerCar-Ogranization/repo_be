@@ -26,4 +26,9 @@ public class FeedbackManagementController {
     public void deleteFeedback(@PathVariable Integer id) {
        feedbackServiceImp.deleteFeedbackById(id);
     }
+    
+    @GetMapping("/public/feedback-driver/find-all/{id}")
+    public ResponseEntity<List<Feedback>> getAllFeedbackByDriverId(@PathVariable Integer id){
+        return ResponseEntity.ok(feedbackServiceImp.findAllFeedbackByDriverDetailId(id));
+    }
 }

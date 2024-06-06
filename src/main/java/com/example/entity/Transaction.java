@@ -15,6 +15,7 @@ import java.util.Date;
 public class Transaction {
     @Id
     @Column(name = "transaction_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
     private boolean transactionStatus;
     private Date createAt;

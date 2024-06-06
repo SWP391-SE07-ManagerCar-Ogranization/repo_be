@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FeedbackServiceImp implements FeedbackService{
@@ -28,4 +29,18 @@ public class FeedbackServiceImp implements FeedbackService{
     public void deleteFeedbackById(int id) {
          feedbackRepository.deleteById(id);
     }
+
+    @Override
+    public List<Feedback> findAllFeedbackByDriverDetailId(int driverDetailId) {
+        return feedbackRepository.findAllByDriverDetailId(driverDetailId);
+    }
+
+    @Override
+    public Map<Integer, List<Feedback>> getFeedbacksForm() {
+
+
+
+        return Map.of();
+    }
+
 }

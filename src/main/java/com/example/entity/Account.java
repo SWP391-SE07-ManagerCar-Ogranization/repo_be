@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "account")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
 public class Account implements UserDetails {
 
     @Id
@@ -54,7 +58,7 @@ public class Account implements UserDetails {
     private double accountBalance;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference(value = "account_role")
     @JoinColumn(name="role_id")
     private Role role;
 
