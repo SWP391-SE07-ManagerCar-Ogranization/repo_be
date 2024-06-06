@@ -1,6 +1,9 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,13 +23,13 @@ public class Invoice {
     private boolean isFinish;
     private Date timeStart;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "customer_invoice")
     @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "driver_detail_invoice")
     @JoinColumn(name="driver_detail_id", nullable=false)
     private DriverDetail driverDetail;
 
