@@ -13,9 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "group_car")
 @Data
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.IntSequenceGenerator.class,
-        property = "@group_car_id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "groupId")
 public class GroupCar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,16 +28,17 @@ public class GroupCar {
     private boolean isFinish;
     private Date timeStart;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference(value = "driver_detail_group_car")
     @JoinColumn(name="driver_detail_id", nullable=false)
     private DriverDetail driverDetail;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "groupCar")
+    @JsonManagedReference(value = "group_car_trans")
     private Set<Transaction> transactions;
 
     @ManyToMany(mappedBy = "groupCars")
+//    @JsonManagedReference(value = "customersGroupCars")
     Set<Customer> customers;
 
 }

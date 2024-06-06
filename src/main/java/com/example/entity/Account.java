@@ -1,6 +1,7 @@
 package com.example.entity;
 
 
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -17,9 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "account")
 @Data
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.IntSequenceGenerator.class,
-        property = "@accountId")
 public class Account implements UserDetails {
 
     @Id
@@ -55,8 +53,8 @@ public class Account implements UserDetails {
 
     private double accountBalance;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="role_id")
     private Role role;
 

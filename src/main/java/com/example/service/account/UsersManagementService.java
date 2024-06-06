@@ -84,7 +84,6 @@ public class UsersManagementService {
                 user.setRole(roleService.findById(2));
                 user.setStatus(true);
                 user.setCreatedAt(new Date());
-                System.out.println(user);
                 ourUserDetailsService.addAccount(user);
             }
             var jwt = jwtUtils.generateToken(user);
@@ -221,7 +220,7 @@ public class UsersManagementService {
             if (account != null) {
                 account.setEmail(updatedUser.getEmail());
                 account.setName(updatedUser.getName());
-                account.setRole(roleService.findById(2));
+                account.setRole(account.getRole());
                 account.setImage(updatedUser.getImage());
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
                     account.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
