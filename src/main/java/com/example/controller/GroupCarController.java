@@ -3,10 +3,10 @@ package com.example.controller;
 import com.example.entity.GroupCar;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
+
 import java.util.List;
 
 @RestController
@@ -28,6 +28,14 @@ public class GroupCarController {
     public List<GroupCar> getGroupCars() {
         return service.getGroupCars();
     }
+    @GetMapping("/public/groupCarsByStartPoint/{startPoint}")
+    public List<GroupCar> getGroupCarsByStartPoint(@PathVariable String startPoint) {
+        return service.getGroupCarsByStartPoint(startPoint);
+    }
+    @GetMapping("/public/groupCarsByEndPoint/{endPoint}")
+    public List<GroupCar> getGroupCarsByEndPoint(@PathVariable String endPoint) {
+        return service.getGroupCarsByEndPoint(endPoint);
+    }
 
     @GetMapping("/public/groupCarById/{id}")
     public GroupCar getGroupCarById(@PathVariable int id) {
@@ -48,4 +56,5 @@ public class GroupCarController {
     public String deleteGroupCar(@PathVariable int id) {
         return service.deleteGroupCar(id);
     }
+
 }

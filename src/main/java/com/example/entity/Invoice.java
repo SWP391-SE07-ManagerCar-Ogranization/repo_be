@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "invoice")
 @Entity
 public class Invoice {
@@ -34,6 +37,7 @@ public class Invoice {
     private DriverDetail driverDetail;
 
     @OneToOne
+    @JsonBackReference(value = "transaction_invoice")
     @MapsId
     @JoinColumn(name = "invoice_id")
     private Transaction transaction;

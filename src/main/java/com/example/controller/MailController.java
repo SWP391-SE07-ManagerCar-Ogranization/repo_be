@@ -1,8 +1,8 @@
 package com.example.controller;
 
 import com.example.dto.ReqRes;
-import com.example.service.mail.MailService;
 import com.example.service.account.UsersManagementService;
+import com.example.service.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

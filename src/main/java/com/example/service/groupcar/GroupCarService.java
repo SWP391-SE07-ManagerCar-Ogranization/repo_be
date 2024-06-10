@@ -20,9 +20,18 @@ public class GroupCarService {
         return groupCarRepository.saveAll(groupCars);
     }
 
-        public List<GroupCar> getGroupCars(){
+    public List<GroupCar> getGroupCars(){
             return groupCarRepository.findAll();
     }
+
+    public List<GroupCar> getGroupCarsByStartPoint(String startPoint){
+        return groupCarRepository.findByStartPoint(startPoint);
+    }
+
+    public List<GroupCar> getGroupCarsByEndPoint(String endPoint){
+        return groupCarRepository.findByEndPoint(endPoint);
+    }
+
 
     public GroupCar getGroupCarById(int id) {
         return groupCarRepository.findById(id).orElse(null);
@@ -31,6 +40,7 @@ public class GroupCarService {
     public GroupCar getGroupCarByGroupName(String groupName) {
         return groupCarRepository.findByGroupName(groupName);
     }
+
 
     public String deleteGroupCar(int id){
         groupCarRepository.deleteById(id);
@@ -47,6 +57,9 @@ public class GroupCarService {
         existingGroupCar.setEndPoint(groupCar.getEndPoint());
         existingGroupCar.setFinish(groupCar.isFinish());
         existingGroupCar.setTimeStart(groupCar.getTimeStart());
+        existingGroupCar.setCustomers(groupCar.getCustomers());
         return groupCarRepository.save(existingGroupCar);
     }
+
+
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -22,16 +21,16 @@ public class GroupCar {
     private Integer groupId;
     private String groupName;
     private int capacity;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private Date createAt;
+    private Date updateAt;
     private String startPoint;
     private String endPoint;
     private boolean isFinish;
-    private LocalDateTime timeStart;
+    private Date timeStart;
 
     @ManyToOne
     @JsonBackReference(value = "driver_detail_group_car")
-    @JoinColumn(name="driver_detail_id", nullable=false)
+    @JoinColumn(name="driver_detail_id")
     private DriverDetail driverDetail;
 
     @OneToMany(mappedBy = "groupCar")
