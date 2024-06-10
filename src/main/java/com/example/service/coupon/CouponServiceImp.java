@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CouponServiceImp implements CouponService{
     @Autowired
@@ -24,5 +26,10 @@ public class CouponServiceImp implements CouponService{
     @Override
     public void deleteCoupon(int couponId) {
         couponRepository.deleteById(couponId);
+    }
+
+    @Override
+    public Optional<Coupon> findCouponById(int couponId) {
+        return couponRepository.findById(couponId);
     }
 }

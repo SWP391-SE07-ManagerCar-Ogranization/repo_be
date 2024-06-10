@@ -7,19 +7,18 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Set;
+
 @Entity
-@Table(name = "coupon")
+@Table(name = "payment_method")
 @Data
-public class Coupon {
+public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer couponId;
-    private String couponName;
-    private double couponValue;
-    private int couponQuantity;
+    private Integer paymentMethodId;
+    private String methodName;
 
-    @ManyToOne
-    @JsonBackReference(value = "customer_coupon")
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @OneToMany(mappedBy = "paymentMethod")
+    @JsonManagedReference(value = "payment_method")
+    private Set<Transaction> transactions;
 }

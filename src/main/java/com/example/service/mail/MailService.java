@@ -2,10 +2,14 @@ package com.example.service.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -15,24 +19,23 @@ public class MailService {
 
     @Value("${spring.mail.username}")
     private String fromMail;
-    private int CODE = 0;
-
+    Map<String,String> otpMap = new HashMap<>();
     public void sendMail(String mail) {
-        CODE = generateRandomFiveDigitNumber();
+        String otp = String.valueOf(generateRandomFiveDigitNumber());
+        otpMap.put(mail, otp);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(fromMail);
         simpleMailMessage.setSubject("[FCAR] FORGOT PASSWORD " + mail);
-        simpleMailMessage.setText(generateContentForgot());
+        simpleMailMessage.setText( "Your Code to recovery password is: " + otp);
         simpleMailMessage.setTo(mail);
         mailSender.send(simpleMailMessage);
     }
 
-    public boolean verifyOtpMail(int otp) {
-        return CODE == otp;
-    }
-
-    public String generateContentForgot() {
-        return "Your Code to recovery password is: " + CODE;
+    public boolean verifyOtpMail(String mail, String otp) {
+        if(otpMap.containsKey(mail)) {
+            return otp.equals(otpMap.get(mail));
+        }
+        return false;
     }
 
     public int generateRandomFiveDigitNumber() {
