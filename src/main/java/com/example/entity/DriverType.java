@@ -10,21 +10,17 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "driver_type")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "roleId")
-public class Role {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "driverTypeId")
+public class DriverType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
-
-    private String roleName;
-
-    @OneToMany(mappedBy = "role")
-    @JsonManagedReference(value = "account_role")
-    private Set<Account> accounts;
-
+    private int driverTypeId;
+    private String driverTypeName;
+    @ManyToMany(mappedBy = "driver")
+    Set<DriverDetail> driverDetails;
 }

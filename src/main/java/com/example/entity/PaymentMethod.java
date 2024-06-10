@@ -5,26 +5,20 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "roleId")
-public class Role {
+@Table(name = "payment_method")
+@Data
+public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
+    private Integer paymentMethodId;
+    private String methodName;
 
-    private String roleName;
-
-    @OneToMany(mappedBy = "role")
-    @JsonManagedReference(value = "account_role")
-    private Set<Account> accounts;
-
+    @OneToMany(mappedBy = "paymentMethod")
+    @JsonManagedReference(value = "payment_method")
+    private Set<Transaction> transactions;
 }

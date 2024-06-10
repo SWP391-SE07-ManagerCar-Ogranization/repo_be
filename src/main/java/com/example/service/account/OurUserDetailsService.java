@@ -16,6 +16,8 @@ public class OurUserDetailsService implements UserDetailsService,AccountService 
 
     @Autowired
     private AccountRepository accountRepository;
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findByEmail(username).orElseThrow();
@@ -24,6 +26,11 @@ public class OurUserDetailsService implements UserDetailsService,AccountService 
     @Override
     public Account findByEmail(String email) {
         return accountRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public Account findByPhone(String phone) {
+        return accountRepository.findByPhone(phone).orElse(null);
     }
 
     @Override
@@ -50,4 +57,18 @@ public class OurUserDetailsService implements UserDetailsService,AccountService 
     public Account findById(Integer id) {
         return accountRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Account> getAllAccountByRoleId(Integer roleId) {
+        return accountRepository.findByRoleRoleId(roleId);
+    }
+
+    @Override
+    public boolean updateStatusById(Integer accountId, boolean status) {
+       return accountRepository.updateStatusById(accountId, status) > 0;
+
+    }
+
+
+
 }

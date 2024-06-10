@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.ReqRes;
 import com.example.entity.Account;
+import com.example.service.account.OurUserDetailsService;
 import com.example.service.account.UsersManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +10,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserManagementController {
     @Autowired
     private UsersManagementService usersManagementService;
+    @Autowired
+    private OurUserDetailsService ourUserDetailsService;
+
     @PostMapping("/auth/register")
     public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg){
         return ResponseEntity.ok(usersManagementService.register(reg));
@@ -33,7 +39,12 @@ public class UserManagementController {
         return ResponseEntity.ok(usersManagementService.refreshToken(req));
     }
 
-    @GetMapping("/admin/get-all-users")
+    @PostMapping("/auth/change-pass")
+    public ResponseEntity<ReqRes> changePassword(@RequestBody ReqRes reqRes){
+        return ResponseEntity.ok(usersManagementService.changeNewPassword(reqRes));
+    }
+
+    @GetMapping("/auth/get-all-users")
     public ResponseEntity<ReqRes> getAllUsers(){
         return ResponseEntity.ok(usersManagementService.getAllUsers());
 
@@ -62,5 +73,24 @@ public class UserManagementController {
     public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.deleteUser(userId));
     }
+
+    //Do-Admin
+    @GetMapping("/public/get-all-customers")
+    public ResponseEntity<List<Account>> getAllCustomers(){
+        return ResponseEntity.ok(ourUserDetailsService.getAllAccountByRoleId(1));
+    }
+
+    @GetMapping("/public/get-all-drivers")
+    public ResponseEntity<List<Account>> getAllDrivers(){
+        return ResponseEntity.ok(ourUserDetailsService.getAllAccountByRoleId(3));
+    }
+
+    @PutMapping("/public/{id}/update-status")
+    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestParam boolean status){
+        return ResponseEntity.ok(ourUserDetailsService.updateStatusById(id,status));
+    }
+
+
+
 
 }

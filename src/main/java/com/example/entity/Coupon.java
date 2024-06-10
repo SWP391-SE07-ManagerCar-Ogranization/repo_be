@@ -7,24 +7,22 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
 @Entity
-@Table(name = "role")
+@Table(name = "coupon")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "roleId")
-public class Role {
+public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
+    private Integer couponId;
+    private String couponName;
+    private double couponValue;
+    private int couponQuantity;
 
-    private String roleName;
-
-    @OneToMany(mappedBy = "role")
-    @JsonManagedReference(value = "account_role")
-    private Set<Account> accounts;
-
+    @ManyToOne
+    @JsonBackReference(value = "customer_coupon")
+    @JoinColumn(name = "customer_id", nullable=false)
+    private Customer customer;
 }
