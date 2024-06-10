@@ -5,16 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "invoice")
 @Entity
 public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invoice_id")
     private Integer invoiceId;
     private Date bookingDate;
@@ -36,5 +39,6 @@ public class Invoice {
     @OneToOne
     @MapsId
     @JoinColumn(name = "invoice_id")
+    @JsonBackReference(value = "transaction_invoice")
     private Transaction transaction;
 }

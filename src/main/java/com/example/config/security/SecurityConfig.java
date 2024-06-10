@@ -36,8 +36,9 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .authorizeHttpRequests(request-> request.requestMatchers("/auth/**", "/public/**","/oauth2/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/user/**").hasAnyAuthority("USER")
-                        .requestMatchers("/adminuser/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers("/user/**").hasAnyAuthority("CUSTOMER")
+                        .requestMatchers("/driver/**").hasAnyAuthority("DRIVER")
+                        .requestMatchers("/adminuser/**").hasAnyAuthority("ADMIN", "CUSTOMER","DRIVER")
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

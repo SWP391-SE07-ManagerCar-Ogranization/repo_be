@@ -39,6 +39,11 @@ public class UserManagementController {
         return ResponseEntity.ok(usersManagementService.refreshToken(req));
     }
 
+    @PostMapping("/auth/change-pass")
+    public ResponseEntity<ReqRes> changePassword(@RequestBody ReqRes reqRes){
+        return ResponseEntity.ok(usersManagementService.changeNewPassword(reqRes));
+    }
+
     @GetMapping("/auth/get-all-users")
     public ResponseEntity<ReqRes> getAllUsers(){
         return ResponseEntity.ok(usersManagementService.getAllUsers());

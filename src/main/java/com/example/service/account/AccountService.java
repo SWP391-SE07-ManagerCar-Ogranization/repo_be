@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface AccountService {
     Account findByEmail(String email);
+    Account findByPhone(String phone);
     boolean emailExists(String email);
     Account addAccount(Account account);
     List<Account> getAllAccount();

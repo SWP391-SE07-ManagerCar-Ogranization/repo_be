@@ -5,13 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "feedback")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property  = "feedbackId")
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +26,11 @@ public class Feedback {
     private Date updateAt;
 
     @ManyToOne
-    @JsonManagedReference(value = "customers_feedback")
     @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 
     @ManyToOne
-    @JsonManagedReference(value = "driver_detail_feedback")
+    @JsonBackReference(value = "driver_detail_feedback")
     @JoinColumn(name="driver_detail_id", nullable=false)
     private DriverDetail driverDetail;
 }

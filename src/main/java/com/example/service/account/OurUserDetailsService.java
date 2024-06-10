@@ -29,6 +29,11 @@ public class OurUserDetailsService implements UserDetailsService,AccountService 
     }
 
     @Override
+    public Account findByPhone(String phone) {
+        return accountRepository.findByPhone(phone).orElse(null);
+    }
+
+    @Override
     public boolean emailExists(String email) {
         return accountRepository.findByEmail(email).isPresent();
     }

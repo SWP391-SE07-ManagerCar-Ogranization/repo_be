@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "roleId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "roleId")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Role {
     private String roleName;
 
     @OneToMany(mappedBy = "role")
-    @JsonBackReference(value = "account_role")
+    @JsonManagedReference(value = "account_role")
     private Set<Account> accounts;
 
 }
