@@ -31,22 +31,23 @@ public class Customer {
     Set<GroupCar> groupCars;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customers_feedback")
+    @JsonBackReference(value = "customers_feedback")
     private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customer_coupon")
+    @JsonBackReference(value = "customer_coupon")
     private Set<Coupon> coupons;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customer_invoice")
+    @JsonBackReference(value = "customer_invoice")
     private Set<Invoice> invoices;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customer_trans")
+    @JsonBackReference(value = "customer_trans")
     private Set<Transaction> transactions;
 
     @OneToOne
+    @JsonManagedReference(value = "account_customer")
     @MapsId
     @JoinColumn(name = "customer_id")
     private Account account;

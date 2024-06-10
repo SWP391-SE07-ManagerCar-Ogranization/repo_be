@@ -3,7 +3,7 @@ package com.example.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
 public class Account implements UserDetails {
 
     @Id
@@ -54,8 +55,8 @@ public class Account implements UserDetails {
     private double accountBalance;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name="role_id")
+    @JsonBackReference(value = "account_role")
     private Role role;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
@@ -63,6 +64,7 @@ public class Account implements UserDetails {
     private DriverDetail driverDetail;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonBackReference(value = "account_customer")
     @PrimaryKeyJoinColumn
     private Customer customer;
 
