@@ -10,4 +10,5 @@ public interface CustomerService {
     List<Customer> getAllCustomers();
     Customer saveCustomer(Customer customer);
     void deleteCustomer(int id);
+    void addCustomerToGroupCar(int customerId, int groupId);
 }

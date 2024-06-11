@@ -47,6 +47,7 @@ public class GroupCarController {
         return service.getGroupCarByGroupName(name);
     }
 
+
     @PutMapping("/public/update")
     public GroupCar updateGroupCar(@RequestBody GroupCar groupCar) {
         return service.updateGroupCar(groupCar);
@@ -55,6 +56,11 @@ public class GroupCarController {
     @DeleteMapping("/public/delete/{id}")
     public String deleteGroupCar(@PathVariable int id) {
         return service.deleteGroupCar(id);
+    }
+
+    @GetMapping("/public/groupCarsByCustomerId/{id}")
+    public List<GroupCar> getGroupCarsByCustomerId(@PathVariable int id) {
+        return service.getGroupCarsByCustomerId(id);
     }
 
 }

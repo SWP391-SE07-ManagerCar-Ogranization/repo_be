@@ -41,7 +41,7 @@ public class GroupCar {
     private Set<Transaction> transactions;
 
     @ManyToMany(mappedBy = "groupCars")
-//    @JsonManagedReference(value = "customersGroupCars")
+    // @JsonManagedReference (value = "customersGroupCars")
     Set<Customer> customers;
 
 }
