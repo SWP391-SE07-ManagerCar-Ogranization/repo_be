@@ -90,6 +90,10 @@ public class UserManagementController {
         return ResponseEntity.ok(ourUserDetailsService.updateStatusById(id,status));
     }
 
+    @GetMapping("/public/get-account/{id}")
+    public ResponseEntity<Account> getAccount(@PathVariable Integer id){
+        return ResponseEntity.ok(ourUserDetailsService.findById(id));
+    }
 
 
 

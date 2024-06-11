@@ -15,8 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "driver_detail")
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property  = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DriverDetail {
     @Id
     @Column(name = "driver_detail_id")

@@ -26,11 +26,12 @@ public class Feedback {
     private Date updateAt;
 
     @ManyToOne
+    @JsonManagedReference(value = "customers_feedback")
     @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 
     @ManyToOne
-    @JsonBackReference(value = "driver_detail_feedback")
+    @JsonManagedReference(value = "driver_detail_feedback")
     @JoinColumn(name="driver_detail_id", nullable=false)
     private DriverDetail driverDetail;
 }
