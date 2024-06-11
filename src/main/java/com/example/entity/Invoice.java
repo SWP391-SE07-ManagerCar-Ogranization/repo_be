@@ -29,12 +29,12 @@ public class Invoice {
 
     @ManyToOne
     @JsonBackReference(value = "customer_invoice")
-    @JoinColumn(name="customer_id", nullable=false)
+    @JoinColumn(name="customer_id")
     private Customer customer;
 
     @ManyToOne
     @JsonBackReference(value = "driver_detail_invoice")
-    @JoinColumn(name="driver_detail_id", nullable=false)
+    @JoinColumn(name="driver_detail_id")
     private DriverDetail driverDetail;
 
     @OneToOne
