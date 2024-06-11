@@ -60,6 +60,9 @@ public class GroupCarService {
         existingGroupCar.setCustomers(groupCar.getCustomers());
         return groupCarRepository.save(existingGroupCar);
     }
+    public void addCustomerGroupCar(int customerId, int groupId){
+        groupCarRepository.GroupCarJoin(customerId, groupId);
+    }
 
 
 }

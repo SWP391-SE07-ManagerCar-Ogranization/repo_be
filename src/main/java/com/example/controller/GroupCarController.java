@@ -47,6 +47,7 @@ public class GroupCarController {
         return service.getGroupCarByGroupName(name);
     }
 
+
     @PutMapping("/public/update")
     public GroupCar updateGroupCar(@RequestBody GroupCar groupCar) {
         return service.updateGroupCar(groupCar);
