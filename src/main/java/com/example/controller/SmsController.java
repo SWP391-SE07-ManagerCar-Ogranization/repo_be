@@ -22,7 +22,7 @@ public class SmsController {
     private UsersManagementService usersManagementService;
     @PostMapping("/sendSms/{toMobileNo}")
     public ResponseEntity sendSMS(@PathVariable("toMobileNo") String toMobile) {
-         Twilio.init("AC09fb019a8b07fcdcbaa80d2e9e3991b6","c3ab5390dacaec0b1abdd04c7d0121d7");
+         Twilio.init("AC09fb019a8b07fcdcbaa80d2e9e3991b6","285eb974ad73fb6ef4e9d43e487b4d0e");
         Message.creator(new PhoneNumber(toMobile), new PhoneNumber("+17604529857"), "Your verification PIN is: " + generateOtp(toMobile)).create();
         return new ResponseEntity("Message sent successfully", HttpStatus.OK);
     }
