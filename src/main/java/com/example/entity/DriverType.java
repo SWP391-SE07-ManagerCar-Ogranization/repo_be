@@ -22,5 +22,6 @@ public class DriverType {
     private int driverTypeId;
     private String driverTypeName;
     @ManyToMany(mappedBy = "driver")
+            @JsonBackReference(value = "driver_detail_type")
     Set<DriverDetail> driverDetails;
 }

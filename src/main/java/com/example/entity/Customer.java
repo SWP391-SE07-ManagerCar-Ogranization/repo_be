@@ -31,7 +31,7 @@ public class Customer {
     Set<GroupCar> groupCars;
 
     @OneToMany(mappedBy = "customer")
-    @JsonBackReference(value = "customers_feedback")
+    @JsonManagedReference(value = "customers_feedback")
     private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "customer")

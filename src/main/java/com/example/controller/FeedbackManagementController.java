@@ -62,10 +62,3 @@ public class FeedbackManagementController {
     }
 }
 
-//public Feedback(Integer feedbackId, String feedbackContent, Date createAt, Date updateAt, Customer customer, DriverDetail driverDetail) {
-//    this.feedbackId = feedbackId;
-//    this.feedbackContent = feedbackContent;
-//    this.createAt = createAt;
-//    this.updateAt = updateAt;
-//    this.customer = customer;
-//    this.driverDetail = driverDetail;

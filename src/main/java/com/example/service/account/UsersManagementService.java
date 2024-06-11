@@ -259,6 +259,7 @@ public class UsersManagementService {
             if (account != null) {
                 account.setEmail(updatedUser.getEmail());
                 account.setName(updatedUser.getName());
+                System.out.println("ROLE IS: "  +account.getRole());
                 account.setRole(account.getRole());
                 account.setImage(updatedUser.getImage());
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
