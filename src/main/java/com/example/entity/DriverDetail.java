@@ -5,14 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "driver_detail")
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property  = "id")
 public class DriverDetail {
     @Id
     @Column(name = "driver_detail_id")
@@ -29,7 +33,7 @@ public class DriverDetail {
     Set<DriverType> driver;
 
     @OneToMany(mappedBy = "driverDetail")
-    @JsonManagedReference(value = "driver_detail_invoice")
+    @JsonBackReference(value = "driver_detail_invoice")
     private Set<Invoice> invoices;
 
     @OneToMany(mappedBy = "driverDetail")
@@ -37,11 +41,11 @@ public class DriverDetail {
     private Set<GroupCar> groupCars;
 
     @OneToMany(mappedBy = "driverDetail")
-    @JsonManagedReference(value = "driver_detail_feedback")
+    @JsonBackReference(value = "driver_detail_feedback")
     private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "driverDetail")
-    @JsonManagedReference(value = "driver_detail_trans")
+    @JsonBackReference(value = "driver_detail_trans")
     private Set<Transaction> transactions;
 
     @OneToOne

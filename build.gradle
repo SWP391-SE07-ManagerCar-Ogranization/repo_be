@@ -37,6 +37,11 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 	// https://mvnrepository.com/artifact/com.twilio.sdk/twilio
 	implementation 'com.twilio.sdk:twilio:8.8.0'
+	// https://mvnrepository.com/artifact/com.stripe/stripe-java
+	implementation 'com.stripe:stripe-java:25.11.0'
+// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	implementation 'com.google.code.gson:gson:2.10.1'
+
 
 }
 

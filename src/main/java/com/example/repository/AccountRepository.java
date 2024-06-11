@@ -23,4 +23,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Transactional
     @Query("update Account a set a.status = :status where a.accountId = :id")
     int updateStatusById( @Param("id")Integer id,@Param("status")Boolean status);
+    Optional<Account> findByPhone(String phone);
+
 }

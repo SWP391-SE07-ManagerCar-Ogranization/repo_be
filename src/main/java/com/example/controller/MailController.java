@@ -21,9 +21,9 @@ public class MailController {
         mailService.sendMail(mail);
         return ResponseEntity.ok("ok");
     }
-    @PostMapping("/verify/{otp}")
-    public ResponseEntity<ReqRes> verifyOtp(@PathVariable String otp, @RequestBody ReqRes ReqRes) {
-        return  ResponseEntity.ok(usersManagementService.forgotPassword(ReqRes,mailService.verifyOtpMail(ReqRes.getEmail(),otp)));
-    }
+//    @PostMapping("/verify/{otp}")
+//    public ResponseEntity<ReqRes> verifyOtp(@PathVariable String otp, @RequestBody ReqRes ReqRes) {
+//        return  ResponseEntity.ok(usersManagementService.forgotPassword(ReqRes,mailService.verifyOtpMail(ReqRes.getEmail(),otp)));
+//    }
 
 }

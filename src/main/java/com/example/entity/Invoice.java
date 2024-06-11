@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.util.Date;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +18,6 @@ import java.util.Date;
 @Entity
 public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invoice_id")
     private Integer invoiceId;
     private Date bookingDate;
@@ -37,8 +37,8 @@ public class Invoice {
     private DriverDetail driverDetail;
 
     @OneToOne
-    @JsonBackReference(value = "transaction_invoice")
     @MapsId
     @JoinColumn(name = "invoice_id")
+    @JsonBackReference(value = "transaction_invoice")
     private Transaction transaction;
 }
