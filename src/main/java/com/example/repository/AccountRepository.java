@@ -17,6 +17,8 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     List<Account> findByRoleRoleId(Integer roleId);
 
+    Account findByAccountId(Integer accountId);
+
     @Modifying
     @Transactional
     @Query("update Account a set a.status = :status where a.accountId = :id")

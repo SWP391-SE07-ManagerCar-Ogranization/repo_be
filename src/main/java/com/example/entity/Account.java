@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
 public class Account implements UserDetails {
 
     @Id
