@@ -1,17 +1,17 @@
 package com.example.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "customer")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Customer {
     @Id
@@ -19,6 +19,14 @@ public class Customer {
     private Integer id;
     private int customerPoint;
 
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "customer_id")
+    private Account account;
+    public void setAccount(Account account) {
+        this.account = account;
+        this.account.setCustomer(this); // setting the parent class as the value for the child instance
+    }
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "group_cars_join",
@@ -35,7 +43,7 @@ public class Customer {
     @JsonManagedReference(value = "customer_coupon")
     private Set<Coupon> coupons;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer",cascade=CascadeType.ALL)
     @JsonManagedReference(value = "customer_invoice")
     private Set<Invoice> invoices;
 
@@ -43,9 +51,5 @@ public class Customer {
     @JsonManagedReference(value = "customer_trans")
     private Set<Transaction> transactions;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "customer_id")
-    private Account account;
 
 }
