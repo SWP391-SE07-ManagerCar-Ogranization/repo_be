@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface TransactionStatisticRepository extends JpaRepository<Transaction, Integer> {
+public interface StatisticRepository extends JpaRepository<Transaction, Integer> {
 
     @Query(value = "SELECT * FROM transaction WHERE DATE(create_at) = DATE(:date)", nativeQuery = true)
     List<Transaction> getTransactionByDate(@Param("date") Date date);

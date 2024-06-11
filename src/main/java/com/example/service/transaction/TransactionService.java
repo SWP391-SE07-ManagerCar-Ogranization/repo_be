@@ -1,6 +1,5 @@
-package com.example.service.Transaction;
+package com.example.service.transaction;
 
-import com.example.entity.GroupCar;
 import com.example.entity.Transaction;
 
 import java.util.List;

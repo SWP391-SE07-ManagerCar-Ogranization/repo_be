@@ -1,14 +1,17 @@
-package com.example.service.transaction;
+package com.example.service.statistic;
+
+
 
 import com.example.entity.Transaction;
 
 import java.util.List;
 import java.util.Map;
 
-public interface TransactionStatisticService {
-    Map<Integer, Double> getTransactionsIn7Day();
-    Map<Integer, Double> getTransactionsIn12Months();
-    Map<Integer, Double> getTransactionsIn3Years();
+public interface StatisticService {
+    List<Double> getTransactionsIn7Day();
+    List<Double> getTransactionsIn12Months();
+    List<Integer> getTripIn12Months();
+    List<Double> getTransactionsIn3Years();
     Double getTodayTransactionRevenue();
     Double getThisMonthTransactionRevenue();
     Double getThisYearTransactionRevenue();
