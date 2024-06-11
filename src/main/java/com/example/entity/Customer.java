@@ -27,7 +27,7 @@ public class Customer {
             name = "group_cars_join",
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "group_car_id"))
-    @JsonManagedReference(value = "customersGroupCars")
+     @JsonBackReference (value = "customersGroupCars")
     private Set<GroupCar> groupCars;
 
 

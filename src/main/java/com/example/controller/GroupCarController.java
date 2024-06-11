@@ -58,4 +58,9 @@ public class GroupCarController {
         return service.deleteGroupCar(id);
     }
 
+    @GetMapping("/public/groupCarsByCustomerId/{id}")
+    public List<GroupCar> getGroupCarsByCustomerId(@PathVariable int id) {
+        return service.getGroupCarsByCustomerId(id);
+    }
+
 }

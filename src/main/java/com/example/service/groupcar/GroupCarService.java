@@ -63,6 +63,8 @@ public class GroupCarService {
     public void addCustomerGroupCar(int customerId, int groupId){
         groupCarRepository.GroupCarJoin(customerId, groupId);
     }
-
+    public List<GroupCar> getGroupCarsByCustomerId(int customerId){
+        return groupCarRepository.findGroupCarsByCustomerId(customerId);
+    }
 
 }
