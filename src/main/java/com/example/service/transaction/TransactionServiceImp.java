@@ -16,10 +16,6 @@ public class TransactionServiceImp implements TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @Autowired
-    private GroupCarRepository groupCarRepository;
-
-
     @Override
     public Transaction add(Transaction transaction) {
         return transactionRepository.save(transaction);

@@ -1,9 +1,10 @@
 package com.example.service.transaction;
 
+import com.example.entity.GroupCar;
 import com.example.entity.Transaction;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 public interface TransactionService {
     Transaction add (Transaction transaction);
 
