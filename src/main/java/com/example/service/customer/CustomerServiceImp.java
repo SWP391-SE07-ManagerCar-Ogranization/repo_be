@@ -31,4 +31,13 @@ public class CustomerServiceImp implements CustomerService {
     public void deleteCustomer(int id) {
 
     }
+    @Override
+    public Customer addCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer findCustomerById(Integer id) {
+        return customerRepository.findById(id).orElse(null);
+    }
 }

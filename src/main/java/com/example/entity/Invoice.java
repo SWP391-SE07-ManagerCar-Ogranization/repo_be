@@ -42,4 +42,15 @@ public class Invoice {
     @JoinColumn(name = "invoice_id")
     @JsonBackReference(value = "transaction_invoice")
     private Transaction transaction;
+
+    public Invoice(Date bookingDate, String startPoint, String endPoint, boolean isFinish, Date timeStart, Customer customer, DriverDetail driverDetail, Transaction transaction) {
+        this.bookingDate = bookingDate;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.isFinish = isFinish;
+        this.timeStart = timeStart;
+        this.customer = customer;
+        this.driverDetail = driverDetail;
+        this.transaction = transaction;
+    }
 }

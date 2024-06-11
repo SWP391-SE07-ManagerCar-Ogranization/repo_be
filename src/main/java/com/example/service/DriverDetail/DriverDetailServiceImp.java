@@ -42,4 +42,23 @@ public class DriverDetailServiceImp implements DriverDetailService {
     public DriverDetail findDriverDetailById(Integer id) {
         return driverDetailRepository.findById(id).orElse(null);
     }
+    @Override
+    public DriverDetail getDriverDetail(Integer id) {
+        return driverDetailRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<DriverDetail> getAllDriverDetails() {
+        return List.of();
+    }
+
+    @Override
+    public void deleteDriverDetail(int id) {
+
+    }
+
+    @Override
+    public DriverDetail saveDriverDetail(DriverDetail driverDetail) {
+        return driverDetailRepository.save(driverDetail);
+    }
 }

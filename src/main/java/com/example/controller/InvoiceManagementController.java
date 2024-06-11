@@ -2,15 +2,13 @@ package com.example.controller;
 
 import com.example.dto.TranInvoResReq;
 import com.example.entity.*;
-import com.example.repository.CustomerRepository;
 import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.DriverType.DriverTypeService;
-import com.example.service.Transaction.TransactionService;
 import com.example.service.customer.CustomerService;
 import com.example.service.invoice.InvoiceService;
 import com.example.service.payment.PaymentMethodService;
+import com.example.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/public")
+@RequestMapping("/public/invoice")
 public class InvoiceManagementController {
     @Autowired
     private InvoiceService invoiceService;
@@ -34,11 +32,6 @@ public class InvoiceManagementController {
     private DriverTypeService driverTypeService;
     @Autowired
     private DriverDetailService driverDetailService;
-
-    @GetMapping("/")
-    public String test() {
-        return "test anh 1 quan 1234578";
-    }
 
     @PostMapping("/add")
     public ResponseEntity<Invoice> addInvoice(@RequestBody Invoice invoice) {
@@ -90,14 +83,14 @@ public class InvoiceManagementController {
         return ResponseEntity.ok(driverTypeService.getAll());
     }
 
-    @PostMapping("addtran1/invoi")
+    @PostMapping("/addtran1/invoi")
     public ResponseEntity<Invoice> addtranInvoice(@RequestBody Invoice invoice, @RequestParam Integer paymentMethodId) {
         Transaction transaction = new Transaction(invoice.getBookingDate(), 1000, invoice.getCustomer(), invoice.getDriverDetail(), paymentMethodService.getById(paymentMethodId));
         int invoiceId = transactionService.add(transaction).getTransactionId();
         return ResponseEntity.ok(invoice);
     }
 
-    @PostMapping("addtran/invoice")
+    @PostMapping("/addtran/invoice")
     public ResponseEntity<List<DriverDetail>> addTranInvoice(@RequestBody TranInvoResReq resrep) {
 // resrep.get
         Transaction transaction = new Transaction(new Date(), resrep.getAmount()
