@@ -15,8 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "driver_detail")
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property  = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DriverDetail {
     @Id
     @Column(name = "driver_detail_id")
@@ -41,7 +40,7 @@ public class DriverDetail {
     private Set<GroupCar> groupCars;
 
     @OneToMany(mappedBy = "driverDetail")
-    @JsonBackReference(value = "driver_detail_feedback")
+    @JsonManagedReference(value = "driver_detail_feedback")
     private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "driverDetail")
@@ -49,7 +48,96 @@ public class DriverDetail {
     private Set<Transaction> transactions;
 
     @OneToOne
+    @JsonBackReference(value = "driver_detail_account")
     @MapsId
     @JoinColumn(name = "driver_detail_id")
     private Account account;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDriverLicence() {
+        return driverLicence;
+    }
+
+    public void setDriverLicence(String driverLicence) {
+        this.driverLicence = driverLicence;
+    }
+
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public boolean isWorkingStatus() {
+        return workingStatus;
+    }
+
+    public void setWorkingStatus(boolean workingStatus) {
+        this.workingStatus = workingStatus;
+    }
+
+    public Set<DriverType> getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Set<DriverType> driver) {
+        this.driver = driver;
+    }
+
+    public Set<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(Set<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+    public Set<GroupCar> getGroupCars() {
+        return groupCars;
+    }
+
+    public void setGroupCars(Set<GroupCar> groupCars) {
+        this.groupCars = groupCars;
+    }
+
+    public Set<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(Set<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

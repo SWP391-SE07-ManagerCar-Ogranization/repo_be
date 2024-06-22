@@ -11,4 +11,5 @@ public interface FeedbackService {
     void deleteFeedbackById(int id);
     List<Feedback> findAllFeedbackByDriverDetailId(int driverDetailId);
 //    Map<Integer,List<Feedback>> getFeedbacksForm();
+    Feedback saveFeedback(Feedback feedback);
 }

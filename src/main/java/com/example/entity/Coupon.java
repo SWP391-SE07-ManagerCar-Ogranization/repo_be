@@ -23,6 +23,6 @@ public class Coupon {
 
     @ManyToOne
     @JsonBackReference(value = "customer_coupon")
-    @JoinColumn(name = "customer_id", nullable=false)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 }

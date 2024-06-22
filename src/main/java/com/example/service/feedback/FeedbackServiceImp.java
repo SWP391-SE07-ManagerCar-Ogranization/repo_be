@@ -40,4 +40,9 @@ public class FeedbackServiceImp implements FeedbackService{
 //        return Map.of();
 //    }
 
+    @Override
+    public Feedback saveFeedback(Feedback feedback) {
+        return feedbackRepository.save(feedback);
+    }
+
 }

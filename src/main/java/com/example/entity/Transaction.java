@@ -25,13 +25,13 @@ public class Transaction {
     private double amount;
 
     @OneToOne(mappedBy = "transaction", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "transaction_invoice")
     @PrimaryKeyJoinColumn
+    @JsonBackReference(value = "transaction_invoice")
     private Invoice invoice;
 
     @ManyToOne
     @JsonBackReference(value = "group_car_trans")
-    @JoinColumn(name="group_car_id", nullable=false)
+    @JoinColumn(name="group_car_id", nullable=true)
     private GroupCar groupCar;
 
     @ManyToOne
@@ -48,4 +48,23 @@ public class Transaction {
     @JsonBackReference(value = "payment_method")
     @JoinColumn(name="payment_method_id", nullable=false)
     private PaymentMethod paymentMethod;
+    public Transaction(Date createAt, double amount,
+                       Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod, Invoice invoice) {
+        this.transactionStatus = false;
+        this.createAt = createAt;
+        this.amount = amount;
+        this.customer = customer;
+        this.driverDetail = driverDetail;
+        this.paymentMethod = paymentMethod;
+        this.invoice = invoice;
+    }
+    public Transaction(Date createAt, double amount,
+                       Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod) {
+        this.transactionStatus = false;
+        this.createAt = createAt;
+        this.amount = amount;
+        this.customer = customer;
+        this.driverDetail = driverDetail;
+        this.paymentMethod = paymentMethod;
+    }
 }

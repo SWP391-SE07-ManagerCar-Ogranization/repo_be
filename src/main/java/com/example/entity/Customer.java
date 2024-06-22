@@ -1,9 +1,6 @@
 package com.example.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,7 +30,7 @@ public class Customer {
 
 
     @OneToMany(mappedBy = "customer")
-    @JsonBackReference(value = "customers_feedback")
+    @JsonManagedReference(value = "customers_feedback")
     private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "customer")
@@ -49,7 +46,7 @@ public class Customer {
     private Set<Transaction> transactions;
 
     @OneToOne
-    @JsonManagedReference(value = "account_customer")
+    @JsonBackReference(value = "account_customer")
     @MapsId
     @JoinColumn(name = "customer_id")
     private Account account;

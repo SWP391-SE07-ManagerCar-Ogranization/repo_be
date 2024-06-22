@@ -26,6 +26,7 @@ public class Feedback {
     private Date updateAt;
 
     @ManyToOne
+    @JsonBackReference(value = "customers_feedback")
     @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 

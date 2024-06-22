@@ -18,6 +18,7 @@ import java.util.Date;
 @Entity
 public class Invoice {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invoice_id")
     private Integer invoiceId;
     private Date bookingDate;
@@ -28,12 +29,12 @@ public class Invoice {
 
     @ManyToOne
     @JsonBackReference(value = "customer_invoice")
-    @JoinColumn(name="customer_id", nullable=false)
+    @JoinColumn(name="customer_id")
     private Customer customer;
 
     @ManyToOne
     @JsonBackReference(value = "driver_detail_invoice")
-    @JoinColumn(name="driver_detail_id", nullable=false)
+    @JoinColumn(name="driver_detail_id")
     private DriverDetail driverDetail;
 
     @OneToOne
@@ -41,4 +42,15 @@ public class Invoice {
     @JoinColumn(name = "invoice_id")
     @JsonBackReference(value = "transaction_invoice")
     private Transaction transaction;
+
+    public Invoice(Date bookingDate, String startPoint, String endPoint, boolean isFinish, Date timeStart, Customer customer, DriverDetail driverDetail, Transaction transaction) {
+        this.bookingDate = bookingDate;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.isFinish = isFinish;
+        this.timeStart = timeStart;
+        this.customer = customer;
+        this.driverDetail = driverDetail;
+        this.transaction = transaction;
+    }
 }
