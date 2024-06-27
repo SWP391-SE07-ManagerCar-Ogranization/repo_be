@@ -2,10 +2,9 @@ package com.example.service.statistic;
 
 
 
-import com.example.entity.Transaction;
+import com.example.entity.UserTransaction;
 
 import java.util.List;
-import java.util.Map;
 
 public interface StatisticService {
     List<Double> getTransactionsIn7Day();
@@ -15,7 +14,7 @@ public interface StatisticService {
     Double getTodayTransactionRevenue();
     Double getThisMonthTransactionRevenue();
     Double getThisYearTransactionRevenue();
-    List<Transaction> getTodayTransaction();
-    List<Transaction> getMonthTransaction();
-    List<Transaction> getYearTransaction();
+    List<UserTransaction> getTodayTransaction();
+    List<UserTransaction> getMonthTransaction();
+    List<UserTransaction> getYearTransaction();
 }

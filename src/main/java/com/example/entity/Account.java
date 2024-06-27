@@ -2,6 +2,7 @@ package com.example.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -55,7 +56,6 @@ public class Account implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name="role_id")
-    @JsonBackReference(value = "account_role")
     private Role role;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
@@ -68,8 +68,9 @@ public class Account implements UserDetails {
     private Customer customer;
 
     @Override
+    @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+        return List.of(new SimpleGrantedAuthority(this.getRole().getRoleName()));
     }
 
     @Override

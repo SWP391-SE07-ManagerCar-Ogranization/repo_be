@@ -23,6 +23,7 @@ public class DriverDetail {
     private String driverLicence;
     private String vehicleNumber;
     private double rating;
+    private int totalRating;
     private boolean workingStatus;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -45,7 +46,7 @@ public class DriverDetail {
 
     @OneToMany(mappedBy = "driverDetail")
     @JsonBackReference(value = "driver_detail_trans")
-    private Set<Transaction> transactions;
+    private Set<UserTransaction> userTransactions;
 
     @OneToOne
     @JsonBackReference(value = "driver_detail_account")
@@ -125,12 +126,12 @@ public class DriverDetail {
         this.feedbacks = feedbacks;
     }
 
-    public Set<Transaction> getTransactions() {
-        return transactions;
+    public Set<UserTransaction> getUserTransactions() {
+        return userTransactions;
     }
 
-    public void setTransactions(Set<Transaction> transactions) {
-        this.transactions = transactions;
+    public void setUserTransactions(Set<UserTransaction> userTransactions) {
+        this.userTransactions = userTransactions;
     }
 
     public Account getAccount() {
