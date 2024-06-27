@@ -1,10 +1,7 @@
-package com.example.service.DriverDetail;
+package com.example.service.driverDetail;
 
-import com.example.entity.Customer;
 import com.example.entity.DriverDetail;
 import com.example.entity.DriverType;
-import com.example.entity.Transaction;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 public interface DriverDetailService {
