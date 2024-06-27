@@ -2,8 +2,8 @@ package com.example.controller;
 
 import com.example.dto.TranInvoResReq;
 import com.example.entity.*;
-import com.example.service.DriverDetail.DriverDetailService;
-import com.example.service.DriverType.DriverTypeService;
+import com.example.service.driverDetail.DriverDetailService;
+import com.example.service.driverType.DriverTypeService;
 import com.example.service.transaction.UserTransactionService;
 import com.example.service.customer.CustomerService;
 import com.example.service.invoice.InvoiceService;

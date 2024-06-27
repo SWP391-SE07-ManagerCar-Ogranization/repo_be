@@ -1,8 +1,7 @@
-package com.example.service.DriverType;
+package com.example.service.driverType;
 
 import com.example.entity.DriverType;
 import com.example.repository.DriverTypeRepository;
-import com.example.service.driverType.DriverTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
