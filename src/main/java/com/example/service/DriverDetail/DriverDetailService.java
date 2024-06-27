@@ -1,4 +1,4 @@
-package com.example.service.driverDetail;
+package com.example.service.DriverDetail;
 
 import com.example.entity.DriverDetail;
 import com.example.entity.DriverType;

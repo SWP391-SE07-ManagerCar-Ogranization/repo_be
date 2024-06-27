@@ -37,6 +37,7 @@ public class ReqRes {
     private Date createdAt;
     private Date updateAt;
     private boolean status;
+    private boolean workingStatus;
     private String otp;
     private double amount;
     private List<Account> accountList;

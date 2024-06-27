@@ -5,7 +5,7 @@ import com.example.entity.Customer;
 import com.example.entity.DriverDetail;
 import com.example.entity.Feedback;
 import com.example.service.customer.CustomerService;
-import com.example.service.driverDetail.DriverDetailService;
+import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.feedback.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

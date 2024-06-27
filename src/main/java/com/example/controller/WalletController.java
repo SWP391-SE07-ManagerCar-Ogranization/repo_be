@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.entity.SystemTransaction;
 import com.example.service.transaction.SystemTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +20,9 @@ public class WalletController {
     @Autowired
     SystemTransactionService systemTransactionService;
     @GetMapping("/system-transaction-history")
-    public List<SystemTransaction> getListSystemTrans() {
+    public ResponseEntity<List<SystemTransaction>> getListSystemTrans() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        return systemTransactionService.findAllByEmail(email);
+        return ResponseEntity.ok(systemTransactionService.findAllByEmail(email));
     }
 }
