@@ -23,8 +23,8 @@ public class Role {
 
     private String roleName;
 
-    @OneToMany(mappedBy = "role")
-    @JsonBackReference(value = "account_role")
-    private Set<Account> accounts;
+//    @OneToMany(mappedBy = "role")
+//    @JsonBackReference(value = "account_role")
+//    private Set<Account> accounts;
 
 }

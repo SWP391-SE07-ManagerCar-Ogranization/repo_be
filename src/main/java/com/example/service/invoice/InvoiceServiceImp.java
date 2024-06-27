@@ -1,7 +1,6 @@
 package com.example.service.invoice;
 
 import com.example.entity.Invoice;
-import com.example.entity.Transaction;
 import com.example.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

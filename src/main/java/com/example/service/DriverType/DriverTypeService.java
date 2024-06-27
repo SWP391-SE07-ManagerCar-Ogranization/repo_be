@@ -1,4 +1,5 @@
-package com.example.service.driverType;
+package com.example.service.DriverType;
+
 import com.example.entity.DriverType;
 import java.util.List;
 

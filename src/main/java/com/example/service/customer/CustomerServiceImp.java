@@ -5,6 +5,8 @@ import com.example.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerServiceImp implements CustomerService{
     @Autowired
@@ -12,6 +14,7 @@ public class CustomerServiceImp implements CustomerService{
     @Override
     public void addCustomerToGroupCar(int customerId, int groupId) {
         customerRepository.GroupCarJoin(customerId, groupId);
+    }
     @Override
     public Customer getCustomer(int id) {
         return customerRepository.findById(id).orElse(null);

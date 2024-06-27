@@ -43,7 +43,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer_trans")
-    private Set<Transaction> transactions;
+    private Set<UserTransaction> userTransactions;
 
     @OneToOne
     @JsonBackReference(value = "account_customer")
