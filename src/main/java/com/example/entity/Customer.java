@@ -46,7 +46,7 @@ public class Customer {
     private Set<Transaction> transactions;
 
     @OneToOne
-    @JsonBackReference(value = "account_customer")
+    @JsonManagedReference(value = "account_customer")
     @MapsId
     @JoinColumn(name = "customer_id")
     private Account account;

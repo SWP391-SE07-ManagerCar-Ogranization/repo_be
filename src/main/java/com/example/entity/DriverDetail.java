@@ -36,7 +36,7 @@ public class DriverDetail {
     private Set<Invoice> invoices;
 
     @OneToMany(mappedBy = "driverDetail")
-    @JsonManagedReference(value = "driver_detail_group_car")
+    @JsonBackReference(value = "driver_detail_group_car")
     private Set<GroupCar> groupCars;
 
     @OneToMany(mappedBy = "driverDetail")
@@ -48,7 +48,7 @@ public class DriverDetail {
     private Set<Transaction> transactions;
 
     @OneToOne
-    @JsonBackReference(value = "driver_detail_account")
+    @JsonManagedReference(value = "driver_detail_account")
     @MapsId
     @JoinColumn(name = "driver_detail_id")
     private Account account;

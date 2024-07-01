@@ -1,6 +1,8 @@
 package com.example.service.customer;
 
 import com.example.entity.Customer;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 public interface CustomerService {
@@ -11,4 +13,5 @@ public interface CustomerService {
     List<Customer> getAllCustomers();
     Customer saveCustomer(Customer customer);
     void deleteCustomer(int id);
+
 }
