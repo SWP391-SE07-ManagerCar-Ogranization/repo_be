@@ -1,5 +1,6 @@
 package com.example.service.customer;
 
+import com.example.entity.Account;
 import com.example.entity.Customer;
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface CustomerService {
     List<Customer> getAllCustomers();
     Customer saveCustomer(Customer customer);
     void deleteCustomer(int id);
+    List<Account> getAllCustomerByGroupId(int groupId);
 }

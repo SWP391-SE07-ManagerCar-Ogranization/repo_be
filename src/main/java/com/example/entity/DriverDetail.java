@@ -39,9 +39,9 @@ public class DriverDetail {
     @JsonBackReference(value = "driver_detail_group_car")
     private Set<GroupCar> groupCars;
 
-    @OneToMany(mappedBy = "driverDetail")
-    @JsonManagedReference(value = "driver_detail_feedback")
-    private Set<Feedback> feedbacks;
+//    @OneToMany(mappedBy = "driverDetail")
+//    @JsonManagedReference(value = "driver_detail_feedback")
+//    private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "driverDetail")
     @JsonBackReference(value = "driver_detail_trans")
@@ -117,13 +117,13 @@ public class DriverDetail {
         this.groupCars = groupCars;
     }
 
-    public Set<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(Set<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
-    }
+//    public Set<Feedback> getFeedbacks() {
+//        return feedbacks;
+//    }
+//
+//    public void setFeedbacks(Set<Feedback> feedbacks) {
+//        this.feedbacks = feedbacks;
+//    }
 
     public Set<Transaction> getTransactions() {
         return transactions;

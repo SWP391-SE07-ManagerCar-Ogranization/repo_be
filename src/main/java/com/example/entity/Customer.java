@@ -27,9 +27,9 @@ public class Customer {
 //    @JsonBackReference(value = "customersGroupCars")
     Set<GroupCar> groupCars;
 
-    @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customers_feedback")
-    private Set<Feedback> feedbacks;
+//    @OneToMany(mappedBy = "customer")
+//    @JsonManagedReference(value = "customers_feedback")
+//    private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer_coupon")
