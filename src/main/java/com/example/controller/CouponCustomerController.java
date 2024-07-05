@@ -52,9 +52,9 @@ public class CouponCustomerController {
 
     @PostMapping("/customer/point/trade-minus")
     public Coupon tradeCoupon(@RequestBody Coupon coupon){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String email = authentication.getName();
-        Account account = ourUserDetailsService.findByEmail("phuc123@gmail.com");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account account = ourUserDetailsService.findByEmail(email);
         Customer customer = customerService.findCustomerById(account.getAccountId());
         coupon.setCustomer(customer);
         if (coupon.getCouponValue() == 0.1) {
