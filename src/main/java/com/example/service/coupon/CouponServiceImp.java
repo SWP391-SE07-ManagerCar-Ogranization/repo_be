@@ -5,6 +5,7 @@ import com.example.repository.CouponRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,14 @@ public class CouponServiceImp implements CouponService{
 
     @Override
     public List<Coupon> getAllCoupon() {
-        return couponRepository.findAll();
+        List<Coupon> availableCoupon = new ArrayList<>();
+        List<Coupon> allCoupons = couponRepository.findAll();
+        for (Coupon coupon : allCoupons) {
+            if (coupon.getCustomer() == null) {
+                availableCoupon.add(coupon);
+            }
+        }
+        return availableCoupon;
     }
 
     @Override
@@ -29,7 +37,21 @@ public class CouponServiceImp implements CouponService{
     }
 
     @Override
-    public Optional<Coupon> findCouponById(int couponId) {
-        return couponRepository.findById(couponId);
+    public Coupon findCouponById(int couponId) {
+        return couponRepository.findById(couponId).orElse(null);
+    }
+
+    @Override
+    public List<Coupon> getCouponByCustomerId(int customerId) {
+        List<Coupon> myCoupon = new ArrayList<>();
+        List<Coupon> allCoupons = couponRepository.findAll();
+        for (Coupon coupon : allCoupons) {
+            if (coupon.getCustomer() != null){
+                if (coupon.getCustomer().getId() == customerId) {
+                    myCoupon.add(coupon);
+                }
+            }
+        }
+        return myCoupon;
     }
 }

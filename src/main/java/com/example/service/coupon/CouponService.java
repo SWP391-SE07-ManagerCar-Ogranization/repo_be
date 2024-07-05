@@ -9,5 +9,6 @@ public interface CouponService {
     List<Coupon> getAllCoupon ();
     Coupon addCoupon (Coupon coupon);
     void deleteCoupon(int couponId);
-    Optional<Coupon> findCouponById(int couponId);
+    Coupon findCouponById(int couponId);
+    List<Coupon> getCouponByCustomerId(int customerId);
 }

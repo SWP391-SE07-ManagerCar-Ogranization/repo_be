@@ -55,7 +55,7 @@ public class Account implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name="role_id")
-    @JsonBackReference(value = "account_role")
+//    @JsonBackReference(value = "account_role")
     private Role role;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
@@ -69,7 +69,7 @@ public class Account implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+        return List.of(new SimpleGrantedAuthority(this.getRole().getRoleName()));
     }
 
     @Override
