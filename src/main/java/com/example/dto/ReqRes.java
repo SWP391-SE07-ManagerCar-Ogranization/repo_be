@@ -23,6 +23,7 @@ public class ReqRes {
     private String expirationTime;
     private String name;
     private Role role;
+    private String roleName;
     private String email;
     private String phone;
     private String password;

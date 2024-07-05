@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "driver_detail")
 @Entity
+@ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DriverDetail {
     @Id
@@ -48,7 +49,7 @@ public class DriverDetail {
     @JsonBackReference(value = "driver_detail_trans")
     private Set<UserTransaction> userTransactions;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonBackReference(value = "driver_detail_account")
     @MapsId
     @JoinColumn(name = "driver_detail_id")

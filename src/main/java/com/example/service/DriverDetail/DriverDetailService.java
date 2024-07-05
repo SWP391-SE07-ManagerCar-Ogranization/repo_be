@@ -7,9 +7,7 @@ import java.util.List;
 public interface DriverDetailService {
    List<DriverDetail> findAllByDriverTypeId(Integer id);
 
-   DriverDetail add (DriverDetail driverDetail);
-
-   void delete(DriverType driverType);
+   DriverDetail add(DriverDetail driverDetail);
 
    DriverDetail update(DriverType driverType);
 
@@ -17,9 +15,6 @@ public interface DriverDetailService {
 
    DriverDetail findDriverDetailById(Integer id);
    DriverDetail getDriverDetail(Integer id);
-   List<DriverDetail> getAllDriverDetails();
-   void deleteDriverDetail(int id);
-   DriverDetail saveDriverDetail(DriverDetail driverDetail);
 }
 
 

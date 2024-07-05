@@ -25,7 +25,7 @@ public class DriverController {
         String email = authentication.getName();
         DriverDetail driverDetail = ourUserDetailsService.findByEmail(email).getDriverDetail();
             driverDetail.setWorkingStatus(reqRes.isWorkingStatus());
-            driverDetailService.saveDriverDetail(driverDetail);
+            driverDetailService.add(driverDetail);
             reqRes.setMessage("success");
         return ResponseEntity.ok(reqRes);
     }

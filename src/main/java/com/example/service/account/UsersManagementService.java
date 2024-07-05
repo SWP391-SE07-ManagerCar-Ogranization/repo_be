@@ -2,6 +2,10 @@ package com.example.service.account;
 
 import com.example.dto.ReqRes;
 import com.example.entity.Account;
+import com.example.entity.Customer;
+import com.example.entity.DriverDetail;
+import com.example.service.DriverDetail.DriverDetailService;
+import com.example.service.customer.CustomerService;
 import com.example.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +30,10 @@ public class UsersManagementService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private CustomerService customerService;
+    @Autowired
+    private DriverDetailService driverDetailService;
 
     public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
@@ -34,7 +42,7 @@ public class UsersManagementService {
                 Account ourUser = new Account();
                 ourUser.setDob(registrationRequest.getDob());
                 ourUser.setAddress(registrationRequest.getAddress());
-                ourUser.setRole(roleService.findById(2));
+                ourUser.setRole(roleService.findByName(registrationRequest.getRoleName()));
                 ourUser.setName(registrationRequest.getName());
                 ourUser.setImage(registrationRequest.getImage());
                 ourUser.setStatus(true);
@@ -44,6 +52,7 @@ public class UsersManagementService {
                 Account accountResult = ourUserDetailsService.addAccount(ourUser);
                 if (accountResult.getAccountId() > 0) {
                     resp.setAccount((accountResult));
+                    setRoleForUser(registrationRequest.getRoleName(), ourUserDetailsService.findByEmail(accountResult.getEmail()).getAccountId());
                     resp.setMessage("User Saved Successfully");
                     resp.setStatusCode(200);
                 } else {
@@ -64,8 +73,13 @@ public class UsersManagementService {
             authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
                             loginRequest.getPassword()));
-            setReqRes(loginRequest, response);
-
+            Account account = ourUserDetailsService.findByEmail(loginRequest.getEmail());
+            if (!account.isStatus()) {
+                response.setStatusCode(403);
+                response.setMessage("Your Account had been block, contact Admin to get more info !");
+            } else {
+                setReqRes(loginRequest, response);
+            }
         } catch (Exception e) {
             response.setStatusCode(400);
             response.setMessage("Login fail");
@@ -87,20 +101,24 @@ public class UsersManagementService {
                 user.setStatus(true);
                 user.setCreatedAt(new Date());
                 ourUserDetailsService.addAccount(user);
+            } else {
+                if (!user.isStatus()) {
+                    response.setStatusCode(403);
+                    response.setMessage("Your Account had been block, contact Admin to get more info !");
+                } else {
+                    var jwt = jwtUtils.generateToken(user);
+                    var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+                    response.setAccount(user);
+                    response.setStatusCode(200);
+                    response.setToken(jwt);
+                    response.setRole(user.getRole());
+                    response.setRefreshToken(refreshToken);
+                    response.setExpirationTime("24Hrs");
+                    response.setMessage("Successfully Logged In via OAuth2");
+                }
             }
-            var jwt = jwtUtils.generateToken(user);
-            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
-
-            response.setAccount(user);
-            response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRole(user.getRole());
-            response.setRefreshToken(refreshToken);
-            response.setExpirationTime("24Hrs");
-            response.setMessage("Successfully Logged In via OAuth2");
-            System.out.println(response);
         } catch (Exception e) {
-            response.setStatusCode(500);
+            response.setStatusCode(400);
             response.setMessage(e.getMessage());
         }
         return response;
@@ -133,7 +151,6 @@ public class UsersManagementService {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
         }
-        System.out.println(response);
         return response;
     }
 
@@ -259,7 +276,7 @@ public class UsersManagementService {
             if (account != null) {
                 account.setEmail(updatedUser.getEmail());
                 account.setName(updatedUser.getName());
-                System.out.println("ROLE IS: "  +account.getRole());
+                System.out.println("ROLE IS: " + account.getRole());
                 account.setRole(account.getRole());
                 account.setImage(updatedUser.getImage());
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
@@ -303,23 +320,36 @@ public class UsersManagementService {
 
     }
 
-    public ReqRes getAllCustomer(){
+    public ReqRes getAllCustomer() {
         ReqRes reqRes = new ReqRes();
-        try{
+        try {
             List<Account> result = ourUserDetailsService.getAllAccountByRoleId(1);
-            if (!result.isEmpty()){
+            if (!result.isEmpty()) {
                 reqRes.setAccountList(result);
                 reqRes.setStatusCode(200);
                 reqRes.setMessage("Successful");
-            }else {
+            } else {
                 reqRes.setStatusCode(404);
                 reqRes.setMessage("No customer found");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             reqRes.setStatusCode(500);
             reqRes.setMessage("Error occurred: " + e.getMessage());
         }
-        return  reqRes;
+        return reqRes;
+    }
+
+    private void setRoleForUser(String roleName, int id) {
+        if ("CUSTOMER".equals(roleName)) {
+            Customer customer = new Customer();
+            customer.setAccount(ourUserDetailsService.findById(id));
+            customer.setId(id);
+            customerService.addCustomer(customer);
+        } else if ("DRIVER".equals(roleName)) {
+            DriverDetail driverDetail = new DriverDetail();
+            driverDetail.setAccount(ourUserDetailsService.findById(id));
+            driverDetail.setId(id);
+            driverDetailService.add(driverDetail);
+        }
     }
 }

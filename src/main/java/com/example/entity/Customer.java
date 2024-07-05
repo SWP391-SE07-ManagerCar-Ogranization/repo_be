@@ -45,7 +45,7 @@ public class Customer {
     @JsonBackReference(value = "customer_trans")
     private Set<UserTransaction> userTransactions;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonBackReference(value = "account_customer")
     @MapsId
     @JoinColumn(name = "customer_id")
