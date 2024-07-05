@@ -24,12 +24,11 @@ public class CouponCustomerController {
     @Autowired
     OurUserDetailsService ourUserDetailsService;
 
-    @PostMapping("/customer/coupon/get/{couponId}")
-    public Coupon getCouponByCustomer(@PathVariable int couponId){
+    @PostMapping("/customer/coupon/get")
+    public Coupon getCouponByCustomer(@RequestBody Coupon coupon){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Account account  = ourUserDetailsService.findByEmail(email);
-        Coupon coupon = couponService.findCouponById(couponId);
+        Account account = ourUserDetailsService.findByEmail(email);
         coupon.setCustomer(customerService.findCustomerById(account.getAccountId()));
         return couponService.addCoupon(coupon);
     }
@@ -38,7 +37,7 @@ public class CouponCustomerController {
     public List<Coupon> myCoupon(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Account account  = ourUserDetailsService.findByEmail(email);
+        Account account = ourUserDetailsService.findByEmail(email);
         return couponService.getCouponByCustomerId(account.getAccountId());
     }
 
@@ -47,7 +46,7 @@ public class CouponCustomerController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account account  = ourUserDetailsService.findByEmail(email);
-        return customerService.getCustomer(account.getAccountId()).getCustomerPoint();
+        return customerService.findCustomerById(account.getAccountId()).getCustomerPoint();
     }
 
     @PostMapping("/customer/point/trade-minus")
