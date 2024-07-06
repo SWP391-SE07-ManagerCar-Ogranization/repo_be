@@ -37,17 +37,12 @@ public class CustomerServiceImp implements CustomerService{
     }
 
     @Override
-    public Customer saveCustomer(Customer customer) {
-        return null;
-    }
-
-    @Override
     public void deleteCustomer(int id) {
 
     }
     @Override
-    public Customer addCustomer(Customer customer) {
-        return customerRepository.save(customer);
+    public void addCustomer(Customer customer) {
+        customerRepository.save(customer);
     }
 
     @Override
