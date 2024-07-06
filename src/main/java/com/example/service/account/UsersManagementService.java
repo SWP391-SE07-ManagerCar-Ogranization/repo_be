@@ -177,7 +177,7 @@ public class UsersManagementService {
                 response.setStatusCode(200);
                 response.setToken(jwt);
                 response.setRefreshToken(refreshTokenRequest.getToken());
-                response.setExpirationTime("24Hr");
+                response.setExpirationTime("24Hrs");
                 response.setMessage("Successfully Refreshed Token");
             }
             response.setStatusCode(200);
