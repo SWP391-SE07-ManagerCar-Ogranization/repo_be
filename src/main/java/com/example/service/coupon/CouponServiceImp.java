@@ -27,6 +27,30 @@ public class CouponServiceImp implements CouponService{
     }
 
     @Override
+    public List<Coupon> getAllFreeCoupon() {
+        List<Coupon> coupons = couponRepository.findAll();
+        List<Coupon> result = new ArrayList<>();
+        for (Coupon coupon : coupons){
+            if((coupon.getCouponType().equals("Free coupon"))&&(coupon.getCustomer()==null)&&(coupon.getCouponQuantity()>0)){
+                result.add(coupon);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Coupon> getAllTradeCoupon() {
+        List<Coupon> coupons = couponRepository.findAll();
+        List<Coupon> result = new ArrayList<>();
+        for (Coupon coupon : coupons){
+            if(coupon.getCouponType().equals("Trade coupon")&&(coupon.getCustomer()==null)&&(coupon.getCouponQuantity()>0)){
+                result.add(coupon);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public Coupon addCoupon(Coupon coupon) {
         return couponRepository.save(coupon);
     }
