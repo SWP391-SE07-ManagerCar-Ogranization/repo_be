@@ -1,6 +1,7 @@
 package com.example.service.customer;
 
 import com.example.entity.Customer;
+import com.example.entity.GroupCar;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface CustomerService {
     Customer saveCustomer(Customer customer);
     void deleteCustomer(int id);
 
+    List<Customer> getCustomersByGroup(GroupCar groupCar);
 }

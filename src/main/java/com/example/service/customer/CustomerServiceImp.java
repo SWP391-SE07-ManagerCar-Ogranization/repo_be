@@ -5,7 +5,6 @@ import com.example.entity.GroupCar;
 import com.example.repository.CustomerRepository;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,5 +53,11 @@ public class CustomerServiceImp implements CustomerService{
     @Override
     public Customer findCustomerById(Integer id) {
         return customerRepository.findById(id).orElse(null);
+    }
+
+
+    @Override
+    public List<Customer> getCustomersByGroup(GroupCar groupCar) {
+        return customerRepository.findCustomersByGroupCars(groupCar);
     }
 }

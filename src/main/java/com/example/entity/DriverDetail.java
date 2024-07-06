@@ -48,7 +48,7 @@ public class DriverDetail {
     private Set<Transaction> transactions;
 
     @OneToOne
-    @JsonManagedReference(value = "driver_detail_account")
+    @JsonBackReference(value = "driver_detail_account")
     @MapsId
     @JoinColumn(name = "driver_detail_id")
     private Account account;

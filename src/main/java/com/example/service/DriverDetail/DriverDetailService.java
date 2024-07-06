@@ -1,9 +1,6 @@
 package com.example.service.DriverDetail;
 
-import com.example.entity.Customer;
-import com.example.entity.DriverDetail;
-import com.example.entity.DriverType;
-import com.example.entity.Transaction;
+import com.example.entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +20,8 @@ public interface DriverDetailService {
    List<DriverDetail> getAllDriverDetails();
    void deleteDriverDetail(int id);
    DriverDetail saveDriverDetail(DriverDetail driverDetail);
+
+//   DriverDetail getDriverDetailByGroup(Integer id);
 }
 
 

@@ -63,7 +63,7 @@ public class Account implements UserDetails {
     private DriverDetail driverDetail;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    @JsonBackReference(value = "account_customer")
+    @JsonManagedReference(value = "account_customer")
     @PrimaryKeyJoinColumn
     private Customer customer;
 
