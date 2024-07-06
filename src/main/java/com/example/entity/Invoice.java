@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -18,7 +19,7 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invoice_id")
     private Integer invoiceId;
-    private Date bookingDate;
+    private LocalDateTime bookingDate;
     private String startPoint;
     private String endPoint;
     private boolean isFinish;
@@ -26,28 +27,17 @@ public class Invoice {
 
     @ManyToOne
     @JsonBackReference(value = "customer_invoice")
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name="customer_id", nullable=false)
     private Customer customer;
 
     @ManyToOne
     @JsonBackReference(value = "driver_detail_invoice")
-    @JoinColumn(name="driver_detail_id")
+    @JoinColumn(name="driver_detail_id", nullable=false)
     private DriverDetail driverDetail;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "invoice_id")
     @JsonBackReference(value = "transaction_invoice")
     private UserTransaction userTransaction;
-
-    public Invoice(Date bookingDate, String startPoint, String endPoint, boolean isFinish, Date timeStart, Customer customer, DriverDetail driverDetail, UserTransaction userTransaction) {
-        this.bookingDate = bookingDate;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        this.isFinish = isFinish;
-        this.timeStart = timeStart;
-        this.customer = customer;
-        this.driverDetail = driverDetail;
-        this.userTransaction = userTransaction;
-    }
 }

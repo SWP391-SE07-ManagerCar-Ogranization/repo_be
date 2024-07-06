@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +49,13 @@ public class UserTransactionServiceImp implements UserTransactionService {
         return userTransactionRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public UserTransaction getByCreateAt(LocalDateTime creatAt) {
+        return userTransactionRepository.findUserTransactionByCreateAt(creatAt);
+    }
 
-
-
+    @Override
+    public double calculateMoneyByDistance(double distance) {
+        return distance*10000;
+    }
 }

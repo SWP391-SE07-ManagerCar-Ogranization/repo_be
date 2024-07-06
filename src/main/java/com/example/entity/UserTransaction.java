@@ -1,9 +1,11 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -18,17 +20,17 @@ public class UserTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
     private boolean transactionStatus;
-    private Date createAt;
+    private LocalDateTime createAt;
     private double amount;
 
     @OneToOne(mappedBy = "userTransaction", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    @JsonBackReference(value = "transaction_invoice")
+    @JsonManagedReference(value = "transaction_invoice")
     private Invoice invoice;
 
     @ManyToOne
     @JsonBackReference(value = "group_car_trans")
-    @JoinColumn(name="group_car_id", nullable=true)
+    @JoinColumn(name="group_car_id")
+    @PrimaryKeyJoinColumn
     private GroupCar groupCar;
 
     @ManyToOne
@@ -45,23 +47,4 @@ public class UserTransaction {
     @JsonBackReference(value = "payment_method")
     @JoinColumn(name="payment_method_id", nullable=false)
     private PaymentMethod paymentMethod;
-    public UserTransaction(Date createAt, double amount,
-                           Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod, Invoice invoice) {
-        this.transactionStatus = false;
-        this.createAt = createAt;
-        this.amount = amount;
-        this.customer = customer;
-        this.driverDetail = driverDetail;
-        this.paymentMethod = paymentMethod;
-        this.invoice = invoice;
-    }
-    public UserTransaction(Date createAt, double amount,
-                           Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod) {
-        this.transactionStatus = false;
-        this.createAt = createAt;
-        this.amount = amount;
-        this.customer = customer;
-        this.driverDetail = driverDetail;
-        this.paymentMethod = paymentMethod;
-    }
 }

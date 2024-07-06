@@ -45,101 +45,10 @@ public class DriverDetail {
     @JsonManagedReference(value = "driver_detail_feedback")
     private Set<Feedback> feedbacks;
 
-    @OneToMany(mappedBy = "driverDetail")
-    @JsonBackReference(value = "driver_detail_trans")
-    private Set<UserTransaction> userTransactions;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JsonBackReference(value = "driver_detail_account")
     @MapsId
     @JoinColumn(name = "driver_detail_id")
     private Account account;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDriverLicence() {
-        return driverLicence;
-    }
-
-    public void setDriverLicence(String driverLicence) {
-        this.driverLicence = driverLicence;
-    }
-
-    public String getVehicleNumber() {
-        return vehicleNumber;
-    }
-
-    public void setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public boolean isWorkingStatus() {
-        return workingStatus;
-    }
-
-    public void setWorkingStatus(boolean workingStatus) {
-        this.workingStatus = workingStatus;
-    }
-
-    public Set<DriverType> getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Set<DriverType> driver) {
-        this.driver = driver;
-    }
-
-    public Set<Invoice> getInvoices() {
-        return invoices;
-    }
-
-    public void setInvoices(Set<Invoice> invoices) {
-        this.invoices = invoices;
-    }
-
-    public Set<GroupCar> getGroupCars() {
-        return groupCars;
-    }
-
-    public void setGroupCars(Set<GroupCar> groupCars) {
-        this.groupCars = groupCars;
-    }
-
-    public Set<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(Set<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
-    }
-
-    public Set<UserTransaction> getUserTransactions() {
-        return userTransactions;
-    }
-
-    public void setUserTransactions(Set<UserTransaction> userTransactions) {
-        this.userTransactions = userTransactions;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 }
