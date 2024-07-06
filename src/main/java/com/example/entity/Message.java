@@ -31,6 +31,11 @@ public class Message {
     private Customer customer;
 
     @ManyToOne
+    @JoinColumn(name = "driver_detail_id")
+    @JsonManagedReference(value = "driver_detail_message")
+    private DriverDetail driverDetail;
+
+    @ManyToOne
     @JoinColumn(name = "group_car_id")
     @JsonManagedReference(value = "group_car_message")
     private GroupCar groupCar;

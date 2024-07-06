@@ -4,6 +4,8 @@ import com.example.entity.GroupCar;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -61,6 +63,16 @@ public class GroupCarController {
     @GetMapping("/public/groupCarsByCustomerId/{id}")
     public List<GroupCar> getGroupCarsByCustomerId(@PathVariable int id) {
         return service.getGroupCarsByCustomerId(id);
+    }
+
+    @DeleteMapping("/public/deleteGroupCarJoin/{customerId}/{groupCarId}")
+    public ResponseEntity<String> deleteGroupCarJoin(@PathVariable int customerId, @PathVariable int groupCarId) {
+        try {
+            service.deleteGroupCarJoin(customerId, groupCarId);
+            return ResponseEntity.ok("GroupCarJoin deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting GroupCarJoin.");
+        }
     }
 
 }

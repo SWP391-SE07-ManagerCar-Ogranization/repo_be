@@ -67,4 +67,8 @@ public class GroupCarService {
         return groupCarRepository.findGroupCarsByCustomerId(customerId);
     }
 
+    public void deleteGroupCarJoin (int customerId, int groupCarId){
+        groupCarRepository.deleteGroupCarJoin(customerId, groupCarId);
+    }
+
 }

@@ -30,6 +30,12 @@ public interface GroupCarRepository extends JpaRepository<GroupCar, Integer> {
             "where gcj.customer_id = :customerId", nativeQuery = true)
     List<GroupCar> findGroupCarsByCustomerId(int customerId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM group_cars_join WHERE customer_id = :customerId AND group_car_id = :groupCarId", nativeQuery = true)
+    void deleteGroupCarJoin(@Param("customerId") int customerId, @Param("groupCarId") int groupCarId);
+
+
 }
 
 

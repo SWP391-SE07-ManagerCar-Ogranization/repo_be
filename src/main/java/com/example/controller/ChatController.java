@@ -54,6 +54,7 @@ public class ChatController {
                 new Date(),
                 new Date(),
                 customerService.getCustomer(message.getUserId()),
+                null,
                 groupCarService.getGroupCarById(message.getGroupCarId())
         );
         com.example.entity.Message message_db = messageService.save(newMessage);
