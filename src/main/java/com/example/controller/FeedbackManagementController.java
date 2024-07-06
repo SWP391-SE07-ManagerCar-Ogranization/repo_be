@@ -48,14 +48,14 @@ public class FeedbackManagementController {
         return ResponseEntity.ok(feedbackService.saveFeedback(feedback));
     }
 
-    @PostMapping("/add-new-feedback")
-    public ResponseEntity<Feedback> addNewFeedback(@RequestBody FeedbackReqRes feedbackReqRes) {
-         Customer customer = customerService.getCustomer(feedbackReqRes.getCustomerId());
-         DriverDetail driverDetail = driverDetailService.getDriverDetail(feedbackReqRes.getDriverDetailId());
-         driverDetail.setRating(feedbackReqRes.getRating());
-         Feedback fb = feedbackService.saveFeedback(new Feedback(0, feedbackReqRes.getFeedbackContent(),new Date(),new Date(),customer,
-                 driverDetail));
-            return ResponseEntity.ok(fb);
-    }
+//    @PostMapping("/add-new-feedback")
+//    public ResponseEntity<Feedback> addNewFeedback(@RequestBody FeedbackReqRes feedbackReqRes) {
+//         Customer customer = customerService.getCustomer(feedbackReqRes.getCustomerId());
+//         DriverDetail driverDetail = driverDetailService.getDriverDetail(feedbackReqRes.getDriverDetailId());
+//         driverDetail.setRating(feedbackReqRes.getRating());
+//         Feedback fb = feedbackService.saveFeedback(new Feedback(0, feedbackReqRes.getFeedbackContent(),new Date(),new Date(),customer,
+//                 driverDetail));
+//            return ResponseEntity.ok(fb);
+//    }
 }
 

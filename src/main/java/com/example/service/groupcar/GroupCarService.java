@@ -1,5 +1,6 @@
 package com.example.service.groupcar;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
 import com.example.repository.GroupCarRepository;
 import org.springframework.beans.factory.annotation.Autowired;

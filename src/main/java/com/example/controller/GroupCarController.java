@@ -1,6 +1,10 @@
 package com.example.controller;
 
+import com.example.entity.Account;
+import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
+import com.example.service.DriverDetail.DriverDetailServiceImp;
+import com.example.service.account.OurUserDetailsService;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +18,10 @@ public class GroupCarController {
     @Autowired
     private GroupCarService service;
 
+    @Autowired
+    private OurUserDetailsService ourUserDetailsService;
+    @Autowired
+    private DriverDetailServiceImp driverDetailServiceImp;
     @PostMapping("/public/addGroupCar")
     public GroupCar addGroupCar(@RequestBody GroupCar groupCar) {
         return service.saveGroupCar(groupCar);
@@ -61,6 +69,19 @@ public class GroupCarController {
     @GetMapping("/public/groupCarsByCustomerId/{id}")
     public List<GroupCar> getGroupCarsByCustomerId(@PathVariable int id) {
         return service.getGroupCarsByCustomerId(id);
+    }
+//    @GetMapping("/public/getAccountOfDriverDetailByGroupId/{id}")
+//    public Account getAccountOfDriverDetailByGroupId(@PathVariable int id) {
+//        DriverDetail driverDetail = driverDetailServiceImp.getDriverDetailByGroup(id);
+//        return ourUserDetailsService.getAccountByDriverDetail(driverDetail);
+//    }
+
+    @GetMapping("/public/getAccountOfDriverDetailByGroupId/{id}")
+    public Account getAccountOfDriverDetailByGroupId(@PathVariable int id) {
+        GroupCar groupCar = service.getGroupCarById(id);
+        DriverDetail  driverDetail = groupCar.getDriverDetail();
+        Account account = driverDetail.getAccount();
+        return account;
     }
 
 }
