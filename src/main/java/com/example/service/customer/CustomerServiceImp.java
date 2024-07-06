@@ -11,12 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CustomerServiceImp implements CustomerService {
+public class CustomerServiceImp implements CustomerService{
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
     private AccountRepository accountRepository;
 
+    @Override
+    public void addCustomerToGroupCar(int customerId, int groupId) {
+        customerRepository.GroupCarJoin(customerId, groupId);
+    }
     @Override
     public Customer getCustomer(int id) {
         return customerRepository.findById(id).orElse(null);
@@ -28,17 +32,12 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public Customer saveCustomer(Customer customer) {
-        return null;
-    }
-
-    @Override
     public void deleteCustomer(int id) {
 
     }
     @Override
-    public Customer addCustomer(Customer customer) {
-        return customerRepository.save(customer);
+    public void addCustomer(Customer customer) {
+        customerRepository.save(customer);
     }
 
     @Override

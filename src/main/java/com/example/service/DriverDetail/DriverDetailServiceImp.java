@@ -20,12 +20,7 @@ public class DriverDetailServiceImp implements DriverDetailService {
 
     @Override
     public DriverDetail add(DriverDetail driverDetail) {
-        return null;
-    }
-
-    @Override
-    public void delete(DriverType driverType) {
-
+        return driverDetailRepository.save(driverDetail);
     }
 
     @Override
@@ -45,20 +40,5 @@ public class DriverDetailServiceImp implements DriverDetailService {
     @Override
     public DriverDetail getDriverDetail(Integer id) {
         return driverDetailRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<DriverDetail> getAllDriverDetails() {
-        return List.of();
-    }
-
-    @Override
-    public void deleteDriverDetail(int id) {
-
-    }
-
-    @Override
-    public DriverDetail saveDriverDetail(DriverDetail driverDetail) {
-        return driverDetailRepository.save(driverDetail);
     }
 }

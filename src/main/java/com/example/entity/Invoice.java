@@ -1,9 +1,6 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,9 +38,9 @@ public class Invoice {
     @MapsId
     @JoinColumn(name = "invoice_id")
     @JsonBackReference(value = "transaction_invoice")
-    private Transaction transaction;
+    private UserTransaction userTransaction;
 
-    public Invoice(Date bookingDate, String startPoint, String endPoint, boolean isFinish, Date timeStart, Customer customer, DriverDetail driverDetail, Transaction transaction) {
+    public Invoice(Date bookingDate, String startPoint, String endPoint, boolean isFinish, Date timeStart, Customer customer, DriverDetail driverDetail, UserTransaction userTransaction) {
         this.bookingDate = bookingDate;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -51,6 +48,6 @@ public class Invoice {
         this.timeStart = timeStart;
         this.customer = customer;
         this.driverDetail = driverDetail;
-        this.transaction = transaction;
+        this.userTransaction = userTransaction;
     }
 }

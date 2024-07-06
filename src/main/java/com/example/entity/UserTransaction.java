@@ -1,9 +1,6 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,18 +10,18 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "transaction")
+@Table(name = "user_transaction")
 @Entity
-public class Transaction {
+public class UserTransaction {
     @Id
-    @Column(name = "transaction_id")
+    @Column(name = "user_transaction_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
     private boolean transactionStatus;
     private Date createAt;
     private double amount;
 
-    @OneToOne(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "userTransaction", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @JsonBackReference(value = "transaction_invoice")
     private Invoice invoice;
@@ -48,8 +45,8 @@ public class Transaction {
     @JsonBackReference(value = "payment_method")
     @JoinColumn(name="payment_method_id", nullable=false)
     private PaymentMethod paymentMethod;
-    public Transaction(Date createAt, double amount,
-                       Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod, Invoice invoice) {
+    public UserTransaction(Date createAt, double amount,
+                           Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod, Invoice invoice) {
         this.transactionStatus = false;
         this.createAt = createAt;
         this.amount = amount;
@@ -58,8 +55,8 @@ public class Transaction {
         this.paymentMethod = paymentMethod;
         this.invoice = invoice;
     }
-    public Transaction(Date createAt, double amount,
-                       Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod) {
+    public UserTransaction(Date createAt, double amount,
+                           Customer customer, DriverDetail driverDetail, PaymentMethod paymentMethod) {
         this.transactionStatus = false;
         this.createAt = createAt;
         this.amount = amount;

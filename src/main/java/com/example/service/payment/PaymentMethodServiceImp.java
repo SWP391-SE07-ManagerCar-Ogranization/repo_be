@@ -1,11 +1,9 @@
 package com.example.service.payment;
 
 import com.example.entity.PaymentMethod;
-import com.example.entity.Transaction;
 import com.example.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;

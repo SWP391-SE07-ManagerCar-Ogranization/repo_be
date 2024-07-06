@@ -1,6 +1,6 @@
 package com.example.service.statistic;
 
-import com.example.entity.Transaction;
+import com.example.entity.UserTransaction;
 import com.example.repository.StatisticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class StatisticServiceImp implements StatisticService {
         List<Double> result = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             double total = 0;
-            List<Transaction> trans = statisticRepository.getTransactionByDate(calendar.getTime());
+            List<UserTransaction> trans = statisticRepository.getTransactionByDate(calendar.getTime());
             for (int j = 0; j < trans.size(); j++) {
                 total += trans.get(j).getAmount();
             }
@@ -35,7 +35,7 @@ public class StatisticServiceImp implements StatisticService {
         List<Double> result = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             double total = 0;
-            List<Transaction> trans = statisticRepository.getTransactionByMonth(calendar.getTime());
+            List<UserTransaction> trans = statisticRepository.getTransactionByMonth(calendar.getTime());
             for (int j = 0; j < trans.size(); j++) {
                 total += trans.get(j).getAmount();
             }
@@ -52,7 +52,7 @@ public class StatisticServiceImp implements StatisticService {
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             int total = 0;
-            List<Transaction> trans = statisticRepository.getTransactionByMonth(calendar.getTime());
+            List<UserTransaction> trans = statisticRepository.getTransactionByMonth(calendar.getTime());
             for (int j = 0; j < trans.size(); j++) {
                 total += 1;
             }
@@ -69,7 +69,7 @@ public class StatisticServiceImp implements StatisticService {
         List<Double> result = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             double total = 0;
-            List<Transaction> trans = statisticRepository.getTransactionByYear(calendar.getTime());
+            List<UserTransaction> trans = statisticRepository.getTransactionByYear(calendar.getTime());
             for (int j = 0; j < trans.size(); j++) {
                 total += trans.get(j).getAmount();
             }
@@ -82,7 +82,7 @@ public class StatisticServiceImp implements StatisticService {
     @Override
     public Double getTodayTransactionRevenue() {
         Calendar calendar = Calendar.getInstance();
-        List<Transaction> result = statisticRepository.getTransactionByDate(calendar.getTime());
+        List<UserTransaction> result = statisticRepository.getTransactionByDate(calendar.getTime());
         double revenue = 0;
         for (int i = 0; i < result.size(); i++) {
             revenue += result.get(i).getAmount();
@@ -93,7 +93,7 @@ public class StatisticServiceImp implements StatisticService {
     @Override
     public Double getThisMonthTransactionRevenue() {
         Calendar calendar = Calendar.getInstance();
-        List<Transaction> result = statisticRepository.getTransactionByMonth(calendar.getTime());
+        List<UserTransaction> result = statisticRepository.getTransactionByMonth(calendar.getTime());
         double revenue = 0;
         for (int i = 0; i < result.size(); i++) {
             revenue += result.get(i).getAmount();
@@ -104,7 +104,7 @@ public class StatisticServiceImp implements StatisticService {
     @Override
     public Double getThisYearTransactionRevenue() {
         Calendar calendar = Calendar.getInstance();
-        List<Transaction> result = statisticRepository.getTransactionByYear(calendar.getTime());
+        List<UserTransaction> result = statisticRepository.getTransactionByYear(calendar.getTime());
         double revenue = 0;
         for (int i = 0; i < result.size(); i++) {
             revenue += result.get(i).getAmount();
@@ -113,19 +113,19 @@ public class StatisticServiceImp implements StatisticService {
     }
 
     @Override
-    public List<Transaction> getTodayTransaction() {
+    public List<UserTransaction> getTodayTransaction() {
         Calendar calendar = Calendar.getInstance();
         return statisticRepository.getTransactionByDate(calendar.getTime());
     }
 
     @Override
-    public List<Transaction> getMonthTransaction() {
+    public List<UserTransaction> getMonthTransaction() {
         Calendar calendar = Calendar.getInstance();
         return statisticRepository.getTransactionByMonth(calendar.getTime());
     }
 
     @Override
-    public List<Transaction> getYearTransaction() {
+    public List<UserTransaction> getYearTransaction() {
         Calendar calendar = Calendar.getInstance();
         return statisticRepository.getTransactionByYear(calendar.getTime());
     }

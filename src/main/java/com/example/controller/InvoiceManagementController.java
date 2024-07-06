@@ -4,7 +4,7 @@ import com.example.dto.TranInvoResReq;
 import com.example.entity.*;
 import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.DriverType.DriverTypeService;
-import com.example.service.transaction.TransactionService;
+import com.example.service.transaction.UserTransactionService;
 import com.example.service.customer.CustomerService;
 import com.example.service.invoice.InvoiceService;
 import com.example.service.payment.PaymentMethodService;
@@ -22,7 +22,7 @@ public class InvoiceManagementController {
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
-    private TransactionService transactionService;
+    private UserTransactionService userTransactionService;
     @Autowired
     private PaymentMethodService paymentMethodService;
     @Autowired
@@ -84,18 +84,18 @@ public class InvoiceManagementController {
 
     @PostMapping("/addtran1/invoi")
     public ResponseEntity<Invoice> addtranInvoice(@RequestBody Invoice invoice, @RequestParam Integer paymentMethodId) {
-        Transaction transaction = new Transaction(invoice.getBookingDate(), 1000, invoice.getCustomer(), invoice.getDriverDetail(), paymentMethodService.getById(paymentMethodId));
-        int invoiceId = transactionService.add(transaction).getTransactionId();
+        UserTransaction userTransaction = new UserTransaction(invoice.getBookingDate(), 1000, invoice.getCustomer(), invoice.getDriverDetail(), paymentMethodService.getById(paymentMethodId));
+        int invoiceId = userTransactionService.add(userTransaction).getTransactionId();
         return ResponseEntity.ok(invoice);
     }
 
     @PostMapping("/addtran/invoice")
     public ResponseEntity<List<DriverDetail>> addTranInvoice(@RequestBody TranInvoResReq resrep) {
 // resrep.get
-        Transaction transaction = new Transaction(new Date(), resrep.getAmount()
+        UserTransaction userTransaction = new UserTransaction(new Date(), resrep.getAmount()
                 , customerService.findCustomerById(resrep.getAccount().getAccountId()), resrep.getDriverDetail(),
                 resrep.getPaymentMethod());
-        Transaction newTran = transactionService.add(transaction);
+        UserTransaction newTran = userTransactionService.add(userTransaction);
         Invoice newInvoice = new Invoice(new Date(), resrep.getStartPoint(),
                 resrep.getEndPoint(), resrep.isFinish(), resrep.getTimeStart(),
                 customerService.findCustomerById(resrep.getAccount().getAccountId()),

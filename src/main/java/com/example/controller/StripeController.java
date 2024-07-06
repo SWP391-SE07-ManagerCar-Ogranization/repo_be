@@ -2,9 +2,13 @@ package com.example.controller;
 
 import com.example.dto.ChargeRequest;
 import com.example.dto.ReqRes;
+import com.example.entity.Account;
+import com.example.entity.SystemTransaction;
 import com.example.exception.ApiRequestException;
+import com.example.service.account.OurUserDetailsService;
 import com.example.service.account.UsersManagementService;
 import com.example.service.stripe.StripeService;
+import com.example.service.transaction.SystemTransactionService;
 import com.google.gson.Gson;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
@@ -21,6 +25,7 @@ import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.model.checkout.Session;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 @RestController
@@ -34,18 +39,22 @@ public class StripeController {
     }
     @Autowired
     private UsersManagementService usersManagementService;
+    @Autowired
+    private SystemTransactionService systemTransactionService;
+    @Autowired
+    private OurUserDetailsService ourUserDetailsService;
     private static final String SIGNING_SECRET = "whsec_2a1a22cef89f8cc4a53ab4207f8c7c70ae44cbd57a409cc6303210c0e53d34aa";
     @PostMapping("/charge")
-    public String createPaymentUrl() throws Exception {
+    public String createPaymentUrl(@RequestBody ReqRes reqRes) throws Exception {
         try {
-            String currency = "usd";
+            String currency = "vnd";
             Map<String, String> metadata = new HashMap<>();
             metadata.put("transactionId",1 + "");
-            metadata.put("userId", "1");
+            metadata.put("userId", String.valueOf(reqRes.getAccount().getAccountId()));
             SessionCreateParams params = SessionCreateParams.builder()
                     .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl("http://localhost:3000/payment/result?state=success")
+                    .setSuccessUrl("http://localhost:3000/payment/result/success")
                     .setCancelUrl("http://localhost:3000/payment/result")
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
@@ -53,10 +62,10 @@ public class StripeController {
                                     .setPriceData(
                                             SessionCreateParams.LineItem.PriceData.builder()
                                                     .setCurrency(currency)
-                                                    .setUnitAmountDecimal(new BigDecimal(100))
+                                                    .setUnitAmountDecimal(BigDecimal.valueOf(reqRes.getAmount()))
                                                     .setProductData(
                                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                    .setName("nameProduct")
+                                                                    .setName(reqRes.getMessage())
                                                                     .build())
                                                     .build())
                                     .build())
@@ -81,12 +90,14 @@ public class StripeController {
             if (event.getType().equals("checkout.session.completed")) {
                 @SuppressWarnings("deprecation")
                 Session session = (Session) event.getData().getObject();
-
-                String transactionId = session.getPaymentIntent();
-                int userId = Integer.parseInt(session.getMetadata().get("userId"));
-                String courseId = session.getMetadata().get("courseId");
-                String paymentStatus = session.getPaymentStatus();
                 Double amount = (double) session.getAmountTotal();
+                String content = session.getPaymentStatus();
+                String id = session.getId();
+                String email = session.getCustomerDetails().getEmail();
+                Account account = usersManagementService.getMyInfo(email).getAccount();
+                account.setAccountBalance(account.getAccountBalance()+amount);
+                ourUserDetailsService.addAccount(account);
+                systemTransactionService.add(new SystemTransaction(id,content,true,new Date(),amount, account));
             }
 
         } catch (SignatureVerificationException e) {

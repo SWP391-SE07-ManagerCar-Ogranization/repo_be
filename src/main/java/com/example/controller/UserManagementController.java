@@ -95,6 +95,4 @@ public class UserManagementController {
         return ResponseEntity.ok(ourUserDetailsService.findById(id));
     }
 
-
-
 }

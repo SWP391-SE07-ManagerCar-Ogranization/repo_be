@@ -23,6 +23,7 @@ public class ReqRes {
     private String expirationTime;
     private String name;
     private Role role;
+    private String roleName;
     private String email;
     private String phone;
     private String password;
@@ -37,7 +38,9 @@ public class ReqRes {
     private Date createdAt;
     private Date updateAt;
     private boolean status;
+    private boolean workingStatus;
     private String otp;
+    private double amount;
     private List<Account> accountList;
 
 }

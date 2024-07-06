@@ -24,8 +24,10 @@ public class Customer {
             name = "group_cars_join",
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "group_car_id"))
-//    @JsonBackReference(value = "customersGroupCars")
-    Set<GroupCar> groupCars;
+     @JsonBackReference (value = "customersGroupCars")
+    private Set<GroupCar> groupCars;
+
+
 
 //    @OneToMany(mappedBy = "customer")
 //    @JsonManagedReference(value = "customers_feedback")
@@ -41,9 +43,9 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer_trans")
-    private Set<Transaction> transactions;
+    private Set<UserTransaction> userTransactions;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonBackReference(value = "account_customer")
     @MapsId
     @JoinColumn(name = "customer_id")
