@@ -30,4 +30,10 @@ public class DriverTypeServiceImp implements DriverTypeService {
         }
         return listDriverCar;
     }
+
+    @Override
+    public DriverType getByCapacity(int capacity) {
+        return driverTypeRepository.getDriverTypeByCapacity(capacity);
+    }
+
 }

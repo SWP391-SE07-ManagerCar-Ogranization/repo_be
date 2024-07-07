@@ -33,6 +33,10 @@ public class GroupCar {
     private Date timeStart;
 
     @ManyToOne
+    @JoinColumn(name="driver_type_id")
+    private DriverType driverType;
+
+    @ManyToOne
     @JsonBackReference(value = "driver_detail_group_car")
     @JoinColumn(name="driver_detail_id")
     private DriverDetail driverDetail;

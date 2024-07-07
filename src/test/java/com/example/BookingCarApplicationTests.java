@@ -18,12 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class BookingCarApplicationTests {
 
 	@Autowired
-	private DriverTypeService customerService;
+	private PositionService customerService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Test
 	void contextLoads() {
-		System.out.println(customerService.getAllDriverCar());
+		System.out.println(customerService.calculateDistanceByName("Phú Yên Province, Vietnam","Nha Trang, Khánh Hòa Province, Vietnam"));
+
 	}
 
 }

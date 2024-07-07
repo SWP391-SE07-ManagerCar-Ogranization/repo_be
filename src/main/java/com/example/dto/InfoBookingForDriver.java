@@ -17,5 +17,6 @@ public class InfoBookingForDriver {
     private Invoice invoice;
     private UserTransaction userTransaction;
     private String nameCustomer;
+    private String nameDriver;
     private Long timeRemaining;
 }

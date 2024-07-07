@@ -56,7 +56,7 @@ public class InvoiceManagementController {
             invoice.setUserTransaction(transactionUpdated);
             invoice.setInvoiceId(transactionUpdated.getTransactionId());
             invoiceService.add(invoice);
-            return ResponseEntity.ok(new InfoBookingForDriver(invoice,transactionUpdated,accountCustomer.getName(), 1L));
+            return ResponseEntity.ok(new InfoBookingForDriver(invoice,transactionUpdated,accountCustomer.getName(), accountDriver.getName(), 1L));
         }
     }
 

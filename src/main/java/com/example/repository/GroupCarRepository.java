@@ -1,6 +1,5 @@
 package com.example.repository;
 
-import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,7 +20,7 @@ public interface GroupCarRepository extends JpaRepository<GroupCar, Integer> {
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO group_cars_join (customer_id, group_car_id) VALUES (:customerId, :groupCarId)", nativeQuery = true)
-    void GroupCarJoin(@Param("customerId") int customerId, @Param("groupCarId") int groupCarId);
+    void addGroupCarJoin(@Param("customerId") int customerId, @Param("groupCarId") int groupCarId);
 
     @Modifying
     @Transactional
