@@ -65,4 +65,6 @@ public class DriverDetailServiceImp implements DriverDetailService {
     public DriverDetail saveDriverDetail(DriverDetail driverDetail) {
         return driverDetailRepository.save(driverDetail);
     }
+
+
 }

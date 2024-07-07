@@ -29,7 +29,11 @@ public interface GroupCarRepository extends JpaRepository<GroupCar, Integer> {
             "join group_cars_join gcj on gc.group_car_id = gcj.group_car_id\n" +
             "where gcj.customer_id = :customerId", nativeQuery = true)
     List<GroupCar> findGroupCarsByCustomerId(int customerId);
-
+    // UPDATE `fcar`.`group_car` SET `driver_detail_id` = '14' WHERE (`group_car_id` = '3');
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE `fcar`.`group_car` SET `driver_detail_id` = :driverDetailId WHERE (`group_car_id` = :groupId)", nativeQuery = true)
+    void addDriverDetail(@Param("groupId") Integer groupId,@Param("driverDetailId") Integer driverDetailId);
 }
 
 

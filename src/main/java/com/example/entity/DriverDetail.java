@@ -24,7 +24,7 @@ public class DriverDetail {
     private String driverLicence;
     private String vehicleNumber;
     private double rating;
-    private int totalRating;
+    private Integer totalRating;
     private boolean workingStatus;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

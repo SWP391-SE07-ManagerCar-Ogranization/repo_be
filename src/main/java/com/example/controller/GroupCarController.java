@@ -8,6 +8,7 @@ import com.example.service.account.OurUserDetailsService;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -84,4 +85,19 @@ public class GroupCarController {
         return account;
     }
 
+    @PostMapping("/public/addDriverDetailOfGroup/{groupId}/{driverDetailId}")
+    public ResponseEntity<?> addDriverDetailOfGroup(@PathVariable Integer groupId, @PathVariable Integer driverDetailId) {
+        GroupCar groupCar = service.getGroupCarById(groupId);
+        try {
+            if(groupCar.getDriverDetail()==null){
+                service.addDriverDetail(groupId, driverDetailId);
+            }
+            else{
+                return ResponseEntity.badRequest().build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
 }

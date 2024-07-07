@@ -67,5 +67,7 @@ public class GroupCarService {
     public List<GroupCar> getGroupCarsByCustomerId(int customerId){
         return groupCarRepository.findGroupCarsByCustomerId(customerId);
     }
-
+    public void addDriverDetail(Integer groupId, Integer driverDetailId){
+        groupCarRepository.addDriverDetail(groupId, driverDetailId);
+    }
 }
