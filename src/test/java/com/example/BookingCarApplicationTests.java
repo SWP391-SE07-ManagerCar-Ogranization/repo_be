@@ -3,6 +3,7 @@ package com.example;
 import com.example.entity.Customer;
 import com.example.entity.DriverDetail;
 import com.example.service.DriverDetail.DriverDetailService;
+import com.example.service.DriverType.DriverTypeService;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.customer.CustomerService;
 import com.example.service.feedback.FeedbackService;
@@ -17,12 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class BookingCarApplicationTests {
 
 	@Autowired
-	private PositionService customerService;
+	private DriverTypeService customerService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Test
 	void contextLoads() {
-		System.out.println(customerService.calculateDistanceByName("Hùng Vương, Vĩnh Trung, Thanh Khê, Đà Nẵng 550000, Việt Nam", "Hội An, Quảng Nam"));
+		System.out.println(customerService.getAllDriverCar());
 	}
 
 }

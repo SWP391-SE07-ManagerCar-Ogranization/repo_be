@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Repository
 public interface GroupCarRepository extends JpaRepository<GroupCar, Integer> {
@@ -29,7 +30,7 @@ public interface GroupCarRepository extends JpaRepository<GroupCar, Integer> {
             "join group_cars_join gcj on gc.group_car_id = gcj.group_car_id\n" +
             "where gcj.customer_id = :customerId", nativeQuery = true)
     List<GroupCar> findGroupCarsByCustomerId(int customerId);
-
+    GroupCar findGroupCarByCreateAt(LocalDateTime createAt);
 }
 
 

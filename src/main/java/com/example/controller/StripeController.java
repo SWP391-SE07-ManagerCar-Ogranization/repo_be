@@ -43,6 +43,8 @@ public class StripeController {
     private SystemTransactionService systemTransactionService;
     @Autowired
     private OurUserDetailsService ourUserDetailsService;
+    @Value("${context.path}")
+    private String path;
     private static final String SIGNING_SECRET = "whsec_2a1a22cef89f8cc4a53ab4207f8c7c70ae44cbd57a409cc6303210c0e53d34aa";
     @PostMapping("/charge")
     public String createPaymentUrl(@RequestBody ReqRes reqRes) throws Exception {
@@ -54,8 +56,8 @@ public class StripeController {
             SessionCreateParams params = SessionCreateParams.builder()
                     .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl("http://localhost:3000/payment/result/success")
-                    .setCancelUrl("http://localhost:3000/payment/result")
+                    .setSuccessUrl(path+"/payment/result/success")
+                    .setCancelUrl(path+"/payment/result")
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
                                     .setQuantity(1L)

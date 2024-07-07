@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.entity.Account;
+import com.example.entity.Customer;
 import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
 import com.example.service.DriverDetail.DriverDetailServiceImp;
@@ -8,10 +9,16 @@ import com.example.service.account.OurUserDetailsService;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class GroupCarController {
@@ -22,9 +29,18 @@ public class GroupCarController {
     private OurUserDetailsService ourUserDetailsService;
     @Autowired
     private DriverDetailServiceImp driverDetailServiceImp;
-    @PostMapping("/public/addGroupCar")
+    @PostMapping("/public/group-car/add")
     public GroupCar addGroupCar(@RequestBody GroupCar groupCar) {
-        return service.saveGroupCar(groupCar);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        LocalDateTime timeNow = LocalDateTime.now();
+        groupCar.setCreateAt(timeNow);
+        Set<Customer> customers = new HashSet<>();
+        customers.add(accountCustomer.getCustomer());
+        groupCar.setCustomers(customers);
+        service.saveGroupCar(groupCar);
+        return groupCar;
     }
 
     @PostMapping("/public/addGroupCars")

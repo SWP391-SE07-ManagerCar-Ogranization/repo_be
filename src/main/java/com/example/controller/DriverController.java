@@ -2,10 +2,8 @@ package com.example.controller;
 
 import com.example.dto.InfoBookingForDriver;
 import com.example.dto.ReqRes;
-import com.example.entity.Account;
-import com.example.entity.DriverDetail;
-import com.example.entity.Invoice;
-import com.example.entity.UserTransaction;
+import com.example.entity.*;
+import com.example.service.DriverType.DriverTypeService;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.invoice.InvoiceService;
@@ -31,7 +29,7 @@ public class DriverController {
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
-    private UserTransactionService userTransactionService;
+    private DriverTypeService driverTypeService;
 
     @PostMapping("/update-status")
     public ResponseEntity<ReqRes> updateStatus(@RequestBody ReqRes reqRes) {
@@ -84,5 +82,10 @@ public class DriverController {
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/list/driver-type/car")
+    public ResponseEntity<?> getAllDriverType() {
+        return ResponseEntity.ok(driverTypeService.getAllDriverCar());
     }
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -24,8 +25,8 @@ public class GroupCar {
     private Integer groupId;
     private String groupName;
     private int capacity;
-    private Date createAt;
-    private Date updateAt;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
     private String startPoint;
     private String endPoint;
     private boolean isFinish;
@@ -41,7 +42,7 @@ public class GroupCar {
     private Set<UserTransaction> userTransactions;
 
     @ManyToMany(mappedBy = "groupCars")
-    // @JsonManagedReference (value = "customersGroupCars")
+//    @JsonBackReference(value = "customers_group_car")
     Set<Customer> customers;
 
 }

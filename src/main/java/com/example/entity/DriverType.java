@@ -21,6 +21,7 @@ public class DriverType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int driverTypeId;
     private String driverTypeName;
+    private int capacity;
     @ManyToMany(mappedBy = "driver")
             @JsonBackReference(value = "driver_detail_type")
     Set<DriverDetail> driverDetails;

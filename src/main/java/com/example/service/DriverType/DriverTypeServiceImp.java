@@ -5,6 +5,7 @@ import com.example.repository.DriverTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,6 +16,18 @@ public class DriverTypeServiceImp implements DriverTypeService {
 
     @Override
     public List<DriverType> getAll() {
-        return  driverTypeRepository.findAll();
+        return driverTypeRepository.findAll();
+    }
+
+    @Override
+    public List<DriverType> getAllDriverCar() {
+        List<DriverType> list = driverTypeRepository.findAll();
+        List<DriverType> listDriverCar = new ArrayList<>();
+        for(DriverType type : list) {
+            if (type.getDriverTypeName().toLowerCase().contains("Seater".toLowerCase())) {
+                listDriverCar.add(type);
+            }
+        }
+        return listDriverCar;
     }
 }
