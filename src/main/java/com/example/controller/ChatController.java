@@ -93,6 +93,26 @@ public class ChatController {
 
     @MessageMapping("/private-message")
     public  Message receivePrivateMessage(@Payload Message message) {
+        com.example.entity.Message initMessage = new com.example.entity.Message();
+        if(message.getRole().equals("DRIVER")) {
+            initMessage.setContent(message.getMessage());
+            initMessage.setCreatedAt(new Date());
+            initMessage.setUpdatedAt(new Date());
+            initMessage.setDriverDetail(driverDetailService.getDriverDetail(message.getUserId()));
+            initMessage.setSenderId(message.getUserId());
+            initMessage.setCustomer(customerService.getCustomer(message.getReceiverId()));
+        }else {
+            initMessage.setContent(message.getMessage());
+            initMessage.setCreatedAt(new Date());
+            initMessage.setUpdatedAt(new Date());
+            initMessage.setDriverDetail(driverDetailService.getDriverDetail(message.getReceiverId()));
+            initMessage.setSenderId(message.getUserId());
+            initMessage.setCustomer(customerService.getCustomer(message.getUserId()));
+        }
+        com.example.entity.Message message_db = messageService.save(initMessage);
+        MessageData messageData = new MessageData();
+        messageData.setMessage(message_db);
+        messageData.setStatus(message.getStatus());
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverId()) , "/private", message); // /user/David/private
         return message;
     }

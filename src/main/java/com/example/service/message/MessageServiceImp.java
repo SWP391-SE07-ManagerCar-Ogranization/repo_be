@@ -2,6 +2,7 @@ package com.example.service.message;
 
 import com.example.dto.MessageDto;
 import com.example.entity.Message;
+import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import java.util.List;
 public class MessageServiceImp implements MessageService{
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Override
     public Message save(Message message) {
@@ -52,7 +56,11 @@ public class MessageServiceImp implements MessageService{
             messageDto.setCreateAt(message.getCreatedAt());
             messageDto.setUpdatedAt(message.getUpdatedAt());
             messageDto.setSenderId(message.getSenderId());
+            messageDto.setCustomerName(accountRepository.findByAccountId(message.getCustomer().getId()).getName());
+            messageDto.setDriverName(accountRepository.findByAccountId(message.getDriverDetail().getId()).getName());
+
             privateMessageDtos.add(messageDto);
+
         }
         return privateMessageDtos;
     }

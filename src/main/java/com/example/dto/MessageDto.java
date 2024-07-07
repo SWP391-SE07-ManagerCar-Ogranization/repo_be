@@ -21,7 +21,9 @@ public class MessageDto {
     private Date createAt;
     private Date updatedAt;
     private Integer driverDetailId;
+    private String driverName;
     private Integer customerId;
+    private String customerName;
     private Integer senderId;
 
 }
