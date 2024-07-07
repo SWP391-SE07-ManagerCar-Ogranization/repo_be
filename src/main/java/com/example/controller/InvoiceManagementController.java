@@ -64,7 +64,7 @@ public class InvoiceManagementController {
         invoice.setUserTransaction(transactionUpdated);
         invoice.setInvoiceId(transactionUpdated.getTransactionId());
         invoiceService.add(invoice);
-        return ResponseEntity.ok(invoice);
+        return ResponseEntity.ok(transactionUpdated);
     }
 
     @PutMapping("/update")

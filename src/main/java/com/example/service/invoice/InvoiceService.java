@@ -1,5 +1,6 @@
 package com.example.service.invoice;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.Invoice;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface InvoiceService {
     List<Invoice> getAll();
 
     Invoice getById(Integer id);
-
+    List<Invoice> findByDriverDetail(DriverDetail driverDetail);
 }

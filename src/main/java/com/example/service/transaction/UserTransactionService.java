@@ -1,5 +1,6 @@
 package com.example.service.transaction;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.UserTransaction;
 
 import java.time.LocalDate;
@@ -21,4 +22,5 @@ public interface UserTransactionService {
 //    GroupCar getGroupCarById(Integer groupCarId);
     double calculateMoneyByDistance(double distance);
 
+    List<UserTransaction> findAllByDriverDetail(DriverDetail driverDetail);
 }

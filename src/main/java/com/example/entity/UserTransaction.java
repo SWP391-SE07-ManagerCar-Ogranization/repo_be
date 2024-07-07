@@ -24,7 +24,7 @@ public class UserTransaction {
     private double amount;
 
     @OneToOne(mappedBy = "userTransaction", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "transaction_invoice")
+    @JsonBackReference(value = "transaction_invoice")
     private Invoice invoice;
 
     @ManyToOne

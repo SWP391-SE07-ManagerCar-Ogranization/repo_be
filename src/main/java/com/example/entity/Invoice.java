@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +39,6 @@ public class Invoice {
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "invoice_id")
-    @JsonBackReference(value = "transaction_invoice")
+    @JsonManagedReference(value = "transaction_invoice")
     private UserTransaction userTransaction;
 }

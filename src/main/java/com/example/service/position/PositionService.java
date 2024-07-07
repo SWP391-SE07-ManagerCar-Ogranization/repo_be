@@ -4,6 +4,7 @@ import com.example.entity.Account;
 import com.example.entity.DriverDetail;
 import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.account.OurUserDetailsService;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpResponse;
@@ -44,12 +45,19 @@ public class PositionService {
             HttpGet request = new HttpGet(url);
             HttpResponse response = httpClient.execute(request);
             String json = EntityUtils.toString(response.getEntity());
-            JsonObject jsonObject = JsonParser.parseString(json).getAsJsonArray().get(0).getAsJsonObject();
+            JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
+
+            if (jsonArray.isEmpty()) {
+                throw new Exception("No results found for the address: " + address);
+            }
+
+            JsonObject jsonObject = jsonArray.get(0).getAsJsonObject();
             double lat = jsonObject.get("lat").getAsDouble();
             double lon = jsonObject.get("lon").getAsDouble();
             return new double[]{lat, lon};
         }
     }
+
 
     public double calculateDistanceByName(String address1, String address2) {
         double distance = 0.0;

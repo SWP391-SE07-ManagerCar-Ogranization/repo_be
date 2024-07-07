@@ -25,8 +25,8 @@ public class CustomerController {
     @Autowired
     OurUserDetailsService ourUserDetailsService;
 
-
-    @PostMapping("/public/addCustomer/{customerId}/{groupId}")
+// kiet update path api
+    @PostMapping("/public/group-car/add-customer/{customerId}/{groupId}")
     public ResponseEntity<?> addCustomer(@PathVariable int customerId, @PathVariable int groupId) {
         try {
             customerService.addCustomerToGroupCar(customerId, groupId);

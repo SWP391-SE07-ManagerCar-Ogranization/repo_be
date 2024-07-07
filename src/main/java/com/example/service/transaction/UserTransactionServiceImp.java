@@ -1,6 +1,7 @@
 package com.example.service.transaction;
 
 
+import com.example.entity.DriverDetail;
 import com.example.entity.UserTransaction;
 import com.example.repository.UserTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,12 @@ public class UserTransactionServiceImp implements UserTransactionService {
 
     @Override
     public double calculateMoneyByDistance(double distance) {
-        return distance*10000;
+        return Math.round(distance*10000 / 1000.0) * 1000.0;
     }
+
+    @Override
+    public List<UserTransaction> findAllByDriverDetail(DriverDetail driverDetail) {
+        return userTransactionRepository.findAllByDriverDetail(driverDetail);
+    }
+
 }
