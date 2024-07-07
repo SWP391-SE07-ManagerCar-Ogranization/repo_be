@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,4 +17,5 @@ public class InfoBookingForDriver {
     private Invoice invoice;
     private UserTransaction userTransaction;
     private String nameCustomer;
+    private Long timeRemaining;
 }

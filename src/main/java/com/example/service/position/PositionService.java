@@ -70,8 +70,8 @@ public class PositionService {
         }
         return distance;
     }
-    public boolean checkHadPosition(Account account) {
-        return (account.getLatitude()!= 0 && account.getLongitude()!= 0);
+    public boolean checkHadPositionAndAvailable(Account account) {
+        return (account.getLatitude()!= 0 && account.getLongitude()!= 0 && account.getDriverDetail().isWorkingStatus());
     }
     public Account calculateNearestDriver(Account account) {
         List<Account> driverDetailList = ourUserDetailsService.getAllAccountByRoleId(3);
@@ -81,7 +81,7 @@ public class PositionService {
             for (Account driver : driverDetailList) {
                 double distanceCurrent = haversine(account.getLatitude(),account.getLongitude(),driver.getLatitude(),driver.getLongitude());
                 if((minDistance > distanceCurrent) || (minDistance == 0)) {
-                    if (checkHadPosition(driver)) {
+                    if (checkHadPositionAndAvailable(driver)) {
                         minDistance = distanceCurrent;
                         driverNearest = driver;
                     }

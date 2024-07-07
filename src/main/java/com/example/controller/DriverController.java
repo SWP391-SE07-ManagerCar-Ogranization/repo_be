@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -56,8 +57,32 @@ public class DriverController {
         List<Invoice> invoiceList = invoiceService.findByDriverDetail(driverDetail);
         List<InfoBookingForDriver> infoBookingForDrivers = new ArrayList<>();
         for (Invoice invoice: invoiceList) {
-            infoBookingForDrivers.add(new InfoBookingForDriver(invoice, invoice.getUserTransaction(),invoice.getCustomer().getAccount().getName()));
+            InfoBookingForDriver info = new InfoBookingForDriver();
+            info.setInvoice(invoice);
+            info.setUserTransaction(invoice.getUserTransaction());
+            info.setNameCustomer(invoice.getCustomer().getAccount().getName());
+            infoBookingForDrivers.add(info);
         }
         return ResponseEntity.ok(infoBookingForDrivers);
+    }
+    @PostMapping("/confirm-invoice")
+    public ResponseEntity<?> confirmInvoice(@RequestBody Invoice invoiceInput) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account account = ourUserDetailsService.findByEmail(email);
+        DriverDetail driverDetail = account.getDriverDetail();
+        Invoice invoice = invoiceService.getById(invoiceInput.getInvoiceId());
+        if(Objects.equals(invoice.getDriverDetail(), driverDetail)) {
+            UserTransaction userTransaction = invoice.getUserTransaction();
+            if (userTransaction.isTransactionStatus()) {
+                invoice.setFinish(true);
+                invoiceService.add(invoice);
+                return ResponseEntity.ok("Update Trip Finished");
+            } else {
+                return ResponseEntity.ok("User need to payment");
+            }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

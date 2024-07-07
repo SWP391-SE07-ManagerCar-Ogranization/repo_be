@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dto.InfoBookingForDriver;
 import com.example.dto.TranInvoResReq;
 import com.example.entity.*;
 import com.example.service.DriverDetail.DriverDetailService;
@@ -64,7 +65,7 @@ public class InvoiceManagementController {
         invoice.setUserTransaction(transactionUpdated);
         invoice.setInvoiceId(transactionUpdated.getTransactionId());
         invoiceService.add(invoice);
-        return ResponseEntity.ok(transactionUpdated);
+        return ResponseEntity.ok(new InfoBookingForDriver(invoice,transactionUpdated,accountCustomer.getName(), 1L));
     }
 
     @PutMapping("/update")
