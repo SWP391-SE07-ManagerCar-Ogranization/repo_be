@@ -44,4 +44,14 @@ public class InvoiceServiceImp implements InvoiceService {
     public Invoice getById(Integer id) {
         return invoiceRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Invoice> findAllByDriverDetailIdAndDriverTypeId(Integer driverDetailId, Integer driverTypeId) {
+        return invoiceRepository.findAllByDriverDetailIdAndDriverTypeId(driverDetailId, driverTypeId);
+    }
+
+    @Override
+    public List<Invoice> findAllByDriverTypeIdAndCustomerId(Integer customerId, Integer driverTypeId) {
+        return invoiceRepository.findAllByDriverTypeIdAndCustomerId(customerId, driverTypeId);
+    }
 }

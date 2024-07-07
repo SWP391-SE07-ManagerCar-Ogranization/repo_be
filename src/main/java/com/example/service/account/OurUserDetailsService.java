@@ -2,6 +2,7 @@ package com.example.service.account;
 
 
 import com.example.entity.Account;
+import com.example.entity.DriverDetail;
 import com.example.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,12 +66,21 @@ public class OurUserDetailsService implements UserDetailsService,AccountService 
         return accountRepository.findByRoleRoleId(roleId);
     }
 
+//    @Override
+//    public Account findByDriverDetail(DriverDetail driverDetail) {
+//        return accountRepository.findByAccountId(driverDetail.getId());
+//    }
+
     @Override
     public boolean updateStatusById(Integer accountId, boolean status) {
        return accountRepository.updateStatusById(accountId, status) > 0;
 
     }
 
+//    @Override
+//    public Account getAccountByDriverDetail(DriverDetail driverDetail) {
+//        return accountRepository.findByAccountId(driverDetail.getId());
+//    }
 
 
 }

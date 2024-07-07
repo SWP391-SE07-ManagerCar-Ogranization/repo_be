@@ -41,6 +41,8 @@ public class ReqRes {
     private boolean workingStatus;
     private String otp;
     private double amount;
+    private double latitude;
+    private double longitude;
     private List<Account> accountList;
 
 }

@@ -1,5 +1,6 @@
 package com.example.service.message;
 
+import com.example.dto.MessageDto;
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,4 +14,5 @@ public interface MessageService {
     List<Message> findAll();
     Message findById(Integer id);
     List<Message> getAllMessageByGroupCarId(Integer id);
+    List<MessageDto> findByCustomerIdAndDriverDetailId(Integer customerId, Integer driverId);
 }

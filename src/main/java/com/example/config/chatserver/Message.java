@@ -10,8 +10,9 @@ import lombok.*;
 public class Message {
 
     private Integer userId;
+    private String role;
     private Integer groupCarId;
-    private String ReceiverName;
+    private Integer receiverId;
     private String message;
     private String createdAt;
     private Status status;

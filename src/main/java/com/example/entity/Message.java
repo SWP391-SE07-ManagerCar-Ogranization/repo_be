@@ -39,4 +39,6 @@ public class Message {
     @JoinColumn(name = "group_car_id")
     @JsonManagedReference(value = "group_car_message")
     private GroupCar groupCar;
+
+    private Integer senderId ;
 }

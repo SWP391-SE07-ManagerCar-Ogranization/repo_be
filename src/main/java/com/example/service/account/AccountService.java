@@ -2,6 +2,7 @@ package com.example.service.account;
 
 
 import com.example.entity.Account;
+import com.example.entity.DriverDetail;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface AccountService {
 
 
     boolean updateStatusById(Integer accountId, boolean status);
+
+//    Account getAccountByDriverDetail(DriverDetail driverDetail);
 }

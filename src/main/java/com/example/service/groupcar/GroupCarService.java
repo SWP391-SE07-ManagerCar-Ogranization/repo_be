@@ -1,5 +1,6 @@
 package com.example.service.groupcar;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
 import com.example.repository.GroupCarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,10 @@ public class GroupCarService {
 
     public void deleteGroupCarJoin (int customerId, int groupCarId){
         groupCarRepository.deleteGroupCarJoin(customerId, groupCarId);
+    }
+
+    public List<GroupCar> getGroupCarsByDriverDetailId(int driverDetailId){
+        return groupCarRepository.findGroupCarsByDriverDetailId(driverDetailId);
     }
 
 }

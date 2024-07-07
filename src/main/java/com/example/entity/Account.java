@@ -54,6 +54,10 @@ public class Account implements UserDetails {
 
     private double accountBalance;
 
+    private double latitude;
+
+    private double longitude;
+
     @ManyToOne
     @JoinColumn(name="role_id")
     private Role role;

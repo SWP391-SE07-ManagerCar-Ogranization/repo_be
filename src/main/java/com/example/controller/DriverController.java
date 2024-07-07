@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dto.ReqRes;
+import com.example.entity.Account;
 import com.example.entity.DriverDetail;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.DriverDetail.DriverDetailService;
@@ -23,8 +24,12 @@ public class DriverController {
     public ResponseEntity<ReqRes> updateStatus(@RequestBody ReqRes reqRes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        DriverDetail driverDetail = ourUserDetailsService.findByEmail(email).getDriverDetail();
+        Account account = ourUserDetailsService.findByEmail(email);
+        DriverDetail driverDetail = account.getDriverDetail();
             driverDetail.setWorkingStatus(reqRes.isWorkingStatus());
+            account.setLatitude(reqRes.getLatitude());
+            account.setLongitude(reqRes.getLongitude());
+            ourUserDetailsService.addAccount(account);
             driverDetailService.add(driverDetail);
             reqRes.setMessage("success");
         return ResponseEntity.ok(reqRes);

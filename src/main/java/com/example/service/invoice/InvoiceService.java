@@ -15,4 +15,8 @@ public interface InvoiceService {
 
     Invoice getById(Integer id);
 
+    List<Invoice> findAllByDriverDetailIdAndDriverTypeId(Integer driverDetailId, Integer driverTypeId);
+
+    List<Invoice> findAllByDriverTypeIdAndCustomerId(Integer customerId, Integer driverTypeId);
+
 }

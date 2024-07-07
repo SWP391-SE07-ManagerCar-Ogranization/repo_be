@@ -3,6 +3,8 @@ package com.example.controller;
 import com.example.config.chatserver.Message;
 import com.example.config.chatserver.Status;
 import com.example.dto.MessageData;
+import com.example.dto.MessageDto;
+import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.customer.CustomerService;
 import com.example.service.groupcar.GroupCarService;
 import com.example.service.message.MessageService;
@@ -35,6 +37,9 @@ public class ChatController {
     @Autowired
     private GroupCarService groupCarService;
 
+    @Autowired
+    private DriverDetailService driverDetailService;
+
 //    @MessageMapping("/message")
 //    private Message receivePublicMessage(@Payload Message message) {
 //        simpMessagingTemplate.convertAndSend("/chatroom/" + message.getGroupId() + "/public", message);
@@ -46,18 +51,39 @@ public class ChatController {
         return ResponseEntity.ok(messageService.getAllMessageByGroupCarId(id));
     }
 
+    @GetMapping("/public/get-all-private-message/by-driver-and-customer/{customerId}/{driverDetailId}")
+    public ResponseEntity<List<MessageDto>> getAllMessageByGroupCar(@PathVariable int customerId, @PathVariable int driverDetailId) {
+        return ResponseEntity.ok(messageService.findByCustomerIdAndDriverDetailId(customerId, driverDetailId));
+    }
+
     @MessageMapping("/message")
     private Message receivePublicMessage(@Payload Message message) {
-        com.example.entity.Message newMessage = new com.example.entity.Message(
-                -1,
-                message.getMessage(),
-                new Date(),
-                new Date(),
-                customerService.getCustomer(message.getUserId()),
-                null,
-                groupCarService.getGroupCarById(message.getGroupCarId())
-        );
-        com.example.entity.Message message_db = messageService.save(newMessage);
+        com.example.entity.Message initMessage = new com.example.entity.Message();
+        if(message.getRole().equals("DRIVER")){
+            initMessage.setContent(message.getMessage());
+            initMessage.setCreatedAt(new Date());
+            initMessage.setUpdatedAt(new Date());
+            initMessage.setDriverDetail(driverDetailService.getDriverDetail(message.getUserId()));
+            initMessage.setGroupCar(groupCarService.getGroupCarById(message.getGroupCarId()));
+        }else {
+//            com.example.entity.Message newMessage = new com.example.entity.Message(
+//                -1,
+//                message.getMessage(),
+//                new Date(),
+//                new Date(),
+//                customerService.getCustomer(message.getUserId()),
+//                null,
+//                groupCarService.getGroupCarById(message.getGroupCarId())
+            initMessage.setContent(message.getMessage());
+            initMessage.setCreatedAt(new Date());
+            initMessage.setUpdatedAt(new Date());
+            initMessage.setCustomer(customerService.getCustomer(message.getUserId()));
+            initMessage.setGroupCar(groupCarService.getGroupCarById(message.getGroupCarId()));
+
+        }
+
+
+        com.example.entity.Message message_db = messageService.save(initMessage);
         MessageData messageData = new MessageData();
         messageData.setMessage(message_db);
         messageData.setStatus(message.getStatus());
@@ -67,7 +93,7 @@ public class ChatController {
 
     @MessageMapping("/private-message")
     public  Message receivePrivateMessage(@Payload Message message) {
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message); // /user/David/private
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverId()) , "/private", message); // /user/David/private
         return message;
     }
 

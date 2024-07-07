@@ -111,9 +111,25 @@ public class InvoiceManagementController {
         }
     }
 
+    //Do
+    @GetMapping("/find-all-by-driverdetailid-drivertype/{driverId}/{driverTypeId}")
+    public ResponseEntity<?> getAllByDriverDetailAndDriverType(@PathVariable Integer driverId, @PathVariable Integer driverTypeId) {
+        try {
+            List<Invoice> invoices = invoiceService.findAllByDriverDetailIdAndDriverTypeId(driverId, driverTypeId);
+            return ResponseEntity.ok(invoices);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
+    }
 
-
-
-
+    @GetMapping("/find-all-by-drivertype-customer/{customerId}/{driverTypeId}")
+    public ResponseEntity<List<Invoice>> getAllByDriverTypeAndCustomerId(@PathVariable Integer customerId, @PathVariable Integer driverTypeId) {
+        try {
+            List<Invoice> invoices = invoiceService.findAllByDriverTypeIdAndCustomerId(customerId, driverTypeId);
+            return ResponseEntity.ok(invoices);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
