@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dto.InvoiceResReq;
 import com.example.dto.TranInvoResReq;
 import com.example.entity.*;
 import com.example.repository.CustomerRepository;
@@ -14,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +39,7 @@ public class InvoiceManagementController {
 
     @GetMapping("/")
     public String test() {
-        return "test anh 1 quan 1234578";
+        return "test";
     }
 
     @PostMapping("/add")
@@ -73,17 +75,62 @@ public class InvoiceManagementController {
     @GetMapping("/{id}")
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable Integer id) {
         Invoice invoice = invoiceService.getById(id);
+
         if (invoice != null) {
             return ResponseEntity.ok(invoice);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+    private Integer invoiceId;
+    private Date bookingDate;
+    private String startPoint;
+    private String endPoint;
+    private boolean isFinish;
+    private Date timeStart;
 
-    @GetMapping("/list")
-    public ResponseEntity<List<Invoice>> getAllInvoices() {
-        return ResponseEntity.ok(invoiceService.getAll());
+    private Integer customerId;
+    private String customerName;
+    private String customerPhone;
+
+    @GetMapping("/getAllInvoices")
+    public ResponseEntity<List<InvoiceResReq>> getAllInvoices() {
+
+        List<InvoiceResReq> invoiceResReqList = new ArrayList<>();
+        List<Invoice> invoices = invoiceService.getAll();
+        if (invoices != null) {
+            for (Invoice invoice : invoices) {
+                InvoiceResReq invoiceResReq = new InvoiceResReq(
+                        invoice.getInvoiceId(),
+                        invoice.getBookingDate(),
+                        invoice.getStartPoint(),
+                        invoice.getEndPoint(),
+                        invoice.isFinish(),
+                        invoice.getTimeStart(),
+
+                        invoice.getCustomer().getAccount().getAccountId(),
+                        invoice.getCustomer().getAccount().getName(),
+                        invoice.getCustomer().getAccount().getPhone()
+                        );
+                invoiceResReqList.add(invoiceResReq);
+            }
+        }
+        return ResponseEntity.ok(invoiceResReqList);
     }
+    //quandao
+
+    @GetMapping("/getInvoicesByCustomer/{customerId}")
+    public ResponseEntity<List<Invoice>> getInvoicesByCustomerId(@PathVariable Integer customerId) {
+        List<Invoice> invoices = invoiceService.getInvoicesByCustomerId(customerId);
+        if (!invoices.isEmpty()) {
+            return ResponseEntity.ok(invoices);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 
     @GetMapping("/listDriverType")
     public ResponseEntity<List<DriverType>> getAllDriverType() {
@@ -99,7 +146,6 @@ public class InvoiceManagementController {
 
     @PostMapping("addtran/invoice")
     public ResponseEntity<List<DriverDetail>> addTranInvoice(@RequestBody TranInvoResReq resrep) {
-// resrep.get
         Transaction transaction = new Transaction(new Date(), resrep.getAmount()
                 , customerService.findCustomerById(resrep.getAccount().getAccountId()), resrep.getDriverDetail(),
                 resrep.getPaymentMethod());
@@ -119,9 +165,52 @@ public class InvoiceManagementController {
         }
     }
 
+    @GetMapping("/searchInvoiceByQuery")
+    public ResponseEntity<List<InvoiceResReq>> searchInvoices(@RequestParam String query) {
+        List<Invoice> invoices = invoiceService.findInvoiceByQuery(query);
+        List<InvoiceResReq> invoiceResReqList = new ArrayList<>();
+        if (invoices != null) {
+            for (Invoice invoice : invoices) {
+                InvoiceResReq invoiceResReq = new InvoiceResReq(
+                        invoice.getInvoiceId(),
+                        invoice.getBookingDate(),
+                        invoice.getStartPoint(),
+                        invoice.getEndPoint(),
+                        invoice.isFinish(),
+                        invoice.getTimeStart(),
+
+                        invoice.getCustomer().getAccount().getAccountId(),
+                        invoice.getCustomer().getAccount().getName(),
+                        invoice.getCustomer().getAccount().getPhone()
+                );
+                invoiceResReqList.add(invoiceResReq);
+            }
+        }
+        return ResponseEntity.ok(invoiceResReqList);
+    }
 
 
+    @GetMapping("/sortInvoices")
+    public ResponseEntity<List<InvoiceResReq>> sortInvoices(@RequestParam String sortCriteria) {
+        List<Invoice> invoices = invoiceService.sortInvoices(sortCriteria);
+        List<InvoiceResReq> invoiceResReqList = new ArrayList<>();
+        if (invoices != null) {
+            for (Invoice invoice : invoices) {
+                InvoiceResReq invoiceResReq = new InvoiceResReq(
+                        invoice.getInvoiceId(),
+                        invoice.getBookingDate(),
+                        invoice.getStartPoint(),
+                        invoice.getEndPoint(),
+                        invoice.isFinish(),
+                        invoice.getTimeStart(),
 
-
-
+                        invoice.getCustomer().getAccount().getAccountId(),
+                        invoice.getCustomer().getAccount().getName(),
+                        invoice.getCustomer().getAccount().getPhone()
+                );
+                invoiceResReqList.add(invoiceResReq);
+            }
+        }
+        return ResponseEntity.ok(invoiceResReqList);
+    }
 }

@@ -17,4 +17,10 @@ public interface InvoiceService {
 
     Invoice getById(Integer id);
 
+   List<Invoice> findInvoiceByQuery(String query);
+
+    List<Invoice> sortInvoices(String sortCriteria);
+    ///
+    List<Invoice> getInvoicesByCustomerId(Integer customerId);
+
 }

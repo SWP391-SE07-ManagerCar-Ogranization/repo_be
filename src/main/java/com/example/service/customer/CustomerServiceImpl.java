@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    @Override
+    public Customer getById(Integer id) {
+        return customerRepository.findById(id).orElse(null);
+    }
+
     @Autowired
     private CustomerRepository customerRepository;
     @Override

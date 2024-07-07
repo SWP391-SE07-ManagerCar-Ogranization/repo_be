@@ -19,7 +19,7 @@ public class TranInvoResReq {
     private String endPoint;
     private boolean isFinish;
     private Date timeStart;
-//    private Customer customer;
+
     private Account account;
     private DriverDetail driverDetail;
     private double amount;
@@ -27,3 +27,4 @@ public class TranInvoResReq {
     private DriverType driverType;
 
 }
+

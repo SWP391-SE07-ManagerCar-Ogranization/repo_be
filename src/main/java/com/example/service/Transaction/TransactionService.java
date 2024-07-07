@@ -17,6 +17,4 @@ public interface TransactionService {
     Transaction getById(Integer id);
 
 //    GroupCar getGroupCarById(Integer groupCarId);
-
-
 }

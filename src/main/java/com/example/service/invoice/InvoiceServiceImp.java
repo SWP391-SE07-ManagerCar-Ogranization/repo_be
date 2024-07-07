@@ -45,4 +45,22 @@ public class InvoiceServiceImp implements InvoiceService {
     public Invoice getById(Integer id) {
         return invoiceRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Invoice> findInvoiceByQuery(String query) {
+        return invoiceRepository.searchByQuery(query);
+    }
+
+    @Override
+    public List<Invoice> sortInvoices(String sortCriteria) {
+        return invoiceRepository.sortByCriteria(sortCriteria);
+    }
+    ///
+
+    @Override
+    public List<Invoice> getInvoicesByCustomerId(Integer customerId) {
+        return invoiceRepository.findByCustomerId(customerId);
+    }
+
+
 }
