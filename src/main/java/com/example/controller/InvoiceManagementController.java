@@ -1,19 +1,19 @@
 package com.example.controller;
 
-import com.example.dto.TranInvoResReq;
+import com.example.dto.InfoBookingForDriver;
 import com.example.entity.*;
-import com.example.service.DriverDetail.DriverDetailService;
-import com.example.service.DriverType.DriverTypeService;
+import com.example.service.account.OurUserDetailsService;
+import com.example.service.position.PositionService;
 import com.example.service.transaction.UserTransactionService;
-import com.example.service.customer.CustomerService;
 import com.example.service.invoice.InvoiceService;
 import com.example.service.payment.PaymentMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,19 +26,38 @@ public class InvoiceManagementController {
     @Autowired
     private PaymentMethodService paymentMethodService;
     @Autowired
-    private CustomerService customerService;
+    private OurUserDetailsService ourUserDetailsService;
     @Autowired
-    private DriverTypeService driverTypeService;
-    @Autowired
-    private DriverDetailService driverDetailService;
+    private PositionService positionService;
 
-    @PostMapping("/add")
-    public ResponseEntity<Invoice> addInvoice(@RequestBody Invoice invoice) {
-//        Transaction transaction = new Transaction(invoice.getBookingDate() ,
-//                1000 , invoice.getCustomer() , invoice.getDriverDetail() ,
-//                invoice.);
+    @PostMapping("/add/new-trip")
+    public ResponseEntity<?> addInvoice(@RequestBody Invoice invoice) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        LocalDateTime bookingDate = LocalDateTime.now();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        Account accountDriver = positionService.calculateNearestDriver(accountCustomer);
+        if(accountDriver.getDriverDetail() == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            double distance = positionService.calculateDistanceByName(invoice.getStartPoint(), invoice.getEndPoint());
+            invoice.setBookingDate(bookingDate);
+            invoice.setCustomer(accountCustomer.getCustomer());
+            invoice.setDriverDetail(accountDriver.getDriverDetail());
 
-        return ResponseEntity.ok(invoiceService.add(invoice));
+            UserTransaction transaction = new UserTransaction();
+            transaction.setPaymentMethod(paymentMethodService.getById(2));
+            transaction.setAmount(userTransactionService.calculateMoneyByDistance(distance));
+            transaction.setCustomer(accountCustomer.getCustomer());
+            transaction.setDriverDetail(accountDriver.getDriverDetail());
+            transaction.setCreateAt(bookingDate);
+            userTransactionService.add(transaction);
+            UserTransaction transactionUpdated = userTransactionService.getByCreateAt(bookingDate);
+            invoice.setUserTransaction(transactionUpdated);
+            invoice.setInvoiceId(transactionUpdated.getTransactionId());
+            invoiceService.add(invoice);
+            return ResponseEntity.ok(new InfoBookingForDriver(invoice,transactionUpdated,accountCustomer.getName(), accountDriver.getName(), 1L));
+        }
     }
 
     @PutMapping("/update")
@@ -72,64 +91,9 @@ public class InvoiceManagementController {
         }
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<Invoice>> getAllInvoices() {
-        return ResponseEntity.ok(invoiceService.getAll());
-    }
-
-    @GetMapping("/listDriverType")
-    public ResponseEntity<List<DriverType>> getAllDriverType() {
-        return ResponseEntity.ok(driverTypeService.getAll());
-    }
-
-    @PostMapping("/addtran1/invoi")
-    public ResponseEntity<Invoice> addtranInvoice(@RequestBody Invoice invoice, @RequestParam Integer paymentMethodId) {
-        UserTransaction userTransaction = new UserTransaction(invoice.getBookingDate(), 1000, invoice.getCustomer(), invoice.getDriverDetail(), paymentMethodService.getById(paymentMethodId));
-        int invoiceId = userTransactionService.add(userTransaction).getTransactionId();
-        return ResponseEntity.ok(invoice);
-    }
-
-    @PostMapping("/addtran/invoice")
-    public ResponseEntity<List<DriverDetail>> addTranInvoice(@RequestBody TranInvoResReq resrep) {
-// resrep.get
-        UserTransaction userTransaction = new UserTransaction(new Date(), resrep.getAmount()
-                , customerService.findCustomerById(resrep.getAccount().getAccountId()), resrep.getDriverDetail(),
-                resrep.getPaymentMethod());
-        UserTransaction newTran = userTransactionService.add(userTransaction);
-        Invoice newInvoice = new Invoice(new Date(), resrep.getStartPoint(),
-                resrep.getEndPoint(), resrep.isFinish(), resrep.getTimeStart(),
-                customerService.findCustomerById(resrep.getAccount().getAccountId()),
-                resrep.getDriverDetail(), newTran);
-        List<DriverDetail> listDriverDetail = driverDetailService.findAllByDriverTypeId(resrep.getDriverType().getDriverTypeId());
-
-        try {
-            invoiceService.add(newInvoice);
-            return ResponseEntity.ok(listDriverDetail);
-//               return  ResponseEntity.ok(newInvoice);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    //Do
-    @GetMapping("/find-all-by-driverdetailid-drivertype/{driverId}/{driverTypeId}")
-    public ResponseEntity<?> getAllByDriverDetailAndDriverType(@PathVariable Integer driverId, @PathVariable Integer driverTypeId) {
-        try {
-            List<Invoice> invoices = invoiceService.findAllByDriverDetailIdAndDriverTypeId(driverId, driverTypeId);
-            return ResponseEntity.ok(invoices);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/find-all-by-drivertype-customer/{customerId}/{driverTypeId}")
-    public ResponseEntity<List<Invoice>> getAllByDriverTypeAndCustomerId(@PathVariable Integer customerId, @PathVariable Integer driverTypeId) {
-        try {
-            List<Invoice> invoices = invoiceService.findAllByDriverTypeIdAndCustomerId(customerId, driverTypeId);
-            return ResponseEntity.ok(invoices);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }
+
+
+
+
+

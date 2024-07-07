@@ -42,7 +42,7 @@ dependencies {
 	implementation 'com.stripe:stripe-java:25.11.0'
 // https://mvnrepository.com/artifact/com.google.code.gson/gson
 	implementation 'com.google.code.gson:gson:2.10.1'
-
+	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
 }
 

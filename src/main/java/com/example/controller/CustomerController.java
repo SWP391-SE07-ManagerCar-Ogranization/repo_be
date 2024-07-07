@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/public")
 public class CustomerController {
     @Autowired
     CustomerService customerService;
@@ -32,8 +31,8 @@ public class CustomerController {
     @Autowired
     OurUserDetailsService ourUserDetailsService;
 
-
-    @PostMapping("/addCustomer/{customerId}/{groupId}")
+// kiet update path api
+    @PostMapping("/public/group-car/add-customer/{customerId}/{groupId}")
     public ResponseEntity<?> addCustomer(@PathVariable int customerId, @PathVariable int groupId) {
         try {
             customerService.addCustomerToGroupCar(customerId, groupId);
@@ -42,13 +41,12 @@ public class CustomerController {
         }
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/get-all-customer/group-car-id/{id}")
+    @GetMapping("/public/get-all-customer/group-car-id/{id}")
     public ResponseEntity<List<Account>> getAllCustomersByGroupCarId(@PathVariable Integer id) {
         return ResponseEntity.ok( customerService.getAllCustomerByGroupId(id));
     }
 
-
-    @GetMapping("/getAccountsByGroupId/{groupId}")
+    @GetMapping("/public/getAccountsByGroupId/{groupId}")
     public List<Account> getAccountsByGroupId(@PathVariable Integer groupId){
         List<Account> accounts = new ArrayList<>();
         List<Customer> customers = customerService.getCustomersByGroup(groupCarService.getGroupCarById(groupId));

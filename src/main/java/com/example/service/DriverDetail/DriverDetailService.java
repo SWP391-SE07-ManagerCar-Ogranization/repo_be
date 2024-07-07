@@ -2,6 +2,7 @@ package com.example.service.DriverDetail;
 
 import com.example.entity.DriverDetail;
 import com.example.entity.DriverType;
+import com.example.entity.UserTransaction;
 
 import java.util.List;
 public interface DriverDetailService {
@@ -20,7 +21,6 @@ public interface DriverDetailService {
    List<DriverDetail> getAllDriverDetails();
    void deleteDriverDetail(int id);
    DriverDetail saveDriverDetail(DriverDetail driverDetail);
-
 }
 
 

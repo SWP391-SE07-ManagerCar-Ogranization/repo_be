@@ -1,5 +1,6 @@
 package com.example.service.invoice;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.Invoice;
 import com.example.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class InvoiceServiceImp implements InvoiceService {
     @Override
     public Invoice getById(Integer id) {
         return invoiceRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Invoice> findByDriverDetail(DriverDetail driverDetail) {
+        return invoiceRepository.findAllByDriverDetail(driverDetail);
     }
 
     @Override
