@@ -1,9 +1,6 @@
 package com.example.service.transaction;
 
-import com.example.entity.DriverDetail;
-import com.example.entity.DriverType;
-import com.example.entity.GroupCar;
-import com.example.entity.UserTransaction;
+import com.example.entity.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,4 +22,5 @@ public interface UserTransactionService {
     List<UserTransaction> findAllByDriverDetail(DriverDetail driverDetail);
 
     void addTransactionWithGroupCar(GroupCar groupCar);
+    UserTransaction findByCustomerAndGroup(Customer customer, GroupCar groupCar);
 }

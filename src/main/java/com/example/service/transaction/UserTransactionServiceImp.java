@@ -106,4 +106,9 @@ public class UserTransactionServiceImp implements UserTransactionService {
         }
     }
 
+    @Override
+    public UserTransaction findByCustomerAndGroup(Customer customer, GroupCar groupCar) {
+        return userTransactionRepository.findByCustomerAndGroupCar(customer,groupCar);
+    }
+
 }

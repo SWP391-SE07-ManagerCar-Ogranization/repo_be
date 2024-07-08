@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -50,6 +51,21 @@ public class DriverController {
             reqRes.setMessage("success");
         return ResponseEntity.ok(reqRes);
     }
+    @GetMapping("/get-group-car")
+    public ResponseEntity<?> paymentGroupCarForDriver() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account account = ourUserDetailsService.findByEmail(email);
+        List<GroupCar> groupCars = groupCarService.getGroupCarsByDriver(account.getDriverDetail());
+        List<InfoBookingForDriver> infoBookingForDrivers = new ArrayList<>();
+        for (GroupCar groupCar: groupCars) {
+            InfoBookingForDriver info = new InfoBookingForDriver();
+            info.setGroupCar(groupCar);
+            info.setUserTransactions(groupCar.getUserTransactions());
+            infoBookingForDrivers.add(info);
+        }
+        return ResponseEntity.ok(infoBookingForDrivers);
+    }
 
     @GetMapping("/get-invoice")
     public ResponseEntity<?> getPersonalInvoice() {
@@ -80,6 +96,33 @@ public class DriverController {
             if (userTransaction.isTransactionStatus()) {
                 invoice.setFinish(true);
                 invoiceService.add(invoice);
+                return ResponseEntity.ok("Update Trip Finished");
+            } else {
+                return ResponseEntity.ok("User need to payment");
+            }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/confirm-group")
+    public ResponseEntity<?> confirmGroupFinished(@RequestBody GroupCar groupCarInput) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account account = ourUserDetailsService.findByEmail(email);
+        DriverDetail driverDetail = account.getDriverDetail();
+        GroupCar groupCar = groupCarService.getGroupCarById(groupCarInput.getGroupId());
+        if(Objects.equals(groupCar.getDriverDetail(), driverDetail)) {
+            Set<UserTransaction> userTransactions = groupCar.getUserTransactions();
+            for(UserTransaction transaction : userTransactions) {
+                if(transaction.isTransactionStatus()) {
+                    groupCar.setFinish(true);
+                } else {
+                    groupCar.setFinish(false);
+                }
+            }
+            if(groupCar.isFinish()) {
+                groupCarService.saveGroupCar(groupCar);
                 return ResponseEntity.ok("Update Trip Finished");
             } else {
                 return ResponseEntity.ok("User need to payment");

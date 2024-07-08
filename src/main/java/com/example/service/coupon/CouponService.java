@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface CouponService {
     List<Coupon> getAllCoupon ();
+    List<Coupon> getAllFreeCoupon();
+    List<Coupon> getAllTradeCoupon();
     Coupon addCoupon (Coupon coupon);
     void deleteCoupon(int couponId);
     Coupon findCouponById(int couponId);

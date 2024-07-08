@@ -1,5 +1,6 @@
 package com.example.service.groupcar;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
 import com.example.repository.GroupCarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ public class GroupCarService {
     public List<GroupCar> getGroupCars(){
             return groupCarRepository.findAll();
     }
-
+    public List<GroupCar> getGroupCarsByDriver(DriverDetail driverDetail){
+        return groupCarRepository.findGroupCarsByDriverDetail(driverDetail);
+    }
     public List<GroupCar> getGroupCarsByStartPoint(String startPoint){
         return groupCarRepository.findByStartPoint(startPoint);
     }

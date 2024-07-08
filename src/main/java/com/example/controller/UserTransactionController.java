@@ -1,9 +1,9 @@
 package com.example.controller;
 
-import com.example.entity.Account;
-import com.example.entity.DriverDetail;
-import com.example.entity.UserTransaction;
+import com.example.dto.InfoBookingForDriver;
+import com.example.entity.*;
 import com.example.service.account.OurUserDetailsService;
+import com.example.service.groupcar.GroupCarService;
 import com.example.service.transaction.UserTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +19,9 @@ public class UserTransactionController {
     private UserTransactionService userTransactionService;
     @Autowired
     private OurUserDetailsService ourUserDetailsService;
+    @Autowired
+    private GroupCarService groupCarService;
+
     @PostMapping("/payment")
     public ResponseEntity<?> paymentForDriver(@RequestBody UserTransaction userTransaction) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -29,8 +32,8 @@ public class UserTransactionController {
         DriverDetail driverDetail = transactionGet.getDriverDetail();
         Account accountDriver = driverDetail.getAccount();
         double walletDriver = accountDriver.getAccountBalance();
-        if(walletCustomer > userTransaction.getAmount()) {
-            if(!transactionGet.isTransactionStatus()) {
+        if (walletCustomer > userTransaction.getAmount()) {
+            if (!transactionGet.isTransactionStatus()) {
                 accountCustomer.setAccountBalance(walletCustomer - userTransaction.getAmount());
                 accountDriver.setAccountBalance(walletDriver + userTransaction.getAmount());
                 transactionGet.setTransactionStatus(true);
@@ -44,4 +47,17 @@ public class UserTransactionController {
         }
         return ResponseEntity.ok("Not enough balance to payment");
     }
+    @GetMapping("/get/group-car/{id}")
+    public ResponseEntity<?> getTransactionByGroupCar(@PathVariable int id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        Customer customer = accountCustomer.getCustomer();
+        UserTransaction transaction = userTransactionService.findByCustomerAndGroup(customer, groupCarService.getGroupCarById(id));
+        InfoBookingForDriver infoBookingForDriver = new InfoBookingForDriver();
+        infoBookingForDriver.setUserTransaction(transaction);
+        infoBookingForDriver.setNameDriver(transaction.getDriverDetail().getAccount().getName());
+        return ResponseEntity.ok(infoBookingForDriver);
+    }
+
 }

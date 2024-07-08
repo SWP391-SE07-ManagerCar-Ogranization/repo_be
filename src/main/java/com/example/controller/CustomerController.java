@@ -1,23 +1,15 @@
 package com.example.controller;
 
 import com.example.entity.Account;
-import com.example.entity.Account;
 import com.example.entity.Customer;
 import com.example.entity.GroupCar;
+import com.example.entity.UserTransaction;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.customer.CustomerService;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +33,9 @@ public class CustomerController {
         }
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/public/get-all-customer/group-car-id/{id}")
-    public ResponseEntity<List<Account>> getAllCustomersByGroupCarId(@PathVariable Integer id) {
-        return ResponseEntity.ok( customerService.getAllCustomerByGroupId(id));
+    @GetMapping("public/customer/get")
+    public ResponseEntity<?> getCustomerByTransaction(@RequestBody UserTransaction userTransaction) {
+        return ResponseEntity.ok(userTransaction.getCustomer().getAccount().getName());
     }
 
     @GetMapping("/public/getAccountsByGroupId/{groupId}")

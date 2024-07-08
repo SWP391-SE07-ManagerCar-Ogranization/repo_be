@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.entity.DriverDetail;
 import com.example.entity.GroupCar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,6 +31,7 @@ public interface GroupCarRepository extends JpaRepository<GroupCar, Integer> {
             "where gcj.customer_id = :customerId", nativeQuery = true)
     List<GroupCar> findGroupCarsByCustomerId(int customerId);
     GroupCar findGroupCarByCreateAt(LocalDateTime createAt);
+    List<GroupCar> findGroupCarsByDriverDetail(DriverDetail driverDetail);
 
     @Transactional
     @Modifying
