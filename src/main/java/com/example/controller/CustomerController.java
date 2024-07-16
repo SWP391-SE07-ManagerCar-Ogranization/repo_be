@@ -7,8 +7,11 @@ import com.example.entity.UserTransaction;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.customer.CustomerService;
 import com.example.service.groupcar.GroupCarService;
+import com.example.service.invoice.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,6 +25,8 @@ public class CustomerController {
     GroupCarService groupCarService;
     @Autowired
     OurUserDetailsService ourUserDetailsService;
+    @Autowired
+    InvoiceService invoiceService;
 
 // kiet update path api
     @PostMapping("/public/group-car/add-customer/{customerId}/{groupId}")
@@ -46,5 +51,13 @@ public class CustomerController {
             accounts.add(ourUserDetailsService.findById(customer.getId()));
         }
         return accounts;
+    }
+
+    @GetMapping("public/customer/invoices")
+    public ResponseEntity<?> getInvoiceByCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        return ResponseEntity.ok(invoiceService.findByCustomer(accountCustomer.getCustomer()));
     }
 }

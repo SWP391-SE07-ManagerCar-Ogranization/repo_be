@@ -1,5 +1,6 @@
 package com.example.service.invoice;
 
+import com.example.entity.Customer;
 import com.example.entity.DriverDetail;
 import com.example.entity.Invoice;
 import com.example.repository.InvoiceRepository;
@@ -49,6 +50,11 @@ public class InvoiceServiceImp implements InvoiceService {
     @Override
     public List<Invoice> findByDriverDetail(DriverDetail driverDetail) {
         return invoiceRepository.findAllByDriverDetail(driverDetail);
+    }
+
+    @Override
+    public List<Invoice> findByCustomer(Customer customer) {
+        return invoiceRepository.findAllByCustomer(customer);
     }
 
     @Override

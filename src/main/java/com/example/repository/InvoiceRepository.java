@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.entity.Customer;
 import com.example.entity.DriverDetail;
 import com.example.entity.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,4 +26,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice , Integer> {
 
 
     List<Invoice> findAllByDriverDetail(DriverDetail driverDetail);
+    List<Invoice> findAllByCustomer(Customer customer);
 }
