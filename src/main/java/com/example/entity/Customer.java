@@ -24,14 +24,14 @@ public class Customer {
             name = "group_cars_join",
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "group_car_id"))
-     @JsonBackReference (value = "customersGroupCars")
+    @JsonBackReference(value = "customers_group_car")
     private Set<GroupCar> groupCars;
 
 
 
-    @OneToMany(mappedBy = "customer")
-    @JsonManagedReference(value = "customers_feedback")
-    private Set<Feedback> feedbacks;
+//    @OneToMany(mappedBy = "customer")
+//    @JsonManagedReference(value = "customers_feedback")
+//    private Set<Feedback> feedbacks;
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer_coupon")

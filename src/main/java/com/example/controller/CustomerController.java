@@ -3,15 +3,16 @@ package com.example.controller;
 import com.example.entity.Account;
 import com.example.entity.Customer;
 import com.example.entity.GroupCar;
+import com.example.entity.UserTransaction;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.customer.CustomerService;
 import com.example.service.groupcar.GroupCarService;
+import com.example.service.invoice.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,11 @@ public class CustomerController {
     GroupCarService groupCarService;
     @Autowired
     OurUserDetailsService ourUserDetailsService;
+    @Autowired
+    InvoiceService invoiceService;
 
-
-    @PostMapping("/public/addCustomer/{customerId}/{groupId}")
+// kiet update path api
+    @PostMapping("/public/group-car/add-customer/{customerId}/{groupId}")
     public ResponseEntity<?> addCustomer(@PathVariable int customerId, @PathVariable int groupId) {
         try {
             customerService.addCustomerToGroupCar(customerId, groupId);
@@ -34,6 +37,10 @@ public class CustomerController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("public/customer/get")
+    public ResponseEntity<?> getCustomerByTransaction(@RequestBody UserTransaction userTransaction) {
+        return ResponseEntity.ok(userTransaction.getCustomer().getAccount().getName());
     }
 
     @GetMapping("/public/getAccountsByGroupId/{groupId}")
@@ -44,5 +51,13 @@ public class CustomerController {
             accounts.add(ourUserDetailsService.findById(customer.getId()));
         }
         return accounts;
+    }
+
+    @GetMapping("public/customer/invoices")
+    public ResponseEntity<?> getInvoiceByCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        return ResponseEntity.ok(invoiceService.findByCustomer(accountCustomer.getCustomer()));
     }
 }

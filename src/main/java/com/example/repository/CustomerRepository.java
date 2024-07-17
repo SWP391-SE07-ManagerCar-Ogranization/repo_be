@@ -2,14 +2,19 @@ package com.example.repository;
 
 import com.example.entity.Customer;
 import com.example.entity.GroupCar;
+import com.example.entity.UserTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.Set;
 
+@Repository
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Modifying
@@ -29,4 +34,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             "join group_car gc on gc.group_car_id = gcj.group_car_id\n" +
             "where gc.group_car_id = :groupId", nativeQuery = true)
     List<Customer> getCustomersByGroupId(@Param("groupId") Integer groupId);
+    Customer findCustomerByUserTransactions(Set<UserTransaction> userTransaction);
+
+    @Query(value = "SELECT customer_id FROM group_cars_join WHERE group_car_id = :groupCarId", nativeQuery = true)
+    List<Integer> getAllCustomerByGroupCarId(@Param("groupCarId") Integer groupCarId);
 }

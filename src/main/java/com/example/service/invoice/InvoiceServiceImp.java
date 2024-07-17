@@ -1,5 +1,7 @@
 package com.example.service.invoice;
 
+import com.example.entity.Customer;
+import com.example.entity.DriverDetail;
 import com.example.entity.Invoice;
 import com.example.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +45,25 @@ public class InvoiceServiceImp implements InvoiceService {
     @Override
     public Invoice getById(Integer id) {
         return invoiceRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Invoice> findByDriverDetail(DriverDetail driverDetail) {
+        return invoiceRepository.findAllByDriverDetail(driverDetail);
+    }
+
+    @Override
+    public List<Invoice> findByCustomer(Customer customer) {
+        return invoiceRepository.findAllByCustomer(customer);
+    }
+
+    @Override
+    public List<Invoice> findAllByDriverDetailIdAndDriverTypeId(Integer driverDetailId, Integer driverTypeId) {
+        return invoiceRepository.findAllByDriverDetailIdAndDriverTypeId(driverDetailId, driverTypeId);
+    }
+
+    @Override
+    public List<Invoice> findAllByDriverTypeIdAndCustomerId(Integer customerId, Integer driverTypeId) {
+        return invoiceRepository.findAllByDriverTypeIdAndCustomerId(customerId, driverTypeId);
     }
 }

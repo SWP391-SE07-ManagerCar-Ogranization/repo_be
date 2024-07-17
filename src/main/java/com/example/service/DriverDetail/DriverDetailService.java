@@ -2,6 +2,7 @@ package com.example.service.DriverDetail;
 
 import com.example.entity.DriverDetail;
 import com.example.entity.DriverType;
+import com.example.entity.UserTransaction;
 import com.example.entity.GroupCar;
 
 import java.util.List;

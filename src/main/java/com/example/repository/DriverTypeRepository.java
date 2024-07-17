@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DriverTypeRepository  extends JpaRepository<DriverType, Integer> {
+    DriverType getDriverTypeByCapacity(int capacity);
 }

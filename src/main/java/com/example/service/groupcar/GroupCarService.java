@@ -24,7 +24,9 @@ public class GroupCarService {
     public List<GroupCar> getGroupCars(){
             return groupCarRepository.findAll();
     }
-
+    public List<GroupCar> getGroupCarsByDriver(DriverDetail driverDetail){
+        return groupCarRepository.findGroupCarsByDriverDetail(driverDetail);
+    }
     public List<GroupCar> getGroupCarsByStartPoint(String startPoint){
         return groupCarRepository.findByStartPoint(startPoint);
     }
@@ -62,11 +64,20 @@ public class GroupCarService {
         return groupCarRepository.save(existingGroupCar);
     }
     public void addCustomerGroupCar(int customerId, int groupId){
-        groupCarRepository.GroupCarJoin(customerId, groupId);
+        groupCarRepository.addGroupCarJoin(customerId, groupId);
     }
     public List<GroupCar> getGroupCarsByCustomerId(int customerId){
         return groupCarRepository.findGroupCarsByCustomerId(customerId);
     }
+
+    public void deleteGroupCarJoin (int customerId, int groupCarId){
+        groupCarRepository.deleteGroupCarJoin(customerId, groupCarId);
+    }
+
+    public List<GroupCar> getGroupCarsByDriverDetailId(int driverDetailId){
+        return groupCarRepository.findGroupCarsByDriverDetailId(driverDetailId);
+    }
+
     public void addDriverDetail(Integer groupId, Integer driverDetailId){
         groupCarRepository.addDriverDetail(groupId, driverDetailId);
     }

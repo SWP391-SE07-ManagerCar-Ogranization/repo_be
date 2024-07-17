@@ -1,13 +1,18 @@
 package com.example.service.customer;
 
+import com.example.entity.Account;
 import com.example.entity.Customer;
+import com.example.repository.AccountRepository;
 import com.example.entity.GroupCar;
+import com.example.entity.UserTransaction;
 import com.example.repository.CustomerRepository;
 import com.example.service.groupcar.GroupCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomerServiceImp implements CustomerService{
@@ -15,6 +20,9 @@ public class CustomerServiceImp implements CustomerService{
     private CustomerRepository customerRepository;
     @Autowired
     GroupCarService groupCarService;
+    @Autowired
+    private AccountRepository accountRepository;
+
     @Override
     public void addCustomerToGroupCar(int customerId, int groupId) {
         GroupCar groupCar = groupCarService.getGroupCarById(groupId);
@@ -54,5 +62,21 @@ public class CustomerServiceImp implements CustomerService{
     @Override
     public List<Customer> getCustomersByGroup(GroupCar groupCar) {
         return customerRepository.findCustomersByGroupCars(groupCar);
+    }
+
+    @Override
+    public List<Account> getAllCustomerByGroupId(int groupId) {
+        List<Integer> customerIds = customerRepository.getAllCustomerByGroupCarId(groupId);
+        List<Account> customerAccounts = new ArrayList<>();
+        for (Integer customerId : customerIds) {
+            Account account = accountRepository.findById(customerId).orElse(null);
+            customerAccounts.add(account);
+        }
+        return customerAccounts;
+    }
+
+    @Override
+    public Customer getCustomerByUserTransaction(Set<UserTransaction> userTransactions) {
+        return customerRepository.findCustomerByUserTransactions(userTransactions);
     }
 }

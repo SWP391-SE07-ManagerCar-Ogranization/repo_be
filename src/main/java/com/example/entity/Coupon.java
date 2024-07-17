@@ -20,7 +20,7 @@ public class Coupon {
     private String couponName;
     private double couponValue;
     private int couponQuantity;
-
+    private String couponType;
     @ManyToOne
     @JsonBackReference(value = "customer_coupon")
     @JoinColumn(name = "customer_id")
