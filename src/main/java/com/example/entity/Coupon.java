@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "coupon")
 @Getter
@@ -21,6 +23,7 @@ public class Coupon {
     private double couponValue;
     private int couponQuantity;
     private String couponType;
+    private Date takenDate;
 
     @ManyToOne
     @JsonBackReference(value = "customer_coupon")
