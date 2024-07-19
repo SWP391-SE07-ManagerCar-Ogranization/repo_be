@@ -133,16 +133,24 @@ public class DriverController {
     }
     @PostMapping("/join-group")
     public ResponseEntity<?> joinGroup(@RequestBody GroupCar groupCar) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Account account = ourUserDetailsService.findByEmail(email);
-        DriverDetail driverDetail = account.getDriverDetail();
-        GroupCar groupCarNew = groupCarService.getGroupCarById(groupCar.getGroupId());
-        groupCarNew.setDriverDetail(driverDetail);
-        groupCarService.saveGroupCar(groupCarNew);
-        System.out.println("group id: "+ groupCarService.getGroupCarById(groupCar.getGroupId()));
-        userTransactionService.addTransactionWithGroupCar(groupCarService.getGroupCarById(groupCar.getGroupId()));
-        return ResponseEntity.ok(groupCarNew);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String email = authentication.getName();
+            Account account = ourUserDetailsService.findByEmail(email);
+            DriverDetail driverDetail = account.getDriverDetail();
+            GroupCar groupCarNew = groupCarService.getGroupCarById(groupCar.getGroupId());
+            if(groupCarNew.getDriverDetail()!=null){
+                System.out.println("driver >>>>> " + groupCarNew.getDriverDetail());
+                return ResponseEntity.badRequest().body("GroupCar already existed driver");
+            }else{
+                groupCarNew.setDriverDetail(driverDetail);
+                groupCarService.saveGroupCar(groupCarNew);
+                System.out.println("group id: "+ groupCarService.getGroupCarById(groupCar.getGroupId()));
+                userTransactionService.addTransactionWithGroupCar(groupCarService.getGroupCarById(groupCar.getGroupId()));
+                return ResponseEntity.ok(groupCarNew);
+            }
+
+
+
     }
     @GetMapping("/list/group-had-join/{id}")
     public ResponseEntity<?> getAllDriverByGroupCar(@PathVariable Integer id) {
