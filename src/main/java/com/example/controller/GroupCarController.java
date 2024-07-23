@@ -18,14 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 public class GroupCarController {
 
     @Autowired
@@ -38,6 +37,7 @@ public class GroupCarController {
     private DriverTypeService driverTypeService;
     @Autowired
     private UserTransactionService userTransactionService;
+
     @PostMapping("/public/group-car/add")
     public GroupCar addGroupCar(@RequestBody GroupCar groupCar) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -63,10 +63,12 @@ public class GroupCarController {
     public List<GroupCar> getGroupCars() {
         return groupCarService.getGroupCars();
     }
+
     @GetMapping("/public/groupCarsByStartPoint/{startPoint}")
     public List<GroupCar> getGroupCarsByStartPoint(@PathVariable String startPoint) {
         return groupCarService.getGroupCarsByStartPoint(startPoint);
     }
+
     @GetMapping("/public/groupCarsByEndPoint/{endPoint}")
     public List<GroupCar> getGroupCarsByEndPoint(@PathVariable String endPoint) {
         return groupCarService.getGroupCarsByEndPoint(endPoint);
@@ -81,7 +83,6 @@ public class GroupCarController {
     public GroupCar getGroupCarByName(@PathVariable String name) {
         return groupCarService.getGroupCarByGroupName(name);
     }
-
 
     @PutMapping("/public/update")
     public GroupCar updateGroupCar(@RequestBody GroupCar groupCar) {
@@ -106,26 +107,27 @@ public class GroupCarController {
     @GetMapping("/public/getAccountOfDriverDetailByGroupId/{id}")
     public Account getAccountOfDriverDetailByGroupId(@PathVariable int id) {
         GroupCar groupCar = groupCarService.getGroupCarById(id);
-        DriverDetail  driverDetail = groupCar.getDriverDetail();
+        DriverDetail driverDetail = groupCar.getDriverDetail();
         Account account = driverDetail.getAccount();
         return account;
     }
 
     @PostMapping("/public/addDriverDetailOfGroup/{groupId}/{driverDetailId}")
-    public ResponseEntity<?> addDriverDetailOfGroup(@PathVariable Integer groupId, @PathVariable Integer driverDetailId) {
+    public ResponseEntity<?> addDriverDetailOfGroup(@PathVariable Integer groupId,
+            @PathVariable Integer driverDetailId) {
         GroupCar groupCar = groupCarService.getGroupCarById(groupId);
         try {
-            if(groupCar.getDriverDetail()==null){
+            if (groupCar.getDriverDetail() == null) {
                 groupCarService.addDriverDetail(groupId, driverDetailId);
-            }
-            else{
+            } else {
                 return ResponseEntity.badRequest().build();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
+
     @DeleteMapping("/public/deleteGroupCarJoin/{customerId}/{groupCarId}")
     public ResponseEntity<String> deleteGroupCarJoin(@PathVariable int customerId, @PathVariable int groupCarId) {
         try {

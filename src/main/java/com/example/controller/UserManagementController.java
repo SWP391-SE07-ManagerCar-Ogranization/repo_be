@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 public class UserManagementController {
     @Autowired
     private UsersManagementService usersManagementService;
@@ -22,76 +21,78 @@ public class UserManagementController {
     private OurUserDetailsService ourUserDetailsService;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg){
+    public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg) {
         return ResponseEntity.ok(usersManagementService.register(reg));
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ReqRes> login(@RequestBody ReqRes req){
+    public ResponseEntity<ReqRes> login(@RequestBody ReqRes req) {
         return ResponseEntity.ok(usersManagementService.login(req));
     }
+
     @PostMapping("/oauth2/login")
-    public ResponseEntity<ReqRes> loginOauth2(@RequestBody ReqRes req){
+    public ResponseEntity<ReqRes> loginOauth2(@RequestBody ReqRes req) {
         return ResponseEntity.ok(usersManagementService.loginOauth2(req));
     }
+
     @PostMapping("/auth/refresh")
-    public ResponseEntity<ReqRes> refreshToken(@RequestBody ReqRes req){
+    public ResponseEntity<ReqRes> refreshToken(@RequestBody ReqRes req) {
         return ResponseEntity.ok(usersManagementService.refreshToken(req));
     }
 
     @PostMapping("/auth/change-pass")
-    public ResponseEntity<ReqRes> changePassword(@RequestBody ReqRes reqRes){
+    public ResponseEntity<ReqRes> changePassword(@RequestBody ReqRes reqRes) {
         return ResponseEntity.ok(usersManagementService.changeNewPassword(reqRes));
     }
 
     @GetMapping("/auth/get-all-users")
-    public ResponseEntity<ReqRes> getAllUsers(){
+    public ResponseEntity<ReqRes> getAllUsers() {
         return ResponseEntity.ok(usersManagementService.getAllUsers());
 
     }
 
     @GetMapping("/admin/get-users/{userId}")
-    public ResponseEntity<ReqRes> getUSerByID(@PathVariable Integer userId){
+    public ResponseEntity<ReqRes> getUSerByID(@PathVariable Integer userId) {
         return ResponseEntity.ok(usersManagementService.getUsersById(userId));
 
     }
 
     @PutMapping("/adminuser/update/{userId}")
-    public ResponseEntity<ReqRes> updateUser(@PathVariable Integer userId, @RequestBody Account request){
+    public ResponseEntity<ReqRes> updateUser(@PathVariable Integer userId, @RequestBody Account request) {
         return ResponseEntity.ok(usersManagementService.updateUser(userId, request));
     }
 
     @GetMapping("/adminuser/get-profile")
-    public ResponseEntity<ReqRes> getMyProfile(){
+    public ResponseEntity<ReqRes> getMyProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         ReqRes response = usersManagementService.getMyInfo(email);
-        return  ResponseEntity.status(response.getStatusCode()).body(response);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     @DeleteMapping("/admin/delete/{userId}")
-    public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId){
+    public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId) {
         return ResponseEntity.ok(usersManagementService.deleteUser(userId));
     }
 
-    //Do-Admin
+    // Do-Admin
     @GetMapping("/public/get-all-customers")
-    public ResponseEntity<List<Account>> getAllCustomers(){
+    public ResponseEntity<List<Account>> getAllCustomers() {
         return ResponseEntity.ok(ourUserDetailsService.getAllAccountByRoleId(1));
     }
 
     @GetMapping("/public/get-all-drivers")
-    public ResponseEntity<List<Account>> getAllDrivers(){
+    public ResponseEntity<List<Account>> getAllDrivers() {
         return ResponseEntity.ok(ourUserDetailsService.getAllAccountByRoleId(3));
     }
 
     @PutMapping("/public/{id}/update-status")
-    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestParam boolean status){
-        return ResponseEntity.ok(ourUserDetailsService.updateStatusById(id,status));
+    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @RequestParam boolean status) {
+        return ResponseEntity.ok(ourUserDetailsService.updateStatusById(id, status));
     }
 
     @GetMapping("/public/get-account/{id}")
-    public ResponseEntity<Account> getAccount(@PathVariable Integer id){
+    public ResponseEntity<Account> getAccount(@PathVariable Integer id) {
         return ResponseEntity.ok(ourUserDetailsService.findById(id));
     }
 

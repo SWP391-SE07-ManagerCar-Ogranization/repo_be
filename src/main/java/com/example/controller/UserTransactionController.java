@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 @RequestMapping("/public/transaction")
 public class UserTransactionController {
     @Autowired
@@ -25,11 +25,13 @@ public class UserTransactionController {
     private GroupCarService groupCarService;
     @Autowired
     private CouponService couponService;
+
     @PostMapping("/payment")
     public ResponseEntity<?> paymentForDriver(@RequestBody BillingDTO billingDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        UserTransaction transactionGet = userTransactionService.getById(billingDTO.getUserTransaction().getTransactionId());
+        UserTransaction transactionGet = userTransactionService
+                .getById(billingDTO.getUserTransaction().getTransactionId());
         Coupon coupon = billingDTO.getCoupon();
         Account accountCustomer = ourUserDetailsService.findByEmail(email);
         double walletCustomer = accountCustomer.getAccountBalance();
@@ -43,7 +45,7 @@ public class UserTransactionController {
         }
         if (walletCustomer > totalAmountOrigin) {
             if (!transactionGet.isTransactionStatus()) {
-                if(totalAmountDiscount > 0) {
+                if (totalAmountDiscount > 0) {
                     transactionGet.setAmount(totalAmountDiscount);
                     accountCustomer.setAccountBalance(walletCustomer - totalAmountDiscount);
                     couponService.deleteCoupon(coupon.getCouponId());
@@ -62,13 +64,15 @@ public class UserTransactionController {
         }
         return ResponseEntity.status(403).body("Not enough balance to payment");
     }
+
     @GetMapping("/get/group-car/{id}")
     public ResponseEntity<?> getTransactionByGroupCar(@PathVariable int id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account accountCustomer = ourUserDetailsService.findByEmail(email);
         Customer customer = accountCustomer.getCustomer();
-        UserTransaction transaction = userTransactionService.findByCustomerAndGroup(customer, groupCarService.getGroupCarById(id));
+        UserTransaction transaction = userTransactionService.findByCustomerAndGroup(customer,
+                groupCarService.getGroupCarById(id));
         InfoBookingForDriver infoBookingForDriver = new InfoBookingForDriver();
         infoBookingForDriver.setUserTransaction(transaction);
         infoBookingForDriver.setAccountDriver(transaction.getDriverDetail().getAccount());

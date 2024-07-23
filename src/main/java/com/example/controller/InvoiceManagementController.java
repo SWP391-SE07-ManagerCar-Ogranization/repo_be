@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 @RequestMapping("/public/invoice")
 public class InvoiceManagementController {
     @Autowired
@@ -38,7 +38,7 @@ public class InvoiceManagementController {
         LocalDateTime bookingDate = LocalDateTime.now();
         Account accountCustomer = ourUserDetailsService.findByEmail(email);
         Account accountDriver = positionService.calculateNearestDriver(accountCustomer);
-        if(accountDriver.getDriverDetail() == null) {
+        if (accountDriver.getDriverDetail() == null) {
             return ResponseEntity.badRequest().build();
         } else {
             double distance = positionService.calculateDistanceByName(invoice.getStartPoint(), invoice.getEndPoint());
@@ -57,7 +57,8 @@ public class InvoiceManagementController {
             invoice.setUserTransaction(transactionUpdated);
             invoice.setInvoiceId(transactionUpdated.getTransactionId());
             invoiceService.add(invoice);
-            return ResponseEntity.ok(new InfoBookingForDriver(invoice,null,transactionUpdated,null,accountCustomer.getName(), accountDriver, 1L));
+            return ResponseEntity.ok(new InfoBookingForDriver(invoice, null, transactionUpdated, null,
+                    accountCustomer.getName(), accountDriver, 1L));
         }
     }
 
@@ -91,6 +92,7 @@ public class InvoiceManagementController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/customer/invoices")
     public ResponseEntity<?> getInvoiceByCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -113,12 +115,8 @@ public class InvoiceManagementController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account accountCustomer = ourUserDetailsService.findByEmail(email);
-        List<Invoice> sortedInvoices = invoiceService.findInvoicesByCustomerSortedByTimeStart(accountCustomer.getCustomer());
+        List<Invoice> sortedInvoices = invoiceService
+                .findInvoicesByCustomerSortedByTimeStart(accountCustomer.getCustomer());
         return ResponseEntity.ok(sortedInvoices);
     }
 }
-
-
-
-
-

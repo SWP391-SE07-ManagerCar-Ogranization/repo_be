@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 @RequestMapping("/public")
 public class MailController {
     @Autowired
@@ -21,9 +21,11 @@ public class MailController {
         mailService.sendMail(mail);
         return ResponseEntity.ok("ok");
     }
-//    @PostMapping("/verify/{otp}")
-//    public ResponseEntity<ReqRes> verifyOtp(@PathVariable String otp, @RequestBody ReqRes ReqRes) {
-//        return  ResponseEntity.ok(usersManagementService.forgotPassword(ReqRes,mailService.verifyOtpMail(ReqRes.getEmail(),otp)));
-//    }
+    // @PostMapping("/verify/{otp}")
+    // public ResponseEntity<ReqRes> verifyOtp(@PathVariable String otp,
+    // @RequestBody ReqRes ReqRes) {
+    // return
+    // ResponseEntity.ok(usersManagementService.forgotPassword(ReqRes,mailService.verifyOtpMail(ReqRes.getEmail(),otp)));
+    // }
 
 }

@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 public class ChatController {
 
     @Autowired
@@ -39,11 +39,12 @@ public class ChatController {
     @Autowired
     private DriverDetailService driverDetailService;
 
-//    @MessageMapping("/message")
-//    private Message receivePublicMessage(@Payload Message message) {
-//        simpMessagingTemplate.convertAndSend("/chatroom/" + message.getGroupId() + "/public", message);
-//        return message;
-//    }
+    // @MessageMapping("/message")
+    // private Message receivePublicMessage(@Payload Message message) {
+    // simpMessagingTemplate.convertAndSend("/chatroom/" + message.getGroupId() +
+    // "/public", message);
+    // return message;
+    // }
 
     @GetMapping("/public/get-all-message/by-groupcar/{id}")
     public ResponseEntity<List<com.example.entity.Message>> getAllMessageByGroupCar(@PathVariable int id) {
@@ -51,28 +52,29 @@ public class ChatController {
     }
 
     @GetMapping("/public/get-all-private-message/by-driver-and-customer/{customerId}/{driverDetailId}")
-    public ResponseEntity<List<MessageDto>> getAllMessageByGroupCar(@PathVariable int customerId, @PathVariable int driverDetailId) {
+    public ResponseEntity<List<MessageDto>> getAllMessageByGroupCar(@PathVariable int customerId,
+            @PathVariable int driverDetailId) {
         return ResponseEntity.ok(messageService.findByCustomerIdAndDriverDetailId(customerId, driverDetailId));
     }
 
     @MessageMapping("/message")
     private Message receivePublicMessage(@Payload Message message) {
         com.example.entity.Message initMessage = new com.example.entity.Message();
-        if(message.getRole().equals("DRIVER")){
+        if (message.getRole().equals("DRIVER")) {
             initMessage.setContent(message.getMessage());
             initMessage.setCreatedAt(new Date());
             initMessage.setUpdatedAt(new Date());
             initMessage.setDriverDetail(driverDetailService.getDriverDetail(message.getUserId()));
             initMessage.setGroupCar(groupCarService.getGroupCarById(message.getGroupCarId()));
-        }else {
-//            com.example.entity.Message newMessage = new com.example.entity.Message(
-//                -1,
-//                message.getMessage(),
-//                new Date(),
-//                new Date(),
-//                customerService.getCustomer(message.getUserId()),
-//                null,
-//                groupCarService.getGroupCarById(message.getGroupCarId())
+        } else {
+            // com.example.entity.Message newMessage = new com.example.entity.Message(
+            // -1,
+            // message.getMessage(),
+            // new Date(),
+            // new Date(),
+            // customerService.getCustomer(message.getUserId()),
+            // null,
+            // groupCarService.getGroupCarById(message.getGroupCarId())
             initMessage.setContent(message.getMessage());
             initMessage.setCreatedAt(new Date());
             initMessage.setUpdatedAt(new Date());
@@ -81,26 +83,25 @@ public class ChatController {
 
         }
 
-
         com.example.entity.Message message_db = messageService.save(initMessage);
         MessageData messageData = new MessageData();
         messageData.setMessage(message_db);
         messageData.setStatus(message.getStatus());
-        simpMessagingTemplate.convertAndSend("/chatroom/"+ message.getGroupCarId() +"/public", message);
+        simpMessagingTemplate.convertAndSend("/chatroom/" + message.getGroupCarId() + "/public", message);
         return message;
     }
 
     @MessageMapping("/private-message")
-    public  Message receivePrivateMessage(@Payload Message message) {
+    public Message receivePrivateMessage(@Payload Message message) {
         com.example.entity.Message initMessage = new com.example.entity.Message();
-        if(message.getRole().equals("DRIVER")) {
+        if (message.getRole().equals("DRIVER")) {
             initMessage.setContent(message.getMessage());
             initMessage.setCreatedAt(new Date());
             initMessage.setUpdatedAt(new Date());
             initMessage.setDriverDetail(driverDetailService.getDriverDetail(message.getUserId()));
             initMessage.setSenderId(message.getUserId());
             initMessage.setCustomer(customerService.getCustomer(message.getReceiverId()));
-        }else {
+        } else {
             initMessage.setContent(message.getMessage());
             initMessage.setCreatedAt(new Date());
             initMessage.setUpdatedAt(new Date());
@@ -112,15 +113,16 @@ public class ChatController {
         MessageData messageData = new MessageData();
         messageData.setMessage(message_db);
         messageData.setStatus(message.getStatus());
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverId()) , "/private", message); // /user/David/private
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverId()), "/private", message); // /user/David/private
         return message;
     }
 
-//    @MessageMapping("/leave")
-//    public void handleUserLeave(@Payload Message message) {
-//        message.setStatus(Status.LEAVE);
-//        simpMessagingTemplate.convertAndSend("/chatroom/"+ message.getGroupId() +"/public", message);
-//    }
+    // @MessageMapping("/leave")
+    // public void handleUserLeave(@Payload Message message) {
+    // message.setStatus(Status.LEAVE);
+    // simpMessagingTemplate.convertAndSend("/chatroom/"+ message.getGroupId()
+    // +"/public", message);
+    // }
 
     @MessageMapping("/leave")
     public void handleUserLeave(@Payload Message message) {
@@ -128,15 +130,16 @@ public class ChatController {
         simpMessagingTemplate.convertAndSend("/chatroom/public", message);
     }
 
-//    @MessageMapping("/join")
-//    public void handleUserJoin(@Payload Message message) {
-//        message.setStatus(Status.JOIN);
-//        simpMessagingTemplate.convertAndSend("/chatroom/"+ message.getGroupId() +"/public", message);
-//    }
+    // @MessageMapping("/join")
+    // public void handleUserJoin(@Payload Message message) {
+    // message.setStatus(Status.JOIN);
+    // simpMessagingTemplate.convertAndSend("/chatroom/"+ message.getGroupId()
+    // +"/public", message);
+    // }
 
     @MessageMapping("/join")
     public void handleUserJoin(@Payload Message message) {
         message.setStatus(Status.JOIN);
-        simpMessagingTemplate.convertAndSend("/chatroom/"+message.getGroupCarId()+"/public", message);
+        simpMessagingTemplate.convertAndSend("/chatroom/" + message.getGroupCarId() + "/public", message);
     }
 }

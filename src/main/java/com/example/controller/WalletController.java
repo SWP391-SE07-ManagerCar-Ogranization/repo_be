@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 @RequestMapping("/public/wallet")
 public class WalletController {
     @Autowired
     SystemTransactionService systemTransactionService;
+
     @GetMapping("/system-transaction-history")
     public ResponseEntity<List<SystemTransaction>> getListSystemTrans() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

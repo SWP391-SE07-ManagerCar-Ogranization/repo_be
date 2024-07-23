@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 @RequestMapping("/public")
 public class CouponCustomerController {
     @Autowired
@@ -28,17 +28,17 @@ public class CouponCustomerController {
     OurUserDetailsService ourUserDetailsService;
 
     @PostMapping("/customer/coupon/get")
-    public Coupon getCouponByCustomer(@RequestBody Coupon coupon){
+    public Coupon getCouponByCustomer(@RequestBody Coupon coupon) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account account = ourUserDetailsService.findByEmail(email);
         List<Coupon> customerCoupons = couponService.getCouponByCustomerId(account.getAccountId());
-        for (Coupon customerCoupon: customerCoupons){
-            if(customerCoupon.getCouponName().equals(coupon.getCouponName())){
+        for (Coupon customerCoupon : customerCoupons) {
+            if (customerCoupon.getCouponName().equals(coupon.getCouponName())) {
                 return null;
             }
         }
-        if(coupon.getCouponQuantity()==1){
+        if (coupon.getCouponQuantity() == 1) {
             coupon.setCustomer(customerService.findCustomerById(account.getAccountId()));
             return couponService.addCoupon(coupon);
         }
@@ -48,13 +48,13 @@ public class CouponCustomerController {
         newCoupon.setCouponValue(coupon.getCouponValue());
         newCoupon.setCustomer(customerService.findCustomerById(account.getAccountId()));
         newCoupon.setCouponType(coupon.getCouponType());
-        coupon.setCouponQuantity(coupon.getCouponQuantity()-1);
+        coupon.setCouponQuantity(coupon.getCouponQuantity() - 1);
         couponService.addCoupon(coupon);
         return couponService.addCoupon(newCoupon);
     }
 
     @GetMapping("/customer/coupon/myCoupon")
-    public List<Coupon> myCoupon(){
+    public List<Coupon> myCoupon() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account account = ourUserDetailsService.findByEmail(email);
@@ -62,7 +62,7 @@ public class CouponCustomerController {
     }
 
     @GetMapping("/customer/coupon/trade-history")
-    public List<Coupon> myTradeCoupon(){
+    public List<Coupon> myTradeCoupon() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account account = ourUserDetailsService.findByEmail(email);
@@ -70,38 +70,38 @@ public class CouponCustomerController {
     }
 
     @GetMapping("/customer/point/load-point")
-    public int myPoint(){
+    public int myPoint() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Account account  = ourUserDetailsService.findByEmail(email);
+        Account account = ourUserDetailsService.findByEmail(email);
         return customerService.findCustomerById(account.getAccountId()).getCustomerPoint();
     }
 
     @PostMapping("/customer/point/trade-minus")
-    public Coupon tradeCoupon(@RequestBody Coupon coupon){
+    public Coupon tradeCoupon(@RequestBody Coupon coupon) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account account = ourUserDetailsService.findByEmail(email);
         Customer customer = customerService.findCustomerById(account.getAccountId());
         List<Coupon> customerCoupons = couponService.getCouponByCustomerId(account.getAccountId());
-        for (Coupon customerCoupon: customerCoupons){
-            if(customerCoupon.getCouponName().equals(coupon.getCouponName())){
-                customerCoupon.setCouponQuantity(customerCoupon.getCouponQuantity()+1);
+        for (Coupon customerCoupon : customerCoupons) {
+            if (customerCoupon.getCouponName().equals(coupon.getCouponName())) {
+                customerCoupon.setCouponQuantity(customerCoupon.getCouponQuantity() + 1);
                 customerCoupon.setTakenDate(new Date());
-                coupon.setCouponQuantity(coupon.getCouponQuantity()-1);
-                if(coupon.getCouponQuantity()==0){
+                coupon.setCouponQuantity(coupon.getCouponQuantity() - 1);
+                if (coupon.getCouponQuantity() == 0) {
                     couponService.deleteCoupon(coupon.getCouponId());
                 } else {
                     couponService.addCoupon(coupon);
                 }
-                customer.setCustomerPoint(customer.getCustomerPoint()-(int) (1000 * coupon.getCouponValue()));
+                customer.setCustomerPoint(customer.getCustomerPoint() - (int) (1000 * coupon.getCouponValue()));
                 return couponService.addCoupon(customerCoupon);
             }
         }
 
-        if(coupon.getCouponQuantity()==1){
+        if (coupon.getCouponQuantity() == 1) {
             coupon.setCustomer(customerService.findCustomerById(account.getAccountId()));
-            customer.setCustomerPoint(customer.getCustomerPoint()-(int) (1000*coupon.getCouponValue()));
+            customer.setCustomerPoint(customer.getCustomerPoint() - (int) (1000 * coupon.getCouponValue()));
             coupon.setTakenDate(new Date());
             return couponService.addCoupon(coupon);
         }
@@ -112,28 +112,28 @@ public class CouponCustomerController {
         newCoupon.setCustomer(customerService.findCustomerById(account.getAccountId()));
         newCoupon.setCouponType(coupon.getCouponType());
         newCoupon.setTakenDate(new Date());
-        coupon.setCouponQuantity(coupon.getCouponQuantity()-1);
+        coupon.setCouponQuantity(coupon.getCouponQuantity() - 1);
         couponService.addCoupon(coupon);
-        customer.setCustomerPoint(customer.getCustomerPoint()-(int) (1000*coupon.getCouponValue()));
+        customer.setCustomerPoint(customer.getCustomerPoint() - (int) (1000 * coupon.getCouponValue()));
         return couponService.addCoupon(newCoupon);
     }
 
     @GetMapping("/customer/coupon/free-coupon-view")
-    public List<Coupon> getAllFreeCoupon (){
+    public List<Coupon> getAllFreeCoupon() {
         return couponService.getAllFreeCoupon();
     }
 
     @GetMapping("/customer/coupon/takenCoupon")
-    public List<Coupon> getAvailableFreeCoupon (){
+    public List<Coupon> getAvailableFreeCoupon() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Account account = ourUserDetailsService.findByEmail(email);
-        List<Coupon> myCoupon =  couponService.getCouponByCustomerId(account.getAccountId());
+        List<Coupon> myCoupon = couponService.getCouponByCustomerId(account.getAccountId());
         List<Coupon> freeCoupon = couponService.getAllFreeCoupon();
         List<Coupon> result = new ArrayList<>();
-        for (Coupon mine : myCoupon){
-            for (Coupon free : freeCoupon){
-                if(mine.getCouponName().equals(free.getCouponName())){
+        for (Coupon mine : myCoupon) {
+            for (Coupon free : freeCoupon) {
+                if (mine.getCouponName().equals(free.getCouponName())) {
                     result.add(mine);
                 }
             }
@@ -142,7 +142,7 @@ public class CouponCustomerController {
     }
 
     @GetMapping("/customer/coupon/trade-coupon-view")
-    public List<Coupon> getAllTradeCoupon (){
+    public List<Coupon> getAllTradeCoupon() {
         return couponService.getAllTradeCoupon();
     }
 }

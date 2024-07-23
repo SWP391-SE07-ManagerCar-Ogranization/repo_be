@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://3.24.136.21")
 @RequestMapping("/public")
 public class FeedbackManagementController {
 
@@ -31,6 +31,7 @@ public class FeedbackManagementController {
     private DriverDetailService driverDetailService;
     @Autowired
     private OurUserDetailsService ourUserDetailsService;
+
     @GetMapping("/get-all-feedbacks")
     public ResponseEntity<List<Feedback>> getAllFeedback() {
         return ResponseEntity.ok(feedbackService.findAllFeedback());
@@ -38,29 +39,31 @@ public class FeedbackManagementController {
 
     @DeleteMapping("/feedback-driver/delete/{id}")
     public void deleteFeedback(@PathVariable Integer id) {
-       feedbackService.deleteFeedbackById(id);
+        feedbackService.deleteFeedbackById(id);
     }
 
     @GetMapping("/feedback-driver/find-all/{id}")
-    public ResponseEntity<List<Feedback>> getAllFeedbackByDriverId(@PathVariable Integer id){
+    public ResponseEntity<List<Feedback>> getAllFeedbackByDriverId(@PathVariable Integer id) {
         return ResponseEntity.ok(feedbackService.findAllFeedbackByDriverDetailId(id));
     }
+
     @PostMapping("/add-new-feedback")
     public ResponseEntity<Feedback> addNewFeedback(@RequestBody FeedbackReqRes feedbackReqRes) {
         // convert driver detail id to invoice id
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        System.out.println("email here: "+email);
+        System.out.println("email here: " + email);
         Account account = ourUserDetailsService.findByEmail(email);
         Invoice invoice = invoiceService.getById(feedbackReqRes.getDriverDetailId());
         DriverDetail driverDetail = invoice.getDriverDetail();
         int newTotalRating = driverDetail.getTotalRating() + 1;
-        double newRating = (feedbackReqRes.getRating() + driverDetail.getRating()*driverDetail.getTotalRating())/ newTotalRating;
+        double newRating = (feedbackReqRes.getRating() + driverDetail.getRating() * driverDetail.getTotalRating())
+                / newTotalRating;
         driverDetail.setTotalRating(newTotalRating);
         driverDetail.setRating(newRating);
-        Feedback fb = feedbackService.saveFeedback(new Feedback(0, feedbackReqRes.getFeedbackContent(),new Date(),new Date(),account.getCustomer(),
-                driverDetail));
+        Feedback fb = feedbackService.saveFeedback(
+                new Feedback(0, feedbackReqRes.getFeedbackContent(), new Date(), new Date(), account.getCustomer(),
+                        driverDetail));
         return ResponseEntity.ok(fb);
     }
 }
-
