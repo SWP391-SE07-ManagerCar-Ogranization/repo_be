@@ -1,25 +1,29 @@
 package com.example.controller;
 
-import com.example.dto.ChargeRequest;
 import com.example.dto.ReqRes;
+import com.example.entity.Withdraw;
 import com.example.entity.Account;
 import com.example.entity.SystemTransaction;
 import com.example.exception.ApiRequestException;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.account.UsersManagementService;
-import com.example.service.stripe.StripeService;
+import com.example.service.payment.WithdrawService;
 import com.example.service.transaction.SystemTransactionService;
-import com.google.gson.Gson;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
+import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
+import com.stripe.model.Transfer;
 import com.stripe.net.Webhook;
+import com.stripe.param.TransferCreateParams;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.model.checkout.Session;
@@ -43,6 +47,8 @@ public class StripeController {
     private SystemTransactionService systemTransactionService;
     @Autowired
     private OurUserDetailsService ourUserDetailsService;
+    @Autowired
+    private WithdrawService withdrawService;
     @Value("${context.path}")
     private String path;
     private static final String SIGNING_SECRET = "whsec_2a1a22cef89f8cc4a53ab4207f8c7c70ae44cbd57a409cc6303210c0e53d34aa";
@@ -106,5 +112,36 @@ public class StripeController {
             e.printStackTrace();
         }
         return ResponseEntity.ok("Webhook received successfully");
+    }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<?> paymentResult(@RequestHeader("Authorization") String token, @RequestBody double amount) {
+        Stripe.apiKey = stripeApiKey;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account account = ourUserDetailsService.findByEmail(email);
+        long amountInSmallestUnit = (long) amount;
+        if (account.getAccountBalance() < amountInSmallestUnit) {
+            throw new ApiRequestException("Not enough balance", HttpStatus.BAD_REQUEST);
+        }
+
+        TransferCreateParams params = TransferCreateParams.builder()
+                .setAmount(amountInSmallestUnit * 100)
+                .setCurrency("usd")
+                .setDestination(String.valueOf(account.getAccountId()))
+                .setTransferGroup("ORDER_95")
+                .build();
+        try {
+            Transfer transfer = Transfer.create(params);
+            account.setAccountBalance(account.getAccountBalance() - amountInSmallestUnit);
+            ourUserDetailsService.addAccount(account);
+
+            Withdraw withdraw = new Withdraw(account.getAccountId() + "", amountInSmallestUnit, transfer.getId());
+            withdrawService.save(withdraw);
+            return new ResponseEntity<>("Withdraw successfully", HttpStatus.OK);
+        } catch (StripeException e) {
+            e.printStackTrace();
+            throw new ApiRequestException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

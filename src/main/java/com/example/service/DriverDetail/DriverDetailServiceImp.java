@@ -66,5 +66,9 @@ public class DriverDetailServiceImp implements DriverDetailService {
         return driverDetailRepository.save(driverDetail);
     }
 
+    @Override
+    public boolean checkValidDriver(DriverDetail driverDetail) {
+        return driverDetail.getDriverLicence() != null && driverDetail.getVehicleNumber() != null && driverDetail.getAccount().getIdCard() != null;
+    }
 
 }

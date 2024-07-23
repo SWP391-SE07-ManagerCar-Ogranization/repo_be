@@ -7,6 +7,7 @@ import com.example.service.DriverType.DriverTypeService;
 import com.example.service.account.OurUserDetailsService;
 import com.example.service.customer.CustomerService;
 import com.example.service.feedback.FeedbackService;
+import com.example.service.position.DirectionService;
 import com.example.service.position.PositionService;
 import com.example.service.transaction.UserTransactionService;
 import org.junit.jupiter.api.Test;
@@ -18,13 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class BookingCarApplicationTests {
 
 	@Autowired
-	private PositionService customerService;
+	private DirectionService directionService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Test
 	void contextLoads() {
-		System.out.println(customerService.calculateDistanceByName("Phú Yên Province, Vietnam","Nha Trang, Khánh Hòa Province, Vietnam"));
-
+		System.out.println(directionService.calculateDistance2(21.028511, 105.854443, 10.779784, 106.699184));
 	}
 
 }

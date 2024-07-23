@@ -66,4 +66,13 @@ public class InvoiceServiceImp implements InvoiceService {
     public List<Invoice> findAllByDriverTypeIdAndCustomerId(Integer customerId, Integer driverTypeId) {
         return invoiceRepository.findAllByDriverTypeIdAndCustomerId(customerId, driverTypeId);
     }
+    @Override
+    public List<Invoice> searchInvoicesByKeyword(Integer customerId, String keyword) {
+        return invoiceRepository.searchInvoicesByKeyword(customerId, keyword);
+    }
+
+    @Override
+    public List<Invoice> findInvoicesByCustomerSortedByTimeStart(Customer customer) {
+        return invoiceRepository.findAllByCustomerOrderByTimeStartDesc(customer);
+    }
 }

@@ -1,14 +1,16 @@
 package com.example.controller;
 
 import com.example.dto.FeedbackReqRes;
-import com.example.entity.Customer;
-import com.example.entity.DriverDetail;
-import com.example.entity.Feedback;
+import com.example.entity.*;
+import com.example.service.account.OurUserDetailsService;
 import com.example.service.customer.CustomerService;
 import com.example.service.DriverDetail.DriverDetailService;
 import com.example.service.feedback.FeedbackService;
+import com.example.service.invoice.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -23,11 +25,12 @@ public class FeedbackManagementController {
     private FeedbackService feedbackService;
 
     @Autowired
-    private CustomerService customerService;
+    private InvoiceService invoiceService;
 
     @Autowired
     private DriverDetailService driverDetailService;
-
+    @Autowired
+    private OurUserDetailsService ourUserDetailsService;
     @GetMapping("/get-all-feedbacks")
     public ResponseEntity<List<Feedback>> getAllFeedback() {
         return ResponseEntity.ok(feedbackService.findAllFeedback());
@@ -42,20 +45,22 @@ public class FeedbackManagementController {
     public ResponseEntity<List<Feedback>> getAllFeedbackByDriverId(@PathVariable Integer id){
         return ResponseEntity.ok(feedbackService.findAllFeedbackByDriverDetailId(id));
     }
-
-    @PostMapping("/add-feedback")
-    public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
-        return ResponseEntity.ok(feedbackService.saveFeedback(feedback));
+    @PostMapping("/add-new-feedback")
+    public ResponseEntity<Feedback> addNewFeedback(@RequestBody FeedbackReqRes feedbackReqRes) {
+        // convert driver detail id to invoice id
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        System.out.println("email here: "+email);
+        Account account = ourUserDetailsService.findByEmail(email);
+        Invoice invoice = invoiceService.getById(feedbackReqRes.getDriverDetailId());
+        DriverDetail driverDetail = invoice.getDriverDetail();
+        int newTotalRating = driverDetail.getTotalRating() + 1;
+        double newRating = (feedbackReqRes.getRating() + driverDetail.getRating()*driverDetail.getTotalRating())/ newTotalRating;
+        driverDetail.setTotalRating(newTotalRating);
+        driverDetail.setRating(newRating);
+        Feedback fb = feedbackService.saveFeedback(new Feedback(0, feedbackReqRes.getFeedbackContent(),new Date(),new Date(),account.getCustomer(),
+                driverDetail));
+        return ResponseEntity.ok(fb);
     }
-
-//    @PostMapping("/add-new-feedback")
-//    public ResponseEntity<Feedback> addNewFeedback(@RequestBody FeedbackReqRes feedbackReqRes) {
-//         Customer customer = customerService.getCustomer(feedbackReqRes.getCustomerId());
-//         DriverDetail driverDetail = driverDetailService.getDriverDetail(feedbackReqRes.getDriverDetailId());
-//         driverDetail.setRating(feedbackReqRes.getRating());
-//         Feedback fb = feedbackService.saveFeedback(new Feedback(0, feedbackReqRes.getFeedbackContent(),new Date(),new Date(),customer,
-//                 driverDetail));
-//            return ResponseEntity.ok(fb);
-//    }
 }
 

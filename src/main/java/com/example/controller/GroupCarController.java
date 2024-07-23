@@ -102,11 +102,6 @@ public class GroupCarController {
     public List<GroupCar> getGroupCarsByDriverDetailId(@PathVariable int id) {
         return groupCarService.getGroupCarsByDriverDetailId(id);
     }
-//    @GetMapping("/public/getAccountOfDriverDetailByGroupId/{id}")
-//    public Account getAccountOfDriverDetailByGroupId(@PathVariable int id) {
-//        DriverDetail driverDetail = driverDetailServiceImp.getDriverDetailByGroup(id);
-//        return ourUserDetailsService.getAccountByDriverDetail(driverDetail);
-//    }
 
     @GetMapping("/public/getAccountOfDriverDetailByGroupId/{id}")
     public Account getAccountOfDriverDetailByGroupId(@PathVariable int id) {

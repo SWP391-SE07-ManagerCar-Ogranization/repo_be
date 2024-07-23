@@ -27,4 +27,14 @@ public interface InvoiceRepository extends JpaRepository<Invoice , Integer> {
 
     List<Invoice> findAllByDriverDetail(DriverDetail driverDetail);
     List<Invoice> findAllByCustomer(Customer customer);
+
+    @Query("SELECT i FROM Invoice i WHERE i.customer.id = :customerId AND " +
+            "(i.startPoint LIKE %:keyword% OR i.endPoint LIKE %:keyword% OR " +
+            "CAST(i.timeStart AS string) LIKE %:keyword%) ORDER BY i.timeStart DESC")
+    List<Invoice> searchInvoicesByKeyword(@Param("customerId") Integer customerId, @Param("keyword") String keyword);
+
+    @Query("SELECT i FROM Invoice i WHERE i.customer.id = :customerId ORDER BY i.timeStart ASC")
+    List<Invoice> findByCustomerOrderByTimeStartAsc(@Param("customerId") Integer customerId);
+
+    List<Invoice> findAllByCustomerOrderByTimeStartDesc(Customer customer);
 }

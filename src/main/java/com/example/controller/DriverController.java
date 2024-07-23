@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -43,13 +44,18 @@ public class DriverController {
         String email = authentication.getName();
         Account account = ourUserDetailsService.findByEmail(email);
         DriverDetail driverDetail = account.getDriverDetail();
+        if(driverDetailService.checkValidDriver(driverDetail)) {
             driverDetail.setWorkingStatus(reqRes.isWorkingStatus());
             account.setLatitude(reqRes.getLatitude());
             account.setLongitude(reqRes.getLongitude());
             ourUserDetailsService.addAccount(account);
             driverDetailService.add(driverDetail);
             reqRes.setMessage("success");
-        return ResponseEntity.ok(reqRes);
+            return ResponseEntity.ok(reqRes);
+        } else {
+            reqRes.setMessage("Need update information");
+            return ResponseEntity.status(403).body(reqRes);
+        }
     }
     @GetMapping("/get-group-car")
     public ResponseEntity<?> paymentGroupCarForDriver() {
@@ -67,6 +73,12 @@ public class DriverController {
         return ResponseEntity.ok(infoBookingForDrivers);
     }
 
+    @GetMapping("/invoice/{invoiceId}")
+    public ResponseEntity<?> getDriverByInvoiceId(@PathVariable String invoiceId) {
+        Invoice invoice = invoiceService.getById(Integer.valueOf(invoiceId));
+        DriverDetail driverDetail = invoice.getDriverDetail();
+        return ResponseEntity.ok(driverDetail.getAccount());
+    }
     @GetMapping("/get-invoice")
     public ResponseEntity<?> getPersonalInvoice() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -74,14 +86,18 @@ public class DriverController {
         Account account = ourUserDetailsService.findByEmail(email);
         DriverDetail driverDetail = account.getDriverDetail();
         List<Invoice> invoiceList = invoiceService.findByDriverDetail(driverDetail);
-        List<InfoBookingForDriver> infoBookingForDrivers = new ArrayList<>();
-        for (Invoice invoice: invoiceList) {
-            InfoBookingForDriver info = new InfoBookingForDriver();
-            info.setInvoice(invoice);
-            info.setUserTransaction(invoice.getUserTransaction());
-            info.setNameCustomer(invoice.getCustomer().getAccount().getName());
-            infoBookingForDrivers.add(info);
-        }
+
+        List<InfoBookingForDriver> infoBookingForDrivers = invoiceList.stream()
+                .map(invoice -> {
+                    InfoBookingForDriver info = new InfoBookingForDriver();
+                    info.setInvoice(invoice);
+                    info.setUserTransaction(invoice.getUserTransaction());
+                    info.setNameCustomer(invoice.getCustomer().getAccount().getName());
+                    return info;
+                })
+                .sorted((info1, info2) -> info2.getInvoice().getBookingDate().compareTo(info1.getInvoice().getBookingDate()))
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(infoBookingForDrivers);
     }
     @PostMapping("/confirm-invoice")
@@ -100,6 +116,22 @@ public class DriverController {
             } else {
                 return ResponseEntity.ok("User need to payment");
             }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    @PostMapping("/ignore-invoice")
+    public ResponseEntity<?> ignoreInvoice(@RequestBody Invoice invoiceInput) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account account = ourUserDetailsService.findByEmail(email);
+        DriverDetail driverDetail = account.getDriverDetail();
+        Invoice invoice = invoiceService.getById(invoiceInput.getInvoiceId());
+        if(Objects.equals(invoice.getDriverDetail(), driverDetail)) {
+            UserTransaction userTransaction = invoice.getUserTransaction();
+            userTransactionService.delete(userTransaction);
+            invoiceService.delete(invoice);
+            return ResponseEntity.ok("Delete finished");
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -139,12 +171,10 @@ public class DriverController {
             DriverDetail driverDetail = account.getDriverDetail();
             GroupCar groupCarNew = groupCarService.getGroupCarById(groupCar.getGroupId());
             if(groupCarNew.getDriverDetail()!=null){
-                System.out.println("driver >>>>> " + groupCarNew.getDriverDetail());
                 return ResponseEntity.badRequest().body("GroupCar already existed driver");
             }else{
                 groupCarNew.setDriverDetail(driverDetail);
                 groupCarService.saveGroupCar(groupCarNew);
-                System.out.println("group id: "+ groupCarService.getGroupCarById(groupCar.getGroupId()));
                 userTransactionService.addTransactionWithGroupCar(groupCarService.getGroupCarById(groupCar.getGroupId()));
                 return ResponseEntity.ok(groupCarNew);
             }

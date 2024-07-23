@@ -22,6 +22,7 @@ public interface DriverDetailService {
    List<DriverDetail> getAllDriverDetails();
    void deleteDriverDetail(int id);
    DriverDetail saveDriverDetail(DriverDetail driverDetail);
+   boolean checkValidDriver(DriverDetail driverDetail);
 
 }
 

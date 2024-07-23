@@ -78,4 +78,18 @@ public class CouponServiceImp implements CouponService{
         }
         return myCoupon;
     }
+
+    @Override
+    public List<Coupon> getMyTradeCoupon(int customerId) {
+        List<Coupon> myTradeCoupon = new ArrayList<>();
+        List<Coupon> allCoupons = couponRepository.findAll();
+        for (Coupon coupon : allCoupons) {
+            if ((coupon.getCustomer() != null) && (coupon.getCouponType().equalsIgnoreCase("Trade coupon"))){
+                if (coupon.getCustomer().getId() == customerId) {
+                    myTradeCoupon.add(coupon);
+                }
+            }
+        }
+        return myTradeCoupon;
+    }
 }

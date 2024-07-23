@@ -23,7 +23,8 @@ public class PositionService {
     private static final double EARTH_RADIUS_KM = 6371.01;
     @Autowired
     private OurUserDetailsService ourUserDetailsService;
-
+    @Autowired
+    private DirectionService directionService;
     public double haversine(double lat1, double lon1, double lat2, double lon2) {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);

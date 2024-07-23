@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -56,7 +57,7 @@ public class InvoiceManagementController {
             invoice.setUserTransaction(transactionUpdated);
             invoice.setInvoiceId(transactionUpdated.getTransactionId());
             invoiceService.add(invoice);
-            return ResponseEntity.ok(new InfoBookingForDriver(invoice,null,transactionUpdated,null,accountCustomer.getName(), accountDriver.getName(), 1L));
+            return ResponseEntity.ok(new InfoBookingForDriver(invoice,null,transactionUpdated,null,accountCustomer.getName(), accountDriver, 1L));
         }
     }
 
@@ -90,7 +91,31 @@ public class InvoiceManagementController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/customer/invoices")
+    public ResponseEntity<?> getInvoiceByCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        return ResponseEntity.ok(invoiceService.findByCustomer(accountCustomer.getCustomer()));
+    }
 
+    @GetMapping("/customer/invoices/search")
+    public ResponseEntity<List<Invoice>> searchInvoicesByKeyword(@RequestParam("keyword") String keyword) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        List<Invoice> searchResults = invoiceService.searchInvoicesByKeyword(accountCustomer.getAccountId(), keyword);
+        return ResponseEntity.ok(searchResults);
+    }
+
+    @GetMapping("/customer/invoices/sort")
+    public ResponseEntity<List<Invoice>> getSortedInvoicesByCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Account accountCustomer = ourUserDetailsService.findByEmail(email);
+        List<Invoice> sortedInvoices = invoiceService.findInvoicesByCustomerSortedByTimeStart(accountCustomer.getCustomer());
+        return ResponseEntity.ok(sortedInvoices);
+    }
 }
 
 

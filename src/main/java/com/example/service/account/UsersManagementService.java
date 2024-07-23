@@ -276,14 +276,24 @@ public class UsersManagementService {
             if (account != null) {
                 account.setEmail(updatedUser.getEmail());
                 account.setName(updatedUser.getName());
-                System.out.println("ROLE IS: " + account.getRole());
                 account.setRole(account.getRole());
+                account.setDob(updatedUser.getDob());
+                account.setAddress(updatedUser.getAddress());
+                account.setUpdateAt(new Date());
+                account.setPhone(updatedUser.getPhone());
                 account.setImage(updatedUser.getImage());
+                account.setIdCard(updatedUser.getIdCard());
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
                     account.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                 }
 
                 Account savedUser = ourUserDetailsService.addAccount(account);
+                if(account.getDriverDetail() != null) {
+                    DriverDetail driverDetail = account.getDriverDetail();
+                    driverDetail.setDriverLicence(updatedUser.getDriverDetail().getDriverLicence());
+                    driverDetail.setVehicleNumber(updatedUser.getDriverDetail().getVehicleNumber());
+                    driverDetailService.add(driverDetail);
+                }
                 reqRes.setAccount(savedUser);
                 reqRes.setStatusCode(200);
                 reqRes.setMessage("User updated successfully");

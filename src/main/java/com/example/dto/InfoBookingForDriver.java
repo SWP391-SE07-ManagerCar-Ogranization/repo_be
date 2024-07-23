@@ -1,8 +1,6 @@
 package com.example.dto;
 
-import com.example.entity.GroupCar;
-import com.example.entity.Invoice;
-import com.example.entity.UserTransaction;
+import com.example.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -22,6 +20,6 @@ public class InfoBookingForDriver {
     private UserTransaction userTransaction;
     private Set<UserTransaction> userTransactions;
     private String nameCustomer;
-    private String nameDriver;
+    private Account accountDriver;
     private Long timeRemaining;
 }

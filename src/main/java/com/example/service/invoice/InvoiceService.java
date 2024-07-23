@@ -23,4 +23,8 @@ public interface InvoiceService {
 
     List<Invoice> findAllByDriverTypeIdAndCustomerId(Integer customerId, Integer driverTypeId);
 
+    List<Invoice> searchInvoicesByKeyword(Integer customerId, String keyword);
+
+    List<Invoice> findInvoicesByCustomerSortedByTimeStart(Customer customer);
+
 }
